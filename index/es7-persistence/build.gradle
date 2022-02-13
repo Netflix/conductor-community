@@ -63,5 +63,5 @@ shadowJar {
     }
 }
 
-//jar.enabled = false
-//jar.dependsOn shadowJar
+jar.enabled = false
+jar.dependsOn shadowJar

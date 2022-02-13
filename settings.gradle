@@ -30,13 +30,13 @@ gradleEnterprise {
 rootProject.name = 'conductor-community'
 
 include 'external-payload-storage'
-include 'tasks'
-include 'event-queues'
+include 'task'
+include 'event-queue'
 include 'metrics'
 include 'persistence'
 include 'index'
 include 'community-common'
-include 'locks'
+include 'lock'
 include 'contribs'
 
 include 'persistence:common-persistence'
@@ -47,22 +47,22 @@ include 'index:noop'
 include 'external-payload-storage:azureblob-storage'
 include 'external-payload-storage:postgres-external-storage'
 include 'external-payload-storage:s3-storage'
-include 'event-queues:amqp'
-include 'event-queues:nats'
-include 'event-queues:sqs'
-include 'locks:zookeeper-lock'
-include 'locks:local-lock'
+include 'event-queue:amqp'
+include 'event-queue:nats'
+include 'event-queue:sqs'
+include 'lock:zookeeper-lock'
+include 'lock:local-lock'
 
 rootProject.children.stream()
         .filter(p -> p.name.equals("persistence") || p.name.equals("index") ||
-                p.name.equals("external-payload-storage") || p.name.equals("event-queues") ||
-                p.name.equals("locks") || p.name.equals("contribs"))
+                p.name.equals("external-payload-storage") || p.name.equals("event-queue") ||
+                p.name.equals("lock") || p.name.equals("contribs"))
         .forEach(it -> it.children
                 .forEach(c -> c.name = "conductor-" + c.name))
 
 rootProject.children.stream()
         .filter(p -> !p.name.equals("persistence") && !p.name.equals("index") &&
-                !p.name.equals("external-payload-storage") && !p.name.equals("event-queues") &&
-                !p.name.equals("locks") && !p.name.equals("contribs"))
+                !p.name.equals("external-payload-storage") && !p.name.equals("event-queue") &&
+                !p.name.equals("lock") && !p.name.equals("contribs"))
         .forEach(it -> it.name = "conductor-" + it.name)
 
