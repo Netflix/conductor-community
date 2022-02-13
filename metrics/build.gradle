@@ -12,9 +12,8 @@
  */
 
 dependencies {
-    implementation project(':conductor-community-common')
-    implementation project(':persistence:conductor-common-persistence')
 
+    implementation project(":conductor-community-common")
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
@@ -49,5 +48,5 @@ dependencies {
     testImplementation "org.testcontainers:mockserver:${revTestContainer}"
     testImplementation "org.mock-server:mockserver-client-java:${revMockServerClient}"
 
-    testImplementation project(':conductor-community-common').sourceSets.test.output
+    //testImplementation "com.netflix.conductor:conductor-common:${revConductor}"
 }

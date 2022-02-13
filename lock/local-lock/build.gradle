@@ -3,7 +3,6 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
     implementation "org.apache.commons:commons-lang3"
-    implementation "org.apache.curator:curator-recipes:${revCuratorRecipes}"
+    implementation "com.google.guava:guava:${revGuava}"
 
-    testImplementation "org.apache.curator:curator-test:${revCuratorTest}"
 }

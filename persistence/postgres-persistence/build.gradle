@@ -12,8 +12,11 @@
  */
 
 dependencies {
-    implementation project(':conductor-common')
-    implementation project(':conductor-core')
+    implementation project(':conductor-community-common')
+    implementation project(':persistence:conductor-common-persistence')
+    implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
     // SBMTODO: remove guava dep
@@ -28,9 +31,9 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
 
     testImplementation "org.testcontainers:postgresql:${revTestContainer}"
+    testImplementation project(':conductor-community-common').sourceSets.test.output
+    testImplementation project(':persistence:conductor-common-persistence').sourceSets.test.output
 
-    testImplementation project(':conductor-core').sourceSets.test.output
-    testImplementation project(':conductor-common').sourceSets.test.output
 }
 
 test {

@@ -1,8 +1,10 @@
 dependencies {
-    compileOnly 'org.springframework.boot:spring-boot-starter'
+
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
-    implementation "com.azure:azure-storage-blob:${revAzureStorageBlobSdk}"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-core"
     implementation "org.apache.commons:commons-lang3"
+
 }

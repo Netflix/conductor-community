@@ -25,8 +25,12 @@ configurations {
 ext['elasticsearch.version'] = revElasticSearch7
 
 dependencies {
-    implementation project(':conductor-common')
-    implementation project(':conductor-core')
+
+    implementation project(':conductor-community-common')
+    implementation project(':persistence:conductor-common-persistence')
+    implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
@@ -43,7 +47,8 @@ dependencies {
 
     testImplementation "org.awaitility:awaitility:${revAwaitility}"
     testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
-    testImplementation project(':conductor-common').sourceSets.test.output
+    testImplementation project(':conductor-community-common').sourceSets.test.output
+
 }
 
 // Drop the classifier and delete jar task actions to replace the regular jar artifact with the shadow artifact
@@ -58,5 +63,5 @@ shadowJar {
     }
 }
 
-jar.enabled = false
-jar.dependsOn shadowJar
+//jar.enabled = false
+//jar.dependsOn shadowJar

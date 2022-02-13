@@ -12,8 +12,6 @@
  */
 
 dependencies {
-    implementation project(':conductor-community-common')
-    implementation project(':persistence:conductor-common-persistence')
 
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
@@ -27,7 +25,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:"
 
     implementation "net.thisptr:jackson-jq:${revJq}"
-    // SBMTODO: remove guava dep
+
     implementation "com.google.guava:guava:${revGuava}"
 
     implementation "javax.ws.rs:jsr311-api:${revJsr311Api}"
@@ -48,6 +46,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.testcontainers:mockserver:${revTestContainer}"
     testImplementation "org.mock-server:mockserver-client-java:${revMockServerClient}"
-
     testImplementation project(':conductor-community-common').sourceSets.test.output
+
+
 }
