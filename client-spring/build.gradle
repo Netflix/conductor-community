@@ -1,9 +1,0 @@
-
-dependencies {
-
-    implementation project(':conductor-common')
-    api project(':conductor-client')
-
-    implementation "com.netflix.eureka:eureka-client:${revEurekaClient}"
-    implementation 'org.springframework.boot:spring-boot-starter'
-}
