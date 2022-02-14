@@ -45,8 +45,24 @@ To maintain backward compatibility with the conductor-contribs module from Netfl
 If you do not need event queues, persistence, zookeeper or es7 support, just add contribs dependencies to your builds.
 
 ## FAQ
-#### Who maintains these repository?
+#### Why separate repository?
+The number of contributions, especially newer implementations of the core contracts in Conductor has increased over the past few years. 
+There is interest in the community to contribute more implementations. 
+To streamline the support and release of the existing community-contributed implementations and future ones, we are creating a new repository dedicated to hosting just contributions. 
+Conductor users who wish to use a contributed module will have a dedicated place to ask questions directly to fellow members of the community. 
+
+Having a separate repository will allow us to scale the contributions and also ensure we are able to review and merge PRs in a timely fashion.
+
 #### How often builds are published?
+Similar to core Conductor the builds are published often with each major release.
+Release numbers are kept in sync with main Conductor releases, which removes the need for a version compatibility matrix.
+
 #### How do I get help?
+Please use the Discussions on Conductor repo at https://github.com/Netflix/conductor/discussions
+
 #### How do I add new modules here?
+1. Start with a proposal by posting on the discussion
+2. Send a PR
+
 #### I have a question not listed here.
+Please use the Discussions on Conductor repo at https://github.com/Netflix/conductor/discussions
