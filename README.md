@@ -66,3 +66,6 @@ Please use the Discussions on Conductor repo at https://github.com/Netflix/condu
 
 #### I have a question not listed here.
 Please use the Discussions on Conductor repo at https://github.com/Netflix/conductor/discussions
+
+#### Does it change how I build Conductor locally?
+#### Do I need to pull additional dependency in my builds going forward?

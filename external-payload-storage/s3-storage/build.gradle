@@ -1,8 +1,0 @@
-dependencies {
-    compileOnly 'org.springframework.boot:spring-boot-starter'
-    implementation "com.netflix.conductor:conductor-common:${revConductor}"
-    implementation "com.netflix.conductor:conductor-core:${revConductor}"
-
-    implementation "com.amazonaws:aws-java-sdk-s3:${revAwsSdk}"
-    implementation "org.apache.commons:commons-lang3"
-}
