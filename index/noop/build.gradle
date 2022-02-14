@@ -1,11 +1,9 @@
 dependencies {
-    implementation project(':conductor-community-common')
     implementation project(':persistence:conductor-common-persistence')
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
-
 }
 
 test {

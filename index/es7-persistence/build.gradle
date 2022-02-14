@@ -26,7 +26,6 @@ ext['elasticsearch.version'] = revElasticSearch7
 
 dependencies {
 
-    implementation project(':conductor-community-common')
     implementation project(':persistence:conductor-common-persistence')
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
@@ -47,7 +46,7 @@ dependencies {
 
     testImplementation "org.awaitility:awaitility:${revAwaitility}"
     testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
-    testImplementation project(':conductor-community-common').sourceSets.test.output
+    testImplementation project(':conductor-test-util').sourceSets.test.output
 
 }
 

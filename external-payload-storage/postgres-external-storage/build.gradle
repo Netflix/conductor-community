@@ -24,6 +24,6 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.testcontainers:postgresql:${revTestContainer}"
-    testImplementation project(':conductor-community-common').sourceSets.test.output
+    testImplementation project(':conductor-test-util').sourceSets.test.output
 
 }

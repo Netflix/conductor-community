@@ -46,7 +46,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.testcontainers:mockserver:${revTestContainer}"
     testImplementation "org.mock-server:mockserver-client-java:${revMockServerClient}"
-    testImplementation project(':conductor-community-common').sourceSets.test.output
+    testImplementation project(':conductor-test-util').sourceSets.test.output
 
 
 }
