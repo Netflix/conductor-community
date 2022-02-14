@@ -16,8 +16,6 @@ dependencies {
     shadow project(':event-queue:conductor-amqp')
     shadow project(':lock:conductor-local-lock')
     shadow project(':conductor-metrics')
-    shadow project(':index:conductor-noop')
-    shadow project(':external-payload-storage:conductor-s3-storage')
 
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
@@ -25,34 +23,7 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation "com.amazonaws:aws-java-sdk-s3:${revAwsSdk}"
-    implementation "com.amazonaws:aws-java-sdk-sqs:${revAwsSdk}"
-
-    implementation "org.apache.commons:commons-lang3:"
-
-    implementation "net.thisptr:jackson-jq:${revJq}"
-    // SBMTODO: remove guava dep
-    implementation "com.google.guava:guava:${revGuava}"
-
-    implementation "javax.ws.rs:jsr311-api:${revJsr311Api}"
-
-    implementation "org.apache.kafka:kafka-clients:${revKafka}"
-
-    implementation "com.rabbitmq:amqp-client:${revAmqpClient}"
-
-    implementation "io.nats:java-nats-streaming:${revNatsStreaming}"
-
-    implementation "io.reactivex:rxjava:${revRxJava}"
-
-    implementation "com.netflix.spectator:spectator-reg-metrics3:${revSpectator}"
-    implementation "com.netflix.spectator:spectator-reg-micrometer:${revSpectator}"
-	implementation "io.prometheus:simpleclient:${revPrometheus}"
-	implementation "io.micrometer:micrometer-registry-prometheus:${revMicrometer}"
-
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation "org.testcontainers:mockserver:${revTestContainer}"
-    testImplementation "org.mock-server:mockserver-client-java:${revMockServerClient}"
-
     testImplementation project(':conductor-test-util').sourceSets.test.output
 }
 
@@ -69,8 +40,6 @@ shadowJar {
                             || it.moduleName == 'conductor-amqp'
                             || it.moduleName == 'conductor-local-lock'
                             || it.moduleName == 'conductor-metrics'
-                            || it.moduleName == 'conductor-noop'
-                            || it.moduleName == 'conductor-s3-storage'
                     )
         })
     }
