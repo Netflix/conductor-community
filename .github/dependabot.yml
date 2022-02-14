@@ -8,6 +8,8 @@ updates:
       - "aravindanr"
       - "jxu-nflx"
       - "apanicker-nflx"
+      - "v1r3n"
+      - "boney9"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
