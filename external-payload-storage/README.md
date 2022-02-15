@@ -55,5 +55,5 @@ conductor.external-payload-storage.postgres.maxDataMonths=0
 conductor.external-payload-storage.postgres.maxDataYears=1
 
 #URL, that can be used to pull the json configurations, that will be downloaded from PostgreSQL to the conductor server. For example: for local development it is "http://localhost:8080"
-conductor.external-payload-storage.postgres.conductorUrl
+conductor.external-payload-storage.postgres.conductorUrl=
 ```
