@@ -1,5 +1,4 @@
-# Task
-Community contributed system tasks
+# Community contributed system tasks
 
 ## Published Artifacts
 
