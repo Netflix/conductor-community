@@ -1,4 +1,8 @@
 # External Payload Storage
+Store and retrieve workflows/tasks input/output payload that
+goes over the thresholds defined in properties named `conductor.[workflow|task].[input|output].payload.threshold.kb`.
+Cf. Documentation [External Payload Storage](https://netflix.github.io/conductor/externalpayloadstorage/)
+
 ## Published Artifacts
 
 Group: `com.netflix.conductor`
