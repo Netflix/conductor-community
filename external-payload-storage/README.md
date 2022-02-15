@@ -22,10 +22,10 @@ Allows storing large workflow payloads to Azure
 (Default values shown below)
 ```properties
 conductor.external-payload-storage.type=azureblob
-conductor.external-payload-storage.azureblob.connectionString
+conductor.external-payload-storage.azureblob.connectionString=
 conductor.external-payload-storage.azureblob.containerName=conductor-payloads
-conductor.external-payload-storage.azureblob.endpoint
-conductor.external-payload-storage.azureblob.sasToken
+conductor.external-payload-storage.azureblob.endpoint=
+conductor.external-payload-storage.azureblob.sasToken=
 conductor.external-payload-storage.azureblob.signedUrlExpirationDuration=5
 
 #paths where the inputs and outputs of workflow and tasks are stored on the server
