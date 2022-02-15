@@ -34,7 +34,6 @@ include 'external-payload-storage:azureblob-storage'
 include 'external-payload-storage:postgres-external-storage'
 include 'event-queue:amqp'
 include 'event-queue:nats'
-include 'event-queue:sqs'
 include 'lock:zookeeper-lock'
 include 'lock:local-lock'
 

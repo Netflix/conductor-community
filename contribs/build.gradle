@@ -11,7 +11,6 @@ dependencies {
 
     //the following modules are added to make contrib published jars backward compatible
     shadow project(':conductor-task')
-    shadow project(':event-queue:conductor-sqs')
     shadow project(':event-queue:conductor-nats')
     shadow project(':event-queue:conductor-amqp')
     shadow project(':lock:conductor-local-lock')
