@@ -28,15 +28,18 @@ conductor.event-queues.amqp.connectionTimeout=60000
 conductor.event-queues.amqp.useExchange=true
 conductor.event-queues.amqp.listenerQueuePrefix=
 ```
-For advanced configurations, see [AMQPEventQueueProperties](src/main/java/com/netflix/conductor/contribs/queue/amqp/config/AMQPEventQueueProperties.java)
+For advanced configurations, see [AMQPEventQueueProperties](amqp/src/main/java/com/netflix/conductor/contribs/queue/amqp/config/AMQPEventQueueProperties.java)
 
 ### NATS
+https://nats.io/
 
-## Backward Compatibility
-Contrib module retains the backward compatiblity with ealier verions published from core Conductor repository.
-This is achived by created a shaded jar that also includes the output of the following modules:
-1. event-queue (AMQP and NATS)
-    1. SQS queue support is now part of core conductor
-2. Metrics
-3. Local only locks
-4. Kafka and JQ tasks
+Provides ability to publish and consume messages from NATS queues
+#### Configuration
+(Default values shown below)
+```properties
+conductor.event-queues.nats.enabled=true
+conductor.event-queues.nats-stream.clusterId=test-cluster
+conductor.event-queues.nats-stream.durableName=
+conductor.event-queues.nats-stream.url=nats://localhost:4222
+conductor.event-queues.nats-stream.listenerQueuePrefix=
+```
