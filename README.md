@@ -20,25 +20,21 @@ Netflix in collaboration with the team at Orkes (https://orkes.io/) will continu
 
 ## Repository Structure and Published Artifcats
 Binaries are available from [Netflix OSS Maven](https://artifacts.netflix.net/netflixoss/com/netflix/conductor/) repository, or the [Maven Central Repository](https://search.maven.org/search?q=g:com.netflix.conductor).
+
 Binaries are published under the group: **com.netflix.conductor**
 
-| Parent Folder | Published Artifact | Description |
-| ----------- | ----------- | --------------- |
-| | conductor-contribs | Optional contrib package that holds extended workflow tasks and support for SQS, AMQP, etc.  <br/>To maintain backward compatibility, the contrib jar also contains the output from task, event-queue, metrics, local-lock and noop index|
-|event-queue| conductor-amqp | Support for AMQP queues |
-|event-queue| conductor-nats | Support for NATS queues |
-|event-queue| conductor-sqs | Support for SQS queues |
-|external-payload-storage| conductor-azureblob-storage | External payload storage implementation using AzureBlob |
-|external-payload-storage| conductor-postgres-external-storage | External payload storage implementation using Postgres |
-|external-payload-storage| conductor-s3-storage | External payload storage implementation using AWS S3 |
-|index| conductor-es7-persistence | Indexing using Elasticsearch 7.X |
-|index| conductor-noop | Disable indexing |
-|metrics| conductor-metrics | Support for various metrics integrations including Datadog and Prometheus |
-|persistence| conductor-mysql-persistence | Persistence and queue using MySQL |
-|persistence| conductor-postgres-persistence | Persistence and queue using Postgres |
-|task| conductor-task | Various system tasks - Http, Kafka Publish and Json JQ Transformer |
-|lock| conductor-zookeeper-lock | Workflow execution lock implementation using Zookeeper |
-|lock| conductor-local-lock | Local JVM only locks - suitable for single instance conductor |
+For the list of artifacts published please see the table below:
+
+| Parent Folder | Description |
+| ----------- | ----- |
+|  [contribs](contribs/README.md)| Workflow Status Listener and Binary compatibility with previously published conductor-contribs |
+|[event-queue](event-queue/README.md)| Support for external eventing systems like AMQP and NATS |
+| [external-payload-storage](external-payload-storage/README.md) | Stroage for large workflow payloads |
+| [index](index/README.md)| Indexing for searching workflows |
+|[metrics](metrics/README.md)| Support for various metrics integrations including Datadog and Prometheus |
+|[persistence](persistence/README.md)| Persistence for metadata, execution and queue implementation |
+| [task](task/README.md)| Various system tasks - Kafka Publish and Json JQ Transformer |
+| [lock](lock/README.md)| Workflow execution lock implementation |
 
 ### A a note about conductor-contrib module
 To maintain backward compatibility with the conductor-contribs module from Netflix Conductor repo, the contribs module adds all the necessary classes in the final jar that are otherwise distributed amongst various sub modules such as lock (local lock), index (noop), tasks etc.
@@ -67,5 +63,9 @@ Please use the Discussions on Conductor repo at https://github.com/Netflix/condu
 #### I have a question not listed here.
 Please use the Discussions on Conductor repo at https://github.com/Netflix/conductor/discussions
 
-#### Does it change how I build Conductor locally?
-#### Do I need to pull additional dependency in my builds going forward?
+#### Does it change how I build Conductor or use the Conductor binaries? (Do I need to pull additional dependency in my builds going forward?)
+Conductor (https://github.com/Netflix/conductor) pulls in all the dependencies from this repository as part of the [conductor-server](https://github.com/Netflix/conductor/tree/main/server) build.
+No additional changes are required to consume Conductor binaries.
+
+
+
