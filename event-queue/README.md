@@ -16,7 +16,7 @@ Provides ability to publish and consume messages from AMQP compatible message br
 
 #### Configuration
 (Default values shown below)
-```json
+```properties
 conductor.event-queues.amqp.enabled=true
 conductor.event-queues.amqp.hosts=localhost
 conductor.event-queues.amqp.port=5672
