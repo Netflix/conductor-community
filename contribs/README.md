@@ -17,5 +17,4 @@ This is achieved by created a shaded jar that also includes the output of the fo
 1. event-queue (AMQP and NATS)
    1. SQS queue support is now part of core conductor
 2. Metrics
-3. Local only locks
-4. Kafka and JQ tasks
+3. Kafka and JQ tasks
