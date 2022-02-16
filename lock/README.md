@@ -10,19 +10,7 @@ Group: `com.netflix.conductor`
 
 | Published Artifact | Description |
 | ----------- | ----------- | 
-| conductor-local-lock | In JVM locks  |
 | conductor-zookeeper-lock | Support for Zookpeeper as locks |
-
-## Modules
-### Local Lock
-Uses in JVM locks - suitable for single instance server
-
-
-#### Configuration
-```properties
-conductor.workflow-execution-lock.type=local_only
-```
-No other configuration required.
 
 ### Zookeeper
 https://zookeeper.apache.org/

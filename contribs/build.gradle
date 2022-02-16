@@ -13,7 +13,6 @@ dependencies {
     shadow project(':conductor-task')
     shadow project(':event-queue:conductor-nats')
     shadow project(':event-queue:conductor-amqp')
-    shadow project(':lock:conductor-local-lock')
     shadow project(':conductor-metrics')
     shadow project(':conductor-workflow-event-listener')
 }
@@ -29,7 +28,6 @@ shadowJar {
                             || it.moduleName == 'conductor-sqs'
                             || it.moduleName == 'conductor-nats'
                             || it.moduleName == 'conductor-amqp'
-                            || it.moduleName == 'conductor-local-lock'
                             || it.moduleName == 'conductor-metrics'
                             || it.moduleName == 'conductor-workflow-event-listener'
                     )
