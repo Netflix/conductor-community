@@ -25,6 +25,7 @@ include 'index'
 include 'test-util'
 include 'lock'
 include 'contribs'
+include 'workflow-event-listener'
 
 include 'persistence:common-persistence'
 include 'persistence:mysql-persistence'

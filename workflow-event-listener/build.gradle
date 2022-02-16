@@ -1,0 +1,11 @@
+dependencies {
+
+    implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation project(':conductor-test-util').sourceSets.test.output
+}

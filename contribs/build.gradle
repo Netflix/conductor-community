@@ -15,15 +15,7 @@ dependencies {
     shadow project(':event-queue:conductor-amqp')
     shadow project(':lock:conductor-local-lock')
     shadow project(':conductor-metrics')
-
-    implementation "com.netflix.conductor:conductor-common:${revConductor}"
-    implementation "com.netflix.conductor:conductor-core:${revConductor}"
-
-    compileOnly 'org.springframework.boot:spring-boot-starter'
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation project(':conductor-test-util').sourceSets.test.output
+    shadow project(':conductor-workflow-event-listener')
 }
 
 shadowJar {
@@ -39,6 +31,7 @@ shadowJar {
                             || it.moduleName == 'conductor-amqp'
                             || it.moduleName == 'conductor-local-lock'
                             || it.moduleName == 'conductor-metrics'
+                            || it.moduleName == 'conductor-workflow-event-listener'
                     )
         })
     }
