@@ -24,7 +24,6 @@ include 'persistence'
 include 'index'
 include 'test-util'
 include 'lock'
-include 'contribs'
 include 'workflow-event-listener'
 
 include 'persistence:common-persistence'
@@ -40,13 +39,13 @@ include 'lock:zookeeper-lock'
 rootProject.children.stream()
         .filter(p -> p.name.equals("persistence") || p.name.equals("index") ||
                 p.name.equals("external-payload-storage") || p.name.equals("event-queue") ||
-                p.name.equals("lock") || p.name.equals("contribs"))
+                p.name.equals("lock"))
         .forEach(it -> it.children
                 .forEach(c -> c.name = "conductor-" + c.name))
 
 rootProject.children.stream()
         .filter(p -> !p.name.equals("persistence") && !p.name.equals("index") &&
                 !p.name.equals("external-payload-storage") && !p.name.equals("event-queue") &&
-                !p.name.equals("lock") && !p.name.equals("contribs"))
+                !p.name.equals("lock"))
         .forEach(it -> it.name = "conductor-" + it.name)
 
