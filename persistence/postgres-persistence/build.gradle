@@ -29,6 +29,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.flywaydb:flyway-core"
 
+    testImplementation "com.netflix.conductor:conductor-server:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-client:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-grpc-client:${revConductor}"
     testImplementation "org.testcontainers:postgresql:${revTestContainer}"
     testImplementation project(':conductor-test-util').sourceSets.test.output
     testImplementation project(':persistence:conductor-common-persistence').sourceSets.test.output

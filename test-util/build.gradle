@@ -1,9 +1,54 @@
+plugins {
+    id 'groovy'
+}
 dependencies {
 
+
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+    implementation "com.netflix.conductor:conductor-server:${revConductor}"
+    implementation "com.netflix.conductor:conductor-client:${revConductor}"
+    implementation "com.netflix.conductor:conductor-rest:${revConductor}"
+    implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
+    implementation "com.netflix.conductor:conductor-grpc-client:${revConductor}"
+    implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
+    implementation "com.netflix.conductor:conductor-contribs:${revConductor}"
 
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation "com.fasterxml.jackson.core:jackson-core"
     implementation "org.apache.commons:commons-lang3"
 
+    //implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+
+    implementation "org.apache.commons:commons-lang3"
+
+    implementation "com.google.protobuf:protobuf-java:${revProtoBuf}"
+    implementation "com.google.guava:guava:${revGuava}"
+    testImplementation "org.springframework:spring-web"
+
+    implementation "redis.clients:jedis:${revJedis}"
+    implementation "com.netflix.dyno-queues:dyno-queues-redis:${revDynoQueues}"
+
+    implementation "org.codehaus.groovy:groovy-all:${revGroovy}"
+    implementation "org.spockframework:spock-core:${revSpock}"
+    implementation "org.spockframework:spock-spring:${revSpock}"
+
+    implementation "org.elasticsearch.client:elasticsearch-rest-client"
+    implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client"
+
+    implementation "org.testcontainers:elasticsearch:${revTestContainer}"
+    implementation "org.testcontainers:mysql:${revTestContainer}"
+    implementation "org.testcontainers:postgresql:${revTestContainer}"
+    implementation(group: 'com.rabbitmq', name: 'amqp-client'){ version{require "${revAmqpClient}"}}
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
 }
