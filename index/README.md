@@ -1,4 +1,15 @@
-# ES7 Persistence
+# Index
+Indexing systems for workflow executions
+
+## Published Artifacts
+
+Group: `com.netflix.conductor`
+
+| Published Artifact | Description |
+| ----------- | ----------- | 
+| conductor-es7-persistence | Elasticsearch 7 |
+
+## ES7 Persistence
 
 This module provides ES7 persistence when indexing workflows and tasks.
 
@@ -12,7 +23,7 @@ From ES6 to ES7 there were significant breaking changes which affected ES7-persi
 More information can be found here: https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking-changes-7.0.html
 
 
-## Build
+### Build
 
 1. In order to use the ES7, you must change the following files from ES6 to ES7:
 
@@ -20,19 +31,19 @@ https://github.com/Netflix/conductor/blob/main/build.gradle
 https://github.com/Netflix/conductor/blob/main/server/src/main/resources/application.properties
 
 In file:
- 
+
 - /build.gradle
 
 change ext['elasticsearch.version'] from revElasticSearch6 to revElasticSearch7
 
 
 In file:
- 
+
 - /server/src/main/resources/application.properties
 
 change conductor.elasticsearch.version from 6 to 7
 
-Also you need to recreate dependencies.lock files with ES7 dependencies. To do that delete all dependencies.lock files and then run: 
+Also you need to recreate dependencies.lock files with ES7 dependencies. To do that delete all dependencies.lock files and then run:
 
 ```
 ./gradlew generateLock updateLock saveLock
@@ -45,18 +56,17 @@ https://github.com/Netflix/conductor/blob/main/test-harness/build.gradle
 https://github.com/Netflix/conductor/blob/main/test-harness/src/test/java/com/netflix/conductor/test/integration/AbstractEndToEndTest.java
 
 In file:
- 
+
 - /test-harness/build.gradle
 
 * change module inclusion from 'es6-persistence' to 'es7-persistence'
 
 In file:
- 
+
 - /test-harness/src/test/java/com/netflix/conductor/test/integration/AbstractEndToEndTest.java
 
 * change conductor.elasticsearch.version from 6 to 7
 * change DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch-oss").withTag("6.8.12") to DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch-oss").withTag("7.6.2")
-
 
 
 ### Configuration
@@ -82,8 +92,7 @@ conductor.elasticsearch.asyncMaxPoolSize=12
 conductor.elasticsearch.asyncBufferFlushTimeout=10
 ```
 
-
-### BASIC Authentication
+#### BASIC Authentication
 If you need to pass user/password to connect to ES, add the following properties to your config file
 * conductor.elasticsearch.username
 * conductor.elasticsearch.password

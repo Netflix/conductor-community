@@ -24,6 +24,7 @@ include 'persistence'
 include 'index'
 include 'test-util'
 include 'lock'
+include 'workflow-event-listener'
 include 'contribs'
 
 include 'persistence:common-persistence'
@@ -35,7 +36,6 @@ include 'external-payload-storage:postgres-external-storage'
 include 'event-queue:amqp'
 include 'event-queue:nats'
 include 'lock:zookeeper-lock'
-include 'lock:local-lock'
 
 rootProject.children.stream()
         .filter(p -> p.name.equals("persistence") || p.name.equals("index") ||
