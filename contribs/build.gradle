@@ -1,0 +1,43 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'java'
+}
+
+configurations {
+    shadow.extendsFrom implementation
+}
+
+dependencies {
+
+    //the following modules are added to make contrib published jars backward compatible
+    shadow project(':conductor-task')
+    shadow project(':event-queue:conductor-nats')
+    shadow project(':event-queue:conductor-amqp')
+    shadow project(':conductor-metrics')
+    shadow project(':conductor-workflow-event-listener')
+}
+
+shadowJar {
+
+    configurations = [project.configurations.shadow]
+    classifier = null
+    dependencies {
+        include(dependency {
+            it.moduleGroup == 'com.netflix.conductor' &&
+                    (it.moduleName == 'conductor-task'
+                            || it.moduleName == 'conductor-nats'
+                            || it.moduleName == 'conductor-amqp'
+                            || it.moduleName == 'conductor-metrics'
+                            || it.moduleName == 'conductor-workflow-event-listener'
+                    )
+        })
+    }
+    // Service files are not included by default.
+    mergeServiceFiles {
+        include 'META-INF/services/*'
+        include 'META-INF/maven/*'
+    }
+}
+
+jar.enabled = false
+jar.dependsOn shadowJar
