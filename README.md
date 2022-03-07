@@ -27,13 +27,12 @@ For the list of artifacts published please see the table below:
 
 | Parent Folder | Description |
 | ----------- | ----- |
-|  [contribs](contribs/README.md)| Module published to keep the backward compatibility with ealier conductor-contrib module|
 |[event-queue](event-queue/README.md)| Support for external eventing systems like AMQP and NATS |
 | [external-payload-storage](external-payload-storage/README.md) | Stroage for large workflow payloads |
 | [index](index/README.md)| Indexing for searching workflows |
 |[metrics](metrics/README.md)| Support for various metrics integrations including Datadog and Prometheus |
 |[persistence](persistence/README.md)| Persistence for metadata, execution and queue implementation |
-| [task](task/README.md)| Various system tasks - Kafka Publish and Json JQ Transformer |
+| [task](task/README.md)| Various system tasks - Kafka Publish
 | [lock](lock/README.md)| Workflow execution lock implementation |
 |  [workflow-event-listener](workflow-event-listener/README.md)| Workflow Status Listener and Binary compatibility with previously published conductor-contribs |
 

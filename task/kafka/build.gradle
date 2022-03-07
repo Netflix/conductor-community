@@ -5,34 +5,16 @@ dependencies {
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
-    implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-test'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation "org.springframework:spring-web"
-
-    implementation "com.amazonaws:aws-java-sdk-s3:${revAwsSdk}"
-    implementation "com.amazonaws:aws-java-sdk-sqs:${revAwsSdk}"
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-test'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly "org.springframework:spring-web"
 
     implementation "org.apache.commons:commons-lang3:"
-
-    implementation "net.thisptr:jackson-jq:${revJq}"
-
     implementation "com.google.guava:guava:${revGuava}"
-
     implementation "javax.ws.rs:jsr311-api:${revJsr311Api}"
-
-    implementation "org.apache.kafka:kafka-clients:${revKafka}"
-
-    implementation "com.rabbitmq:amqp-client:${revAmqpClient}"
-
-    implementation "io.nats:java-nats-streaming:${revNatsStreaming}"
-
     implementation "io.reactivex:rxjava:${revRxJava}"
-
-    implementation "com.netflix.spectator:spectator-reg-metrics3:${revSpectator}"
-    implementation "com.netflix.spectator:spectator-reg-micrometer:${revSpectator}"
-	implementation "io.prometheus:simpleclient:${revPrometheus}"
-	implementation "io.micrometer:micrometer-registry-prometheus:${revMicrometer}"
+    implementation "org.apache.kafka:kafka-clients:${revKafka}"
 
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.testcontainers:mockserver:${revTestContainer}"

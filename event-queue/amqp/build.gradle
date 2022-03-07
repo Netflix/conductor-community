@@ -1,6 +1,7 @@
 dependencies {
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
     implementation "com.rabbitmq:amqp-client:${revAmqpClient}"
     implementation "org.apache.commons:commons-lang3:"
     implementation "com.google.guava:guava:${revGuava}"
