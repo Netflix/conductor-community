@@ -1,11 +1,11 @@
 dependencies {
+
     implementation project(':persistence:conductor-common-persistence')
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
-    // SBMTODO: remove guava dep
     implementation "com.google.guava:guava:${revGuava}"
 
     implementation "com.fasterxml.jackson.core:jackson-databind"
