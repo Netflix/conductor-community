@@ -27,7 +27,7 @@ jobs:
         run: |
           export TAG=${{ github.event.client_payload.tag }}
           export VERSION=$(echo $TAG | cut -d'v' -f2)
-          ./gradlew -Prelease.version=$VERSION candidate --scan
+          ./gradlew -x test -Prelease.version=$VERSION candidate --scan
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
