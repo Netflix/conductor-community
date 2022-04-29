@@ -30,7 +30,7 @@ jobs:
         run: |
           export CORE_CONDUCTOR_VERSION=$(./gradlew conductor-workflow-event-listener:dependencies | grep conductor-core | grep ">" | tail -1 | cut -d ' ' -f4)
           echo "Building against Conductor core version $CORE_CONDUCTOR_VERSION"
-          ./gradlew -x -Prelease.useLastTag=true candidate --scan
+          ./gradlew -Prelease.useLastTag=true candidate --scan
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
@@ -43,7 +43,7 @@ jobs:
         run: |
           export CORE_CONDUCTOR_VERSION=$(./gradlew conductor-workflow-event-listener:dependencies | grep conductor-core | grep ">" | tail -1 | cut -d ' ' -f4)
           echo "Building against Conductor core version $CORE_CONDUCTOR_VERSION"
-          ./gradlew -x :conductor-contribs:test -Prelease.useLastTag=true final --scan
+          ./gradlew -Prelease.useLastTag=true final --scan
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
