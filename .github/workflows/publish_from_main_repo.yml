@@ -47,10 +47,11 @@ jobs:
           NETFLIX_OSS_REPO_USERNAME: ${{ secrets.ORG_NETFLIXOSS_USERNAME }}
           NETFLIX_OSS_REPO_PASSWORD: ${{ secrets.ORG_NETFLIXOSS_PASSWORD }}
       - name: Publish release
-        if: startsWith((!contains(${{ github.event.client_payload.tag }}, '-rc.'))
-        export TAG=${{ github.event.client_payload.tag }}
-        export VERSION=$(echo $TAG | cut -d'v' -f2)
-        run: ./gradlew -Prelease.version=$VERSION final --scan
+        if: (!contains(${{ github.event.client_payload.tag }}, '-rc.'))
+        run: |
+          export TAG=${{ github.event.client_payload.tag }}
+          export VERSION=$(echo $TAG | cut -d'v' -f2)
+          ./gradlew -Prelease.version=$VERSION final --scan
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
