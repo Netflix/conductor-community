@@ -29,6 +29,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
+import com.netflix.conductor.core.utils.IDGenerator;
 
 import static org.junit.Assert.assertEquals;
 
@@ -60,7 +61,9 @@ public class PostgresPayloadStorageTest {
         testPostgres = new PostgresPayloadTestUtil(postgreSQLContainer);
         executionPostgres =
                 new PostgresPayloadStorage(
-                        testPostgres.getTestProperties(), testPostgres.getDataSource());
+                        new IDGenerator(),
+                        testPostgres.getTestProperties(),
+                        testPostgres.getDataSource());
     }
 
     @Test

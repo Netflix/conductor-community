@@ -40,8 +40,11 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
     private final DataSource postgresDataSource;
     private final String tableName;
     private final String conductorUrl;
+    private final IDGenerator idGenerator;
 
-    public PostgresPayloadStorage(PostgresPayloadProperties properties, DataSource dataSource) {
+    public PostgresPayloadStorage(
+            IDGenerator idGenerator, PostgresPayloadProperties properties, DataSource dataSource) {
+        this.idGenerator = idGenerator;
         tableName = properties.getTableName();
         conductorUrl = properties.getConductorUrl();
         this.postgresDataSource = dataSource;
@@ -63,7 +66,7 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
         if (StringUtils.isNotBlank(path)) {
             objectKey = path;
         } else {
-            objectKey = IDGenerator.generate() + ".json";
+            objectKey = idGenerator.generate() + ".json";
         }
         String uri = conductorUrl + "/api/external/postgres/" + objectKey;
         externalStorageLocation.setUri(uri);

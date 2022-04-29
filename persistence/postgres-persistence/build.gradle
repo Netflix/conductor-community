@@ -5,6 +5,7 @@ dependencies {
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.retry:spring-retry'
 
     implementation "com.google.guava:guava:${revGuava}"
 
