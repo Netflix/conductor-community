@@ -24,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.postgres.storage.PostgresPayloadStorage;
 
 @Configuration(proxyBeanMethods = false)
@@ -69,7 +70,7 @@ public class PostgresPayloadConfiguration {
 
     @Bean
     public ExternalPayloadStorage postgresExternalPayloadStorage(
-            PostgresPayloadProperties properties) {
+            IDGenerator idGenerator, PostgresPayloadProperties properties) {
         DataSource dataSource =
                 DataSourceBuilder.create()
                         .driverClassName("org.postgresql.Driver")
@@ -77,6 +78,6 @@ public class PostgresPayloadConfiguration {
                         .username(properties.getUsername())
                         .password(properties.getPassword())
                         .build();
-        return new PostgresPayloadStorage(properties, dataSource);
+        return new PostgresPayloadStorage(idGenerator, properties, dataSource);
     }
 }

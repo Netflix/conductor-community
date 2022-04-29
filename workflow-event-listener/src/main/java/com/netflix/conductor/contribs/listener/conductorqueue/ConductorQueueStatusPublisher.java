@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.run.WorkflowSummary;
-import com.netflix.conductor.core.dal.ModelMapper;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.core.listener.WorkflowStatusListener;
 import com.netflix.conductor.dao.QueueDAO;
@@ -35,7 +34,6 @@ public class ConductorQueueStatusPublisher implements WorkflowStatusListener {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ConductorQueueStatusPublisher.class);
     private final QueueDAO queueDAO;
-    private final ModelMapper modelMapper;
     private final ObjectMapper objectMapper;
 
     private final String successStatusQueue;
@@ -44,11 +42,9 @@ public class ConductorQueueStatusPublisher implements WorkflowStatusListener {
 
     public ConductorQueueStatusPublisher(
             QueueDAO queueDAO,
-            ModelMapper modelMapper,
             ObjectMapper objectMapper,
             ConductorQueueStatusPublisherProperties properties) {
         this.queueDAO = queueDAO;
-        this.modelMapper = modelMapper;
         this.objectMapper = objectMapper;
         this.successStatusQueue = properties.getSuccessQueue();
         this.failureStatusQueue = properties.getFailureQueue();
@@ -73,9 +69,9 @@ public class ConductorQueueStatusPublisher implements WorkflowStatusListener {
         queueDAO.push(finalizeStatusQueue, Collections.singletonList(workflowToMessage(workflow)));
     }
 
-    private Message workflowToMessage(WorkflowModel workflow) {
+    private Message workflowToMessage(WorkflowModel workflowModel) {
         String jsonWfSummary;
-        WorkflowSummary summary = new WorkflowSummary(modelMapper.getWorkflow(workflow));
+        WorkflowSummary summary = new WorkflowSummary(workflowModel.toWorkflow());
         try {
             jsonWfSummary = objectMapper.writeValueAsString(summary);
         } catch (JsonProcessingException e) {
@@ -83,6 +79,6 @@ public class ConductorQueueStatusPublisher implements WorkflowStatusListener {
                     "Failed to convert WorkflowSummary: {} to String. Exception: {}", summary, e);
             throw new RuntimeException(e);
         }
-        return new Message(workflow.getWorkflowId(), jsonWfSummary, null);
+        return new Message(workflowModel.getWorkflowId(), jsonWfSummary, null);
     }
 }

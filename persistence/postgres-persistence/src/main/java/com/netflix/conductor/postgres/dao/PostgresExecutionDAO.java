@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
+import org.springframework.retry.support.RetryTemplate;
+
 import com.netflix.conductor.common.metadata.events.EventExecution;
 import com.netflix.conductor.common.metadata.tasks.PollData;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
@@ -46,8 +48,9 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
     private static final String ARCHIVED_FIELD = "archived";
     private static final String RAW_JSON_FIELD = "rawJSON";
 
-    public PostgresExecutionDAO(ObjectMapper objectMapper, DataSource dataSource) {
-        super(objectMapper, dataSource);
+    public PostgresExecutionDAO(
+            RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
+        super(retryTemplate, objectMapper, dataSource);
     }
 
     private static String dateStr(Long timeInMs) {
@@ -334,9 +337,7 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
         if (workflow != null) {
             if (includeTasks) {
                 List<TaskModel> tasks = getTasksForWorkflow(workflowId);
-                tasks.sort(
-                        Comparator.comparingLong(TaskModel::getScheduledTime)
-                                .thenComparingInt(TaskModel::getSeq));
+                tasks.sort(Comparator.comparingInt(TaskModel::getSeq));
                 workflow.setTasks(tasks);
             }
         }
