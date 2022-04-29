@@ -36,7 +36,7 @@ jobs:
           NETFLIX_OSS_REPO_USERNAME: ${{ secrets.ORG_NETFLIXOSS_USERNAME }}
           NETFLIX_OSS_REPO_PASSWORD: ${{ secrets.ORG_NETFLIXOSS_PASSWORD }}
       - name: Publish release
-        if: (!contains(${{ github.event.client_payload.tag }}, '-rc.'))
+        if: startsWith(${{ github.event.client_payload.tag }}, 'v') && (!contains(${{ github.event.client_payload.tag }}, '-rc.'))
         run: |
           export TAG=${{ github.event.client_payload.tag }}
           export VERSION=$(echo $TAG | cut -d'v' -f2)
