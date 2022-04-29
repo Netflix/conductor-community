@@ -22,17 +22,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Tag Repository
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            await github.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: "refs/tags/${{ github.event.client_payload.tag }}",
-              sha: context.sha
-            })
       - name: Publish candidate
         if: contains(${{ github.event.client_payload.tag }}, '-rc.')
         run: |
