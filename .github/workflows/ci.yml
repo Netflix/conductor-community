@@ -57,12 +57,12 @@ jobs:
           comment_on_pr: false
           files: './**/**/test-results/**/*.xml'
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: '**/build/reports'
       - name: Store Buildscan URL
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-scan
           path: 'buildscan.log'
