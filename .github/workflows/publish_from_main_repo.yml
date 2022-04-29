@@ -33,3 +33,26 @@ jobs:
               ref: "refs/tags/${{ github.event.client_payload.tag }}",
               sha: context.sha
             })
+      - name: Publish candidate
+        if: contains(${{ github.event.client_payload.tag }}, '-rc.')
+        run: |
+          export CORE_CONDUCTOR_VERSION=$(./gradlew conductor-workflow-event-listener:dependencies | grep conductor-core | grep ">" | tail -1 | cut -d ' ' -f4)
+          echo "Building against Conductor core version $CORE_CONDUCTOR_VERSION"
+          ./gradlew -x -Prelease.useLastTag=true candidate --scan
+        env:
+          NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
+          NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
+          NETFLIX_OSS_SIGNING_KEY: ${{ secrets.ORG_SIGNING_KEY }}
+          NETFLIX_OSS_SIGNING_PASSWORD: ${{ secrets.ORG_SIGNING_PASSWORD }}
+          NETFLIX_OSS_REPO_USERNAME: ${{ secrets.ORG_NETFLIXOSS_USERNAME }}
+          NETFLIX_OSS_REPO_PASSWORD: ${{ secrets.ORG_NETFLIXOSS_PASSWORD }}
+      - name: Publish release
+        if: startsWith((!contains(${{ github.event.client_payload.tag }}, '-rc.'))
+        run: ./gradlew -x :conductor-contribs:test -Prelease.useLastTag=true final --scan
+        env:
+          NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
+          NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
+          NETFLIX_OSS_SIGNING_KEY: ${{ secrets.ORG_SIGNING_KEY }}
+          NETFLIX_OSS_SIGNING_PASSWORD: ${{ secrets.ORG_SIGNING_PASSWORD }}
+          NETFLIX_OSS_REPO_USERNAME: ${{ secrets.ORG_NETFLIXOSS_USERNAME }}
+          NETFLIX_OSS_REPO_PASSWORD: ${{ secrets.ORG_NETFLIXOSS_PASSWORD }}
