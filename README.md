@@ -36,9 +36,6 @@ For the list of artifacts published please see the table below:
 | [lock](lock/README.md)| Workflow execution lock implementation |
 |  [workflow-event-listener](workflow-event-listener/README.md)| Workflow Status Listener and Binary compatibility with previously published conductor-contribs |
 
-### A a note about conductor-contrib module
-To maintain backward compatibility with the conductor-contribs module from Netflix Conductor repo, the contribs module adds all the necessary classes in the final jar that are otherwise distributed amongst various sub modules such as lock (local lock), index (noop), tasks etc.
-If you do not need event queues, persistence, zookeeper or es7 support, just add contribs dependencies to your builds.
 
 ## FAQ
 #### Why separate repository?
