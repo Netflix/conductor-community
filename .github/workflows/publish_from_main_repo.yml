@@ -30,7 +30,7 @@ jobs:
           export RC=rc
           if [[ "$TAG" == *"$RC"* ]]; then  
             echo "Publishing release candidate"; 
-            ./gradlew -x test -Prelease.version=$VERSION candidate --scan
+            ./gradlew -Prelease.version=$VERSION candidate --scan
           else 
             echo "Publishing Final Release"; 
             ./gradlew -Prelease.version=$VERSION final --scan
