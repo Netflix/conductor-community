@@ -12,7 +12,6 @@ dependencies {
     implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
     implementation "com.netflix.conductor:conductor-grpc-client:${revConductor}"
     implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
-    implementation "com.netflix.conductor:conductor-contribs:${revConductor}"
 
     implementation "com.fasterxml.jackson.core:jackson-databind"
     implementation "com.fasterxml.jackson.core:jackson-core"
