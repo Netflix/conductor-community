@@ -22,25 +22,19 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Publish candidate
+      - name: Publish Build
         if: contains(${{ github.event.client_payload.tag }}, '-rc.')
         run: |
           export TAG=${{ github.event.client_payload.tag }}
           export VERSION=$(echo $TAG | cut -d'v' -f2)
-          ./gradlew -x test -Prelease.version=$VERSION candidate --scan
-        env:
-          NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
-          NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
-          NETFLIX_OSS_SIGNING_KEY: ${{ secrets.ORG_SIGNING_KEY }}
-          NETFLIX_OSS_SIGNING_PASSWORD: ${{ secrets.ORG_SIGNING_PASSWORD }}
-          NETFLIX_OSS_REPO_USERNAME: ${{ secrets.ORG_NETFLIXOSS_USERNAME }}
-          NETFLIX_OSS_REPO_PASSWORD: ${{ secrets.ORG_NETFLIXOSS_PASSWORD }}
-      - name: Publish release
-        if: startsWith(${{ github.event.client_payload.tag }}, 'v') && (!contains(${{ github.event.client_payload.tag }}, '-rc.'))
-        run: |
-          export TAG=${{ github.event.client_payload.tag }}
-          export VERSION=$(echo $TAG | cut -d'v' -f2)
-          ./gradlew -Prelease.version=$VERSION final --scan
+          export RC=rc
+          if [[ "$TAG" == *"$RC"* ]]; then  
+            echo "Publishing release candidate"; 
+            ./gradlew -x test -Prelease.version=$VERSION candidate --scan
+          else 
+            echo "Publishing Final Release"; 
+            ./gradlew -Prelease.version=$VERSION final --scan
+          fi          
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}
