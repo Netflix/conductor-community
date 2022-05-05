@@ -28,7 +28,7 @@ For the list of artifacts published please see the table below:
 | Parent Folder | Description |
 | ----------- | ----- |
 |[event-queue](event-queue/README.md)| Support for external eventing systems like AMQP and NATS |
-| [external-payload-storage](external-payload-storage/README.md) | Stroage for large workflow payloads |
+| [external-payload-storage](external-payload-storage/README.md) | Storage for large workflow payloads |
 | [index](index/README.md)| Indexing for searching workflows |
 |[metrics](metrics/README.md)| Support for various metrics integrations including Datadog and Prometheus |
 |[persistence](persistence/README.md)| Persistence for metadata, execution and queue implementation |
