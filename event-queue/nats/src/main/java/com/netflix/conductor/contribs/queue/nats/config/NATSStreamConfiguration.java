@@ -11,22 +11,20 @@
  */
 package com.netflix.conductor.contribs.queue.nats.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.netflix.conductor.contribs.queue.nats.NATSStreamObservableQueue;
+import com.netflix.conductor.core.config.ConductorProperties;
+import com.netflix.conductor.core.events.EventQueueProvider;
+import com.netflix.conductor.core.events.queue.ObservableQueue;
+import com.netflix.conductor.model.TaskModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.netflix.conductor.common.metadata.tasks.Task;
-import com.netflix.conductor.contribs.queue.nats.NATSStreamObservableQueue;
-import com.netflix.conductor.core.config.ConductorProperties;
-import com.netflix.conductor.core.events.EventQueueProvider;
-import com.netflix.conductor.core.events.queue.ObservableQueue;
-
 import rx.Scheduler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableConfigurationProperties(NATSStreamProperties.class)
@@ -41,7 +39,7 @@ public class NATSStreamConfiguration {
 
     @ConditionalOnProperty(name = "conductor.default-event-queue.type", havingValue = "nats_stream")
     @Bean
-    public Map<Task.Status, ObservableQueue> getQueues(
+    public Map<TaskModel.Status, ObservableQueue> getQueues(
             ConductorProperties conductorProperties,
             NATSStreamProperties properties,
             Scheduler scheduler) {
@@ -49,9 +47,9 @@ public class NATSStreamConfiguration {
         if (conductorProperties.getStack() != null && conductorProperties.getStack().length() > 0) {
             stack = conductorProperties.getStack() + "_";
         }
-        Task.Status[] statuses = new Task.Status[] {Task.Status.COMPLETED, Task.Status.FAILED};
-        Map<Task.Status, ObservableQueue> queues = new HashMap<>();
-        for (Task.Status status : statuses) {
+        TaskModel.Status[] statuses = new TaskModel.Status[] {TaskModel.Status.COMPLETED, TaskModel.Status.FAILED};
+        Map<TaskModel.Status, ObservableQueue> queues = new HashMap<>();
+        for (TaskModel.Status status : statuses) {
             String queuePrefix =
                     StringUtils.isBlank(properties.getListenerQueuePrefix())
                             ? conductorProperties.getAppId() + "_nats_stream_notify_" + stack
