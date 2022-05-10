@@ -11,12 +11,12 @@
  */
 package com.netflix.conductor.contribs.queue.nats;
 
+import io.nats.client.Nats;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.nats.client.Connection;
-import io.nats.client.ConnectionFactory;
 import io.nats.client.Subscription;
 import rx.Scheduler;
 
@@ -24,30 +24,24 @@ import rx.Scheduler;
 public class NATSObservableQueue extends NATSAbstractQueue {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NATSObservableQueue.class);
-    private final ConnectionFactory fact;
     private Subscription subs;
     private Connection conn;
 
-    public NATSObservableQueue(ConnectionFactory factory, String queueURI, Scheduler scheduler) {
+    public NATSObservableQueue(String queueURI, Scheduler scheduler) {
         super(queueURI, "nats", scheduler);
-        this.fact = factory;
         open();
     }
 
     @Override
     public boolean isConnected() {
-        return (conn != null && conn.isConnected());
+        return (conn != null && Connection.Status.CONNECTED.equals(conn.getStatus()));
     }
 
     @Override
     public void connect() {
         try {
-            Connection temp = fact.createConnection();
+            Connection temp = Nats.connect();
             LOGGER.info("Successfully connected for " + queueURI);
-            temp.setReconnectedCallback(
-                    (event) -> LOGGER.warn("onReconnect. Reconnected back for " + queueURI));
-            temp.setDisconnectedCallback(
-                    (event -> LOGGER.warn("onDisconnect. Disconnected for " + queueURI)));
             conn = temp;
         } catch (Exception e) {
             LOGGER.error("Unable to establish nats connection for " + queueURI, e);
@@ -70,13 +64,13 @@ public class NATSObservableQueue extends NATSAbstractQueue {
                         "No subscription. Creating a queue subscription. subject={}, queue={}",
                         subject,
                         queue);
-                subs =
-                        conn.subscribe(
-                                subject, queue, msg -> onMessage(msg.getSubject(), msg.getData()));
+                conn.createDispatcher(msg -> onMessage(msg.getSubject(), msg.getData()));
+                subs = conn.subscribe(subject, queue);
             } else {
                 LOGGER.info(
                         "No subscription. Creating a pub/sub subscription. subject={}", subject);
-                subs = conn.subscribe(subject, msg -> onMessage(msg.getSubject(), msg.getData()));
+                conn.createDispatcher(msg -> onMessage(msg.getSubject(), msg.getData()));
+                subs = conn.subscribe(subject);
             }
         } catch (Exception ex) {
             LOGGER.error(
@@ -95,7 +89,7 @@ public class NATSObservableQueue extends NATSAbstractQueue {
     public void closeSubs() {
         if (subs != null) {
             try {
-                subs.close();
+                subs.unsubscribe();
             } catch (Exception ex) {
                 LOGGER.error("closeSubs failed with " + ex.getMessage() + " for " + queueURI, ex);
             }

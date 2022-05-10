@@ -11,17 +11,14 @@
  */
 package com.netflix.conductor.contribs.queue.nats;
 
-import java.util.UUID;
-
+import io.nats.client.Connection;
+import io.nats.streaming.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.nats.streaming.StreamingConnection;
-import io.nats.streaming.StreamingConnectionFactory;
-import io.nats.streaming.Subscription;
-import io.nats.streaming.SubscriptionOptions;
 import rx.Scheduler;
+
+import java.util.UUID;
 
 /** @author Oleksiy Lysak */
 public class NATSStreamObservableQueue extends NATSAbstractQueue {
@@ -39,10 +36,11 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
             String queueURI,
             Scheduler scheduler) {
         super(queueURI, "nats_stream", scheduler);
-        this.fact = new StreamingConnectionFactory();
-        this.fact.setClusterId(clusterId);
-        this.fact.setClientId(UUID.randomUUID().toString());
-        this.fact.setNatsUrl(natsUrl);
+        Options.Builder options = new Options.Builder();
+        options.clusterId(clusterId);
+        options.clientId(UUID.randomUUID().toString());
+        options.natsUrl(natsUrl);
+        this.fact = new StreamingConnectionFactory(options.build());
         this.durableName = durableName;
         open();
     }
@@ -51,7 +49,7 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
     public boolean isConnected() {
         return (conn != null
                 && conn.getNatsConnection() != null
-                && conn.getNatsConnection().isConnected());
+                && Connection.Status.CONNECTED.equals(conn.getNatsConnection().getStatus()));
     }
 
     @Override
@@ -59,13 +57,6 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
         try {
             StreamingConnection temp = fact.createConnection();
             LOGGER.info("Successfully connected for " + queueURI);
-            temp.getNatsConnection()
-                    .setReconnectedCallback(
-                            (event) ->
-                                    LOGGER.warn("onReconnect. Reconnected back for " + queueURI));
-            temp.getNatsConnection()
-                    .setDisconnectedCallback(
-                            (event -> LOGGER.warn("onDisconnect. Disconnected for " + queueURI)));
             conn = temp;
         } catch (Exception e) {
             LOGGER.error("Unable to establish nats streaming connection for " + queueURI, e);

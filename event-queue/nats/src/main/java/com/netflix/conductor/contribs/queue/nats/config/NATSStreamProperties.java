@@ -11,9 +11,8 @@
  */
 package com.netflix.conductor.contribs.queue.nats.config;
 
+import io.nats.client.Options;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import io.nats.client.Nats;
 
 @ConfigurationProperties("conductor.event-queues.nats-stream")
 public class NATSStreamProperties {
@@ -25,7 +24,7 @@ public class NATSStreamProperties {
     private String durableName = null;
 
     /** The NATS connection url */
-    private String url = Nats.DEFAULT_URL;
+    private String url = Options.DEFAULT_URL;
 
     /** The prefix to be used for the default listener queues */
     private String listenerQueuePrefix = "";
