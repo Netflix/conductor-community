@@ -1,0 +1,49 @@
+dependencies {
+
+    implementation project(':persistence:conductor-common-persistence')
+    implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.retry:spring-retry'
+
+    implementation "com.google.guava:guava:${revGuava}"
+
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+
+    implementation "org.apache.commons:commons-lang3"
+
+    implementation "com.oracle.database.jdbc:ojdbc8"
+    implementation "org.springframework.boot:spring-boot-starter-jdbc"
+    implementation "org.flywaydb:flyway-core:4.0.3" // Will only be used for JUnits. Superceding 6+ version will takeover in runtime
+
+	testImplementation "org.flywaydb:flyway-core:4.0.3!!" // Downgraded to support Unit Tests on Oracle 11G. Will be reverted after Github Actions support 18C XE based CICD.
+
+    testImplementation "org.codehaus.groovy:groovy-all:${revGroovy}"
+
+    testImplementation "org.elasticsearch:elasticsearch:6.8.23"
+    testImplementation "org.elasticsearch.client:transport:6.8.23"
+    testImplementation "org.elasticsearch.client:elasticsearch-rest-client:6.8.23"
+    testImplementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:6.8.23"
+    testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
+
+    testImplementation "org.testcontainers:oracle-xe:${revTestContainer}"
+
+    testImplementation "com.netflix.conductor:conductor-server:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-client:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-grpc-client:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
+
+    //testImplementation "org.spockframework:spock-core:${revSpock}"
+    //testImplementation "org.spockframework:spock-spring:${revSpock}"
+
+    testImplementation project(':conductor-test-util').sourceSets.test.output
+    testImplementation project(':persistence:conductor-common-persistence').sourceSets.test.output
+
+}
+
+test {
+    //the MySQL unit tests must run within the same JVM to share the same embedded DB
+    maxParallelForks = 1
+}
