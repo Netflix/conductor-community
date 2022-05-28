@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -17,7 +16,6 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -32,13 +30,14 @@ import org.springframework.retry.backoff.NoBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.MetadataDAO;
 import com.netflix.conductor.dao.QueueDAO;
 import com.netflix.conductor.oracle.dao.OracleExecutionDAO;
 import com.netflix.conductor.oracle.dao.OracleMetadataDAO;
 import com.netflix.conductor.oracle.dao.OracleQueueDAO;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OracleProperties.class)
@@ -49,7 +48,7 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 public class OracleConfiguration {
     private static final String ER_LOCK_DEADLOCK = "ORA-00060";
     private static final String ER_SERIALIZATION_FAILURE = "ORA-08177";
-   
+
     @Bean
     @DependsOn({"flyway", "flywayInitializer"})
     public MetadataDAO oracleMetadataDAO(
@@ -57,7 +56,7 @@ public class OracleConfiguration {
             DataSource dataSource,
             @Qualifier("oracleRetryTemplate") RetryTemplate retryTemplate,
             OracleProperties properties) {
-        
+
         return new OracleMetadataDAO(objectMapper, dataSource, retryTemplate, properties);
     }
 
@@ -67,7 +66,7 @@ public class OracleConfiguration {
             ObjectMapper objectMapper,
             DataSource dataSource,
             @Qualifier("oracleRetryTemplate") RetryTemplate retryTemplate) {
-        
+
         return new OracleExecutionDAO(objectMapper, dataSource, retryTemplate);
     }
 
@@ -77,14 +76,13 @@ public class OracleConfiguration {
             ObjectMapper objectMapper,
             DataSource dataSource,
             @Qualifier("oracleRetryTemplate") RetryTemplate retryTemplate) {
-        
+
         return new OracleQueueDAO(objectMapper, dataSource, retryTemplate);
     }
 
     @Bean
     public RetryTemplate oracleRetryTemplate(OracleProperties properties) {
 
-        
         SimpleRetryPolicy retryPolicy = new CustomRetryPolicy();
         retryPolicy.setMaxAttempts(properties.getDeadlockRetryMax());
 

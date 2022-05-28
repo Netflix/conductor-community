@@ -1,5 +1,4 @@
 /*
- * Copyright 2020 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -276,9 +275,7 @@ public class Query implements AutoCloseable {
         return executeScalar(Long.class);
     }
 
-    /**
-     * @return The result of {@link PreparedStatement#executeUpdate()}
-     */
+    /** @return The result of {@link PreparedStatement#executeUpdate()} */
     public int executeUpdate() {
         try {
 
@@ -326,9 +323,7 @@ public class Query implements AutoCloseable {
         }
     }
 
-    /**
-     * @return The single result of the query as an Object.
-     */
+    /** @return The single result of the query as an Object. */
     public Object executeScalar() {
         try (ResultSet rs = executeQuery()) {
             if (!rs.next()) {
