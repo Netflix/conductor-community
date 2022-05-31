@@ -61,8 +61,8 @@ Please use the Discussions on Conductor repo at https://github.com/Netflix/condu
 Please use the Discussions on Conductor repo at https://github.com/Netflix/conductor/discussions
 
 #### Does it change how I build Conductor or use the Conductor binaries? (Do I need to pull additional dependency in my builds going forward?)
-Conductor (https://github.com/Netflix/conductor) pulls in all the dependencies from this repository as part of the [conductor-server](https://github.com/Netflix/conductor/tree/main/server) build.
-No additional changes are required to consume Conductor binaries.
+Conductor (https://github.com/Netflix/conductor) **no longer** pulls in all the dependencies from this repository as part of the [conductor-server](https://github.com/Netflix/conductor/tree/main/server) build.
+If you plan to use the modules from this repository, please build [community-server](/community-server) which pulls in all the dependencies. 
 
 
 

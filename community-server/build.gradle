@@ -1,0 +1,74 @@
+plugins {
+    id 'org.springframework.boot'
+}
+
+dependencies {
+
+
+    implementation "com.netflix.conductor:conductor-rest:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+    implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
+    implementation "com.netflix.conductor:conductor-cassandra-persistence:${revConductor}"
+    implementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
+    implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
+    implementation "com.netflix.conductor:conductor-redis-lock:${revConductor}"
+    implementation "com.netflix.conductor:conductor-redis-concurrency-limit:${revConductor}"
+
+
+    implementation "com.netflix.conductor:conductor-http-task:${revConductor}"
+    implementation "com.netflix.conductor:conductor-json-jq-task:${revConductor}"
+    implementation "com.netflix.conductor:conductor-awss3-storage:${revConductor}"
+    implementation "com.netflix.conductor:conductor-awssqs-event-queue:${revConductor}"
+
+    implementation project(':event-queue:conductor-amqp')
+    implementation project(':event-queue:conductor-nats')
+
+    implementation project(':external-payload-storage:conductor-azureblob-storage')
+    implementation project(':external-payload-storage:conductor-postgres-external-storage')
+
+    implementation project(':lock:conductor-zookeeper-lock')
+
+    implementation project(':conductor-metrics')
+
+    implementation project(':persistence:conductor-common-persistence')
+    implementation project(':persistence:conductor-postgres-persistence')
+    implementation project(':persistence:conductor-mysql-persistence')
+
+    implementation project(':task:conductor-kafka')
+
+    implementation project(':conductor-workflow-event-listener')
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.retry:spring-retry'
+
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.apache.logging.log4j:log4j-web'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    implementation "org.springdoc:springdoc-openapi-ui:${revOpenapi}"
+
+    runtimeOnly "org.glassfish.jaxb:jaxb-runtime:${revJAXB}"
+
+    testImplementation "com.netflix.conductor:conductor-rest:${revConductor}"
+    testImplementation "com.netflix.conductor:conductor-common:${revConductor}"
+    testImplementation "io.grpc:grpc-testing:${revGrpc}"
+    testImplementation "com.google.protobuf:protobuf-java:${revProtoBuf}"
+    testImplementation "io.grpc:grpc-protobuf:${revGrpc}"
+    testImplementation "io.grpc:grpc-stub:${revGrpc}"
+}
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    mainClassName = 'com.netflix.conductor.Conductor'
+    classifier = 'boot'
+}
+
+springBoot {
+    buildInfo()
+}
