@@ -6,15 +6,14 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:5.0.3'
-        // revElasticSearch7 in dependencies.gradle needs to be updated when spring is upgraded
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.3.12.RELEASE'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:5.+'
+        classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:7.0.0'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.6.7'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.+'
     }
 }
 
 plugins {
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'application'
     id 'jacoco'
@@ -75,7 +74,7 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.12.RELEASE")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.7")
         }
     }
 
