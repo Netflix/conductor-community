@@ -12,6 +12,7 @@
 package com.netflix.conductor.contribs.queue.nats.config;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class NATSEventQueueProvider implements EventQueueProvider {
     @NonNull
     public ObservableQueue getQueue(String queueURI) {
         NATSObservableQueue queue =
-                queues.computeIfAbsent(queueURI, q -> new NATSObservableQueue(queueURI, scheduler));
+            queues.computeIfAbsent(queueURI, q -> new NATSObservableQueue(queueURI, scheduler));
         if (queue.isClosed()) {
             queue.open();
         }

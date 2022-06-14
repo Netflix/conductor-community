@@ -55,39 +55,3 @@ spring.datasource.password=
 spring.datasource.hikari.maximum-pool-size=
 spring.datasource.hikari.auto-commit=
 ```
-
-### Oracle 
-
-#### Configuration
-
-``` properties
-conductor.db.type=oracle
-
-# ENSURE TO INCLUDE THIS PROPERTY FOR ORACLE DATABASE 
-	# - If NOT set, then Invalid SQL Format exceptions like "missing braces" or invalid SQL format" etc. would arise as the SQLs from MYSQL db//migration will be picked up and have a slightly different format to Oracle SQLs
-## There is currently so easier way to set this automatically on Oracle Persistence Configuration.
-### Reason being, JUnits / Tests depend on Flyway 4.0.3, where as the actual Conductor runtime uses Flyway 6+ and overrides Oracle Persistence dependency.
-#### The root cause of using Flyway for Test of Oracle Persistence is as GitHub Actions doesn't support Oracle version => 12
-#### This will be updated upon GitHub Actions update and will no longer have two separate versions for Test and Runtime.
-spring.flyway.locations=classpath:db/migration_oracle
-
-# While using base docker image - conductorboot/oracle:19.3.0-ee-slim
-#spring.datasource.url=jdbc:oracle:thin:@//oracle:1521/CONDUCTOR
-#spring.datasource.username=conductor
-#spring.datasource.password=conductor
-
-# While using pre-configured test image - conductorboot/oracle:19.3.0-ee-slim-test
-spring.datasource.url=jdbc:oracle:thin:@//localhost:1521/JUNIT
-spring.datasource.username=junit_user
-spring.datasource.password=junit_user
-
-## Used for JUnits -- Document purpose only - of no practical runtime use.
-#spring.datasource.url=jdbc:oracle:thin:@//localhost:1521/XE
-#spring.datasource.username=junit_user
-#spring.datasource.password=junit_user
-
-# Hikari pool sizes are -1 by default and prevent startup
-spring.datasource.hikari.maximum-pool-size=10
-spring.datasource.hikari.minimum-idle=2
-
-```
