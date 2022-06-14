@@ -11,15 +11,14 @@
  */
 package com.netflix.conductor.contribs.queue.nats;
 
-import java.util.UUID;
-
+import io.nats.client.Connection;
+import io.nats.streaming.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.nats.client.Connection;
-import io.nats.streaming.*;
 import rx.Scheduler;
+
+import java.util.UUID;
 
 /** @author Oleksiy Lysak */
 public class NATSStreamObservableQueue extends NATSAbstractQueue {

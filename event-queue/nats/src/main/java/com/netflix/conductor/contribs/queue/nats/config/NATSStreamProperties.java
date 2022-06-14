@@ -11,9 +11,8 @@
  */
 package com.netflix.conductor.contribs.queue.nats.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import io.nats.client.Options;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("conductor.event-queues.nats-stream")
 public class NATSStreamProperties {
