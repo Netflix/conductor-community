@@ -132,4 +132,9 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
             conn = null;
         }
     }
+
+    @Override
+    public boolean rePublishIfNoAck() {
+        return false;
+    }
 }
