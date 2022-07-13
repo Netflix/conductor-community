@@ -29,7 +29,7 @@ import org.junit.rules.ExpectedException;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
 
@@ -88,12 +88,12 @@ public abstract class ExecutionDAOTest {
         task.setTaskId(UUID.randomUUID().toString());
         task.setTaskDefName("task1");
 
-        expectedException.expect(ApplicationException.class);
+        expectedException.expect(NonTransientException.class);
         expectedException.expectMessage("Workflow instance id cannot be null");
         getExecutionDAO().createTasks(Collections.singletonList(task));
 
         task.setWorkflowInstanceId(UUID.randomUUID().toString());
-        expectedException.expect(ApplicationException.class);
+        expectedException.expect(NonTransientException.class);
         expectedException.expectMessage("Task reference name cannot be null");
         getExecutionDAO().createTasks(Collections.singletonList(task));
     }
@@ -107,7 +107,7 @@ public abstract class ExecutionDAOTest {
         task.setTaskDefName("task1");
         task.setWorkflowInstanceId(UUID.randomUUID().toString());
 
-        expectedException.expect(ApplicationException.class);
+        expectedException.expect(NonTransientException.class);
         expectedException.expectMessage("Task reference name cannot be null");
         getExecutionDAO().createTasks(Collections.singletonList(task));
     }
