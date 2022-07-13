@@ -204,7 +204,7 @@ class WorkflowTestUtil {
     Optional<TaskDef> getPersistedTaskDefinition(String taskDefName) {
         try {
             return Optional.of(metadataService.getTaskDef(taskDefName))
-        } catch (NotFoundException applicationException) {
+        } catch (Exception applicationException) {
             return Optional.empty()
         }
     }

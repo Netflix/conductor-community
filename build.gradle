@@ -109,6 +109,7 @@ allprojects {
         testImplementation('org.springframework.boot:spring-boot-starter-test')
         testImplementation('org.springframework.boot:spring-boot-starter-log4j2')
         testImplementation('junit:junit:4.13.2')
+        testImplementation 'org.junit.vintage:junit-vintage-engine'
     }
 
     // processes additional configuration metadata json file as described here
