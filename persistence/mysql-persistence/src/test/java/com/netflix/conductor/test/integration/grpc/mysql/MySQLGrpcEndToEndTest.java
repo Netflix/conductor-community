@@ -27,7 +27,8 @@ import com.netflix.conductor.test.integration.grpc.AbstractGrpcEndToEndTest;
         properties = {
             "conductor.db.type=mysql",
             "conductor.grpc-server.port=8094",
-            "spring.datasource.url=jdbc:tc:mysql:8.0.27:///conductor", // "tc" prefix starts the MySql
+            "spring.datasource.url=jdbc:tc:mysql:8.0.27:///conductor", // "tc" prefix starts the
+            // MySql
             // container
             "spring.datasource.username=root",
             "spring.datasource.password=root",
