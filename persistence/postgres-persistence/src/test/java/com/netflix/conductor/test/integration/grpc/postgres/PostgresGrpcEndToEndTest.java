@@ -27,7 +27,8 @@ import com.netflix.conductor.test.integration.grpc.AbstractGrpcEndToEndTest;
         properties = {
             "conductor.db.type=postgres",
             "conductor.grpc-server.port=8098",
-            "spring.datasource.url=jdbc:tc:postgresql:11.15-alpine:///conductor", // "tc" prefix starts the
+            "spring.datasource.url=jdbc:tc:postgresql:11.15-alpine:///conductor", // "tc" prefix
+            // starts the
             // Postgres container
             "spring.datasource.username=postgres",
             "spring.datasource.password=postgres",

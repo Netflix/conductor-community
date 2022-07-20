@@ -17,7 +17,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/** @author Viren */
+/**
+ * @author Viren
+ */
 public abstract class AbstractNode {
 
     public static final Pattern WHITESPACE = Pattern.compile("\\s");

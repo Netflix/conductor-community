@@ -11,16 +11,18 @@
  */
 package com.netflix.conductor.contribs.queue.nats;
 
-import io.nats.client.Nats;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.nats.client.Connection;
+import io.nats.client.Nats;
 import io.nats.client.Subscription;
 import rx.Scheduler;
 
-/** @author Oleksiy Lysak */
+/**
+ * @author Oleksiy Lysak
+ */
 public class NATSObservableQueue extends NATSAbstractQueue {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NATSObservableQueue.class);
