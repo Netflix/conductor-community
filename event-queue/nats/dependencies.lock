@@ -5,14 +5,26 @@
         }
     },
     "compileClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.10.1"
+        },
         "com.netflix.conductor:conductor-core": {
             "locked": "3.10.1"
         },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
-        },
-        "org.apache.curator:curator-recipes": {
-            "locked": "2.4.0"
         },
         "org.apache.logging.log4j:log4j-api": {
             "locked": "2.17.1"
@@ -31,17 +43,32 @@
         },
         "org.springframework.boot:spring-boot-starter": {
             "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-web": {
+            "locked": "2.6.7"
         }
     },
     "runtimeClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.10.1"
+        },
         "com.netflix.conductor:conductor-core": {
             "locked": "3.10.1"
         },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
-        },
-        "org.apache.curator:curator-recipes": {
-            "locked": "2.4.0"
         },
         "org.apache.logging.log4j:log4j-api": {
             "locked": "2.17.1"
@@ -60,17 +87,26 @@
         }
     },
     "testCompileClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.10.1"
+        },
         "com.netflix.conductor:conductor-core": {
             "locked": "3.10.1"
         },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
-        },
-        "org.apache.curator:curator-recipes": {
-            "locked": "2.4.0"
-        },
-        "org.apache.curator:curator-test": {
-            "locked": "2.4.0"
         },
         "org.apache.logging.log4j:log4j-api": {
             "locked": "2.17.1"
@@ -98,17 +134,26 @@
         }
     },
     "testRuntimeClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.10.1"
+        },
         "com.netflix.conductor:conductor-core": {
             "locked": "3.10.1"
         },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
-        },
-        "org.apache.curator:curator-recipes": {
-            "locked": "2.4.0"
-        },
-        "org.apache.curator:curator-test": {
-            "locked": "2.4.0"
         },
         "org.apache.logging.log4j:log4j-api": {
             "locked": "2.17.1"
