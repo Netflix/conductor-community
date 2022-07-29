@@ -13,6 +13,7 @@ package com.netflix.conductor.azureblob.storage;
 
 import java.time.Duration;
 
+import com.netflix.conductor.core.exception.NonTransientException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +22,6 @@ import org.junit.rules.ExpectedException;
 import com.netflix.conductor.azureblob.config.AzureBlobProperties;
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
-import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.core.utils.IDGenerator;
 
 import static org.junit.Assert.assertEquals;
@@ -59,7 +59,7 @@ public class AzureBlobPayloadStorageTest {
 
     @Test
     public void testNoStorageAccount() {
-        expectedException.expect(ApplicationException.class);
+        expectedException.expect(NonTransientException.class);
         new AzureBlobPayloadStorage(idGenerator, properties);
     }
 

@@ -187,7 +187,7 @@
             "locked": "2.17.1"
         },
         "org.codehaus.groovy:groovy-all": {
-            "locked": "2.5.13"
+            "locked": "3.0.9"
         },
         "org.elasticsearch.client:elasticsearch-rest-client": {
             "locked": "6.8.23"
@@ -306,7 +306,7 @@
             "locked": "2.17.1"
         },
         "org.codehaus.groovy:groovy-all": {
-            "locked": "2.5.13"
+            "locked": "3.0.9"
         },
         "org.elasticsearch.client:elasticsearch-rest-client": {
             "locked": "6.8.23"
