@@ -24,7 +24,8 @@ import org.springframework.retry.support.RetryTemplate;
 import com.netflix.conductor.common.metadata.events.EventHandler;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.ConflictException;
+import com.netflix.conductor.core.exception.NotFoundException;
 import com.netflix.conductor.dao.EventHandlerDAO;
 import com.netflix.conductor.dao.MetadataDAO;
 import com.netflix.conductor.metrics.Monitors;
@@ -93,8 +94,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                 DELETE_TASKDEF_QUERY,
                 q -> {
                     if (!q.addParameter(name).executeDelete()) {
-                        throw new ApplicationException(
-                                ApplicationException.Code.NOT_FOUND, "No such task definition");
+                        throw new NotFoundException("No such task definition");
                     }
 
                     taskDefCache.remove(name);
@@ -108,8 +108,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
         withTransaction(
                 tx -> {
                     if (workflowExists(tx, def)) {
-                        throw new ApplicationException(
-                                ApplicationException.Code.CONFLICT,
+                        throw new ConflictException(
                                 "Workflow with " + def.key() + " already exists!");
                     }
 
@@ -161,8 +160,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                             DELETE_WORKFLOW_QUERY,
                             q -> {
                                 if (!q.addParameter(name).addParameter(version).executeDelete()) {
-                                    throw new ApplicationException(
-                                            ApplicationException.Code.NOT_FOUND,
+                                    throw new NotFoundException(
                                             String.format(
                                                     "No such workflow definition: %s version: %d",
                                                     name, version));
@@ -217,8 +215,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
         withTransaction(
                 tx -> {
                     if (getEventHandler(tx, eventHandler.getName()) != null) {
-                        throw new ApplicationException(
-                                ApplicationException.Code.CONFLICT,
+                        throw new ConflictException(
                                 "EventHandler with name "
                                         + eventHandler.getName()
                                         + " already exists!");
@@ -251,8 +248,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                 tx -> {
                     EventHandler existing = getEventHandler(tx, eventHandler.getName());
                     if (existing == null) {
-                        throw new ApplicationException(
-                                ApplicationException.Code.NOT_FOUND,
+                        throw new NotFoundException(
                                 "EventHandler with name " + eventHandler.getName() + " not found!");
                     }
 
@@ -276,8 +272,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                 tx -> {
                     EventHandler existing = getEventHandler(tx, name);
                     if (existing == null) {
-                        throw new ApplicationException(
-                                ApplicationException.Code.NOT_FOUND,
+                        throw new NotFoundException(
                                 "EventHandler with name " + name + " not found!");
                     }
 

@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.netflix.conductor.azureblob.config.AzureBlobProperties;
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.core.utils.IDGenerator;
 
 import com.azure.core.exception.UnexpectedLengthException;
@@ -88,7 +88,7 @@ public class AzureBlobPayloadStorage implements ExternalPayloadStorage {
         } else {
             String msg = "Missing property for connectionString OR endpoint";
             LOGGER.error(msg);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg);
+            throw new NonTransientException(msg);
         }
         blobContainerClient = blobContainerClientBuilder.containerName(containerName).buildClient();
     }
@@ -140,7 +140,7 @@ public class AzureBlobPayloadStorage implements ExternalPayloadStorage {
         } catch (BlobStorageException e) {
             String msg = "Error communicating with Azure";
             LOGGER.error(msg, e);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg, e);
+            throw new NonTransientException(msg, e);
         }
     }
 
@@ -172,7 +172,7 @@ public class AzureBlobPayloadStorage implements ExternalPayloadStorage {
         } catch (BlobStorageException | UncheckedIOException | UnexpectedLengthException e) {
             String msg = "Error communicating with Azure";
             LOGGER.error(msg, e);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg, e);
+            throw new NonTransientException(msg, e);
         }
     }
 
@@ -197,7 +197,7 @@ public class AzureBlobPayloadStorage implements ExternalPayloadStorage {
         } catch (BlobStorageException | UncheckedIOException | NullPointerException e) {
             String msg = "Error communicating with Azure";
             LOGGER.error(msg, e);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg, e);
+            throw new NonTransientException(msg, e);
         }
     }
 

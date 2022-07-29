@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.postgres.config.PostgresPayloadProperties;
 
@@ -97,7 +97,7 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
         } catch (SQLException e) {
             String msg = "Error uploading data into External PostgreSQL";
             LOGGER.error(msg, e);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg, e);
+            throw new NonTransientException(msg, e);
         }
     }
 
@@ -123,7 +123,7 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
         } catch (SQLException e) {
             String msg = "Error downloading data from external PostgreSQL";
             LOGGER.error(msg, e);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, msg, e);
+            throw new NonTransientException(msg, e);
         }
         return inputStream;
     }
