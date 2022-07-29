@@ -26,15 +26,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.retry.support.RetryTemplate;
 
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.postgres.util.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-
-import static com.netflix.conductor.core.exception.ApplicationException.Code.*;
 
 public abstract class PostgresBaseDAO {
 
@@ -71,7 +69,7 @@ public abstract class PostgresBaseDAO {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException ex) {
-            throw new ApplicationException(INTERNAL_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -79,7 +77,7 @@ public abstract class PostgresBaseDAO {
         try {
             return objectMapper.readValue(json, tClass);
         } catch (IOException ex) {
-            throw new ApplicationException(INTERNAL_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -87,7 +85,7 @@ public abstract class PostgresBaseDAO {
         try {
             return objectMapper.readValue(json, typeReference);
         } catch (IOException ex) {
-            throw new ApplicationException(INTERNAL_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -100,7 +98,7 @@ public abstract class PostgresBaseDAO {
      *
      * <p>If any {@link Throwable} thrown from {@code TransactionalFunction#apply(Connection)} will
      * result in a rollback of the transaction and will be wrapped in an {@link
-     * ApplicationException} if it is not already one.
+     * NonTransientException} if it is not already one.
      *
      * <p>Generally this is used to wrap multiple {@link #execute(Connection, String,
      * ExecuteFunction)} or {@link #query(Connection, String, QueryFunction)} invocations that
@@ -109,7 +107,7 @@ public abstract class PostgresBaseDAO {
      * @param function The function to apply with a new transactional {@link Connection}
      * @param <R> The return type.
      * @return The result of {@code TransactionalFunction#apply(Connection)}
-     * @throws ApplicationException If any errors occur.
+     * @throws NonTransientException If any errors occur.
      */
     private <R> R getWithTransaction(final TransactionalFunction<R> function) {
         final Instant start = Instant.now();
@@ -125,15 +123,15 @@ public abstract class PostgresBaseDAO {
                 return result;
             } catch (Throwable th) {
                 tx.rollback();
-                if (th instanceof ApplicationException) {
+                if (th instanceof NonTransientException) {
                     throw th;
                 }
-                throw new ApplicationException(BACKEND_ERROR, th.getMessage(), th);
+                throw new NonTransientException(th.getMessage(), th);
             } finally {
                 tx.setAutoCommit(previousAutoCommitMode);
             }
         } catch (SQLException ex) {
-            throw new ApplicationException(BACKEND_ERROR, ex.getMessage(), ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         } finally {
             logger.trace(
                     "{} : took {}ms",
@@ -146,7 +144,7 @@ public abstract class PostgresBaseDAO {
         try {
             return retryTemplate.execute(context -> getWithTransaction(function));
         } catch (Exception e) {
-            throw (ApplicationException) e;
+            throw new NonTransientException(e.getMessage(), e);
         }
     }
 
@@ -164,13 +162,13 @@ public abstract class PostgresBaseDAO {
                 return result;
             } catch (Throwable th) {
                 tx.rollback();
-                logger.info(CONFLICT + " " + th.getMessage());
+                logger.info(th.getMessage());
                 return null;
             } finally {
                 tx.setAutoCommit(previousAutoCommitMode);
             }
         } catch (SQLException ex) {
-            throw new ApplicationException(BACKEND_ERROR, ex.getMessage(), ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         } finally {
             logger.trace(
                     "{} : took {}ms",
@@ -187,7 +185,7 @@ public abstract class PostgresBaseDAO {
      * produce no expected return value.
      *
      * @param consumer The {@link Consumer} callback to pass a transactional {@link Connection} to.
-     * @throws ApplicationException If any errors occur.
+     * @throws NonTransientException If any errors occur.
      * @see #getWithRetriedTransactions(TransactionalFunction)
      */
     protected void withTransaction(Consumer<Connection> consumer) {
@@ -225,7 +223,7 @@ public abstract class PostgresBaseDAO {
         try (Query q = new Query(objectMapper, tx, query)) {
             return function.apply(q);
         } catch (SQLException ex) {
-            throw new ApplicationException(BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -240,7 +238,7 @@ public abstract class PostgresBaseDAO {
         try (Query q = new Query(objectMapper, tx, query)) {
             function.apply(q);
         } catch (SQLException ex) {
-            throw new ApplicationException(BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 

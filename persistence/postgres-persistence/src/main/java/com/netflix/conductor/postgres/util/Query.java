@@ -27,8 +27,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netflix.conductor.core.exception.ApplicationException;
-import com.netflix.conductor.core.exception.ApplicationException.Code;
+import com.netflix.conductor.core.exception.NonTransientException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,10 +66,8 @@ public class Query implements AutoCloseable {
         try {
             this.statement = connection.prepareStatement(query);
         } catch (SQLException ex) {
-            throw new ApplicationException(
-                    Code.BACKEND_ERROR,
-                    "Cannot prepare statement for query: " + ex.getMessage(),
-                    ex);
+            throw new NonTransientException(
+                    "Cannot prepare statement for query: " + ex.getMessage(), ex);
         }
     }
 
@@ -213,7 +210,7 @@ public class Query implements AutoCloseable {
      *
      * @return {@literal true} If a count query returned more than 0 or an exists query returns
      *     {@literal true}.
-     * @throws ApplicationException If an unexpected return type cannot be evaluated to a {@code
+     * @throws NonTransientException If an unexpected return type cannot be evaluated to a {@code
      *     Boolean} result.
      */
     public boolean exists() {
@@ -234,8 +231,7 @@ public class Query implements AutoCloseable {
             return convertBoolean(val);
         }
 
-        throw new ApplicationException(
-                Code.BACKEND_ERROR,
+        throw new NonTransientException(
                 "Expected a Numeric or Boolean scalar return value from the query, received "
                         + val.getClass().getName());
     }
@@ -265,7 +261,9 @@ public class Query implements AutoCloseable {
         return executeScalar(Long.class);
     }
 
-    /** @return The result of {@link PreparedStatement#executeUpdate()} */
+    /**
+     * @return The result of {@link PreparedStatement#executeUpdate()}
+     */
     public int executeUpdate() {
         try {
 
@@ -283,7 +281,7 @@ public class Query implements AutoCloseable {
 
             return val;
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex.getMessage(), ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -293,7 +291,7 @@ public class Query implements AutoCloseable {
      * <p><em>NOTE:</em> The returned ResultSet must be closed/managed by the calling methods.
      *
      * @return {@link PreparedStatement#executeQuery()}
-     * @throws ApplicationException If any SQL errors occur.
+     * @throws NonTransientException If any SQL errors occur.
      */
     public ResultSet executeQuery() {
         Long start = null;
@@ -304,7 +302,7 @@ public class Query implements AutoCloseable {
         try {
             return this.statement.executeQuery();
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         } finally {
             if (null != start && logger.isTraceEnabled()) {
                 long end = System.currentTimeMillis();
@@ -313,7 +311,9 @@ public class Query implements AutoCloseable {
         }
     }
 
-    /** @return The single result of the query as an Object. */
+    /**
+     * @return The single result of the query as an Object.
+     */
     public Object executeScalar() {
         try (ResultSet rs = executeQuery()) {
             if (!rs.next()) {
@@ -321,7 +321,7 @@ public class Query implements AutoCloseable {
             }
             return rs.getObject(1);
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -332,8 +332,8 @@ public class Query implements AutoCloseable {
      * @param <V> The type parameter to return a List of.
      * @return A single result from the execution of the statement, as a type of {@literal
      *     returnType}.
-     * @throws ApplicationException {@literal returnType} is unsupported, cannot be cast to from the
-     *     result, or any SQL errors occur.
+     * @throws NonTransientException {@literal returnType} is unsupported, cannot be cast to from
+     *     the result, or any SQL errors occur.
      */
     public <V> V executeScalar(Class<V> returnType) {
         try (ResultSet rs = executeQuery()) {
@@ -351,7 +351,7 @@ public class Query implements AutoCloseable {
                 return getScalarFromResultSet(rs, returnType);
             }
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -361,8 +361,8 @@ public class Query implements AutoCloseable {
      * @param returnType The type Class return a List of.
      * @param <V> The type parameter to return a List of.
      * @return A {@code List<returnType>}.
-     * @throws ApplicationException {@literal returnType} is unsupported, cannot be cast to from the
-     *     result, or any SQL errors occur.
+     * @throws NonTransientException {@literal returnType} is unsupported, cannot be cast to from
+     *     the result, or any SQL errors occur.
      */
     public <V> List<V> executeScalarList(Class<V> returnType) {
         try (ResultSet rs = executeQuery()) {
@@ -372,7 +372,7 @@ public class Query implements AutoCloseable {
             }
             return values;
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -398,8 +398,8 @@ public class Query implements AutoCloseable {
      * @param returnType The type Class return a List of.
      * @param <V> The type parameter to return a List of.
      * @return A {@code List<returnType>}.
-     * @throws ApplicationException {@literal returnType} is unsupported, cannot be cast to from the
-     *     result, or any SQL errors occur.
+     * @throws NonTransientException {@literal returnType} is unsupported, cannot be cast to from
+     *     the result, or any SQL errors occur.
      */
     public <V> List<V> executeAndFetch(Class<V> returnType) {
         try (ResultSet rs = executeQuery()) {
@@ -409,7 +409,7 @@ public class Query implements AutoCloseable {
             }
             return list;
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -424,7 +424,7 @@ public class Query implements AutoCloseable {
         try (ResultSet rs = executeQuery()) {
             return handler.apply(rs);
         } catch (SQLException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -445,8 +445,7 @@ public class Query implements AutoCloseable {
             setter.apply(this.statement, index);
             return this;
         } catch (SQLException ex) {
-            throw new ApplicationException(
-                    Code.BACKEND_ERROR, "Could not apply bind parameter at index " + index, ex);
+            throw new NonTransientException("Could not apply bind parameter at index " + index, ex);
         }
     }
 
@@ -496,8 +495,7 @@ public class Query implements AutoCloseable {
 
         final String vName = value.getClass().getName();
         final String rName = returnType.getName();
-        throw new ApplicationException(
-                Code.BACKEND_ERROR, "Cannot convert type " + vName + " to " + rName);
+        throw new NonTransientException("Cannot convert type " + vName + " to " + rName);
     }
 
     protected Integer convertInt(Object value) {
@@ -588,7 +586,7 @@ public class Query implements AutoCloseable {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException ex) {
-            throw new ApplicationException(Code.BACKEND_ERROR, ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
@@ -600,10 +598,8 @@ public class Query implements AutoCloseable {
         try {
             return objectMapper.readValue(value, returnType);
         } catch (IOException ex) {
-            throw new ApplicationException(
-                    Code.BACKEND_ERROR,
-                    "Could not convert JSON '" + value + "' to " + returnType.getName(),
-                    ex);
+            throw new NonTransientException(
+                    "Could not convert JSON '" + value + "' to " + returnType.getName(), ex);
         }
     }
 

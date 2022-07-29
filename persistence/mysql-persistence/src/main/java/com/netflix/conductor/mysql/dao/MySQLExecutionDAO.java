@@ -24,7 +24,7 @@ import org.springframework.retry.support.RetryTemplate;
 import com.netflix.conductor.common.metadata.events.EventExecution;
 import com.netflix.conductor.common.metadata.tasks.PollData;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
-import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.dao.ConcurrentExecutionLimitDAO;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.PollDataDAO;
@@ -38,8 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-
-import static com.netflix.conductor.core.exception.ApplicationException.Code.BACKEND_ERROR;
 
 public class MySQLExecutionDAO extends MySQLBaseDAO
         implements ExecutionDAO, RateLimitingDAO, PollDataDAO, ConcurrentExecutionLimitDAO {
@@ -461,10 +459,8 @@ public class MySQLExecutionDAO extends MySQLBaseDAO
         try {
             return getWithRetriedTransactions(tx -> insertEventExecution(tx, eventExecution));
         } catch (Exception e) {
-            throw new ApplicationException(
-                    ApplicationException.Code.BACKEND_ERROR,
-                    "Unable to add event execution " + eventExecution.getId(),
-                    e);
+            throw new NonTransientException(
+                    "Unable to add event execution " + eventExecution.getId(), e);
         }
     }
 
@@ -473,10 +469,8 @@ public class MySQLExecutionDAO extends MySQLBaseDAO
         try {
             withTransaction(tx -> removeEventExecution(tx, eventExecution));
         } catch (Exception e) {
-            throw new ApplicationException(
-                    ApplicationException.Code.BACKEND_ERROR,
-                    "Unable to remove event execution " + eventExecution.getId(),
-                    e);
+            throw new NonTransientException(
+                    "Unable to remove event execution " + eventExecution.getId(), e);
         }
     }
 
@@ -485,10 +479,8 @@ public class MySQLExecutionDAO extends MySQLBaseDAO
         try {
             withTransaction(tx -> updateEventExecution(tx, eventExecution));
         } catch (Exception e) {
-            throw new ApplicationException(
-                    ApplicationException.Code.BACKEND_ERROR,
-                    "Unable to update event execution " + eventExecution.getId(),
-                    e);
+            throw new NonTransientException(
+                    "Unable to update event execution " + eventExecution.getId(), e);
         }
     }
 
@@ -523,7 +515,7 @@ public class MySQLExecutionDAO extends MySQLBaseDAO
                     String.format(
                             "Unable to get event executions for eventHandlerName=%s, eventName=%s, messageId=%s",
                             eventHandlerName, eventName, messageId);
-            throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR, message, e);
+            throw new NonTransientException(message, e);
         }
     }
 
@@ -557,12 +549,12 @@ public class MySQLExecutionDAO extends MySQLBaseDAO
                 String GET_ALL_POLL_DATA = "SELECT json_data FROM poll_data ORDER BY queue_name";
                 return query(tx, GET_ALL_POLL_DATA, q -> q.executeAndFetch(PollData.class));
             } catch (Throwable th) {
-                throw new ApplicationException(BACKEND_ERROR, th.getMessage(), th);
+                throw new NonTransientException(th.getMessage(), th);
             } finally {
                 tx.setAutoCommit(previousAutoCommitMode);
             }
         } catch (SQLException ex) {
-            throw new ApplicationException(BACKEND_ERROR, ex.getMessage(), ex);
+            throw new NonTransientException(ex.getMessage(), ex);
         }
     }
 
