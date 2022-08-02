@@ -213,6 +213,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 if (retry == null) {
                     LOGGER.error(
                             "Cannot ACK message with delivery tag {}", message.getReceipt(), e);
+                    throw e;
                 }
                 try {
                     retry.continueOrPropogate(e, retryIndex);
