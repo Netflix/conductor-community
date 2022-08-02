@@ -9,16 +9,19 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
         },
         "com.netflix.spectator:spectator-reg-micrometer": {
             "locked": "0.122.0"
+        },
+        "io.micrometer:micrometer-registry-datadog": {
+            "locked": "1.9.1"
         },
         "io.micrometer:micrometer-registry-prometheus": {
             "locked": "1.6.2"
@@ -36,19 +39,19 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.springframework.boot:spring-boot-starter": {
             "locked": "2.6.7"
@@ -62,16 +65,19 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
         },
         "com.netflix.spectator:spectator-reg-micrometer": {
             "locked": "0.122.0"
+        },
+        "io.micrometer:micrometer-registry-datadog": {
+            "locked": "1.9.1"
         },
         "io.micrometer:micrometer-registry-prometheus": {
             "locked": "1.6.2"
@@ -89,19 +95,19 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         }
     },
     "testCompileClasspath": {
@@ -109,16 +115,19 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
         },
         "com.netflix.spectator:spectator-reg-micrometer": {
             "locked": "0.122.0"
+        },
+        "io.micrometer:micrometer-registry-datadog": {
+            "locked": "1.9.1"
         },
         "io.micrometer:micrometer-registry-prometheus": {
             "locked": "1.6.2"
@@ -136,19 +145,22 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.mock-server:mockserver-client-java": {
             "locked": "5.12.0"
@@ -163,7 +175,7 @@
             "locked": "2.6.7"
         },
         "org.testcontainers:mockserver": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     },
     "testRuntimeClasspath": {
@@ -171,16 +183,19 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
         },
         "com.netflix.spectator:spectator-reg-micrometer": {
             "locked": "0.122.0"
+        },
+        "io.micrometer:micrometer-registry-datadog": {
+            "locked": "1.9.1"
         },
         "io.micrometer:micrometer-registry-prometheus": {
             "locked": "1.6.2"
@@ -198,19 +213,22 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.mock-server:mockserver-client-java": {
             "locked": "5.12.0"
@@ -225,7 +243,7 @@
             "locked": "2.6.7"
         },
         "org.testcontainers:mockserver": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     }
 }

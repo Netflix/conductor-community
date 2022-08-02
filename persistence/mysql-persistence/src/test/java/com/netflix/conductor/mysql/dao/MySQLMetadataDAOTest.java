@@ -18,6 +18,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.netflix.conductor.core.exception.ConflictException;
+import com.netflix.conductor.core.exception.NonTransientException;
+import com.netflix.conductor.core.exception.NotFoundException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
@@ -33,11 +36,7 @@ import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
 import com.netflix.conductor.common.metadata.events.EventHandler;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.mysql.config.MySQLConfiguration;
-
-import static com.netflix.conductor.core.exception.ApplicationException.Code.CONFLICT;
-import static com.netflix.conductor.core.exception.ApplicationException.Code.NOT_FOUND;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -75,21 +74,19 @@ public class MySQLMetadataDAOTest {
 
         metadataDAO.createWorkflowDef(def);
 
-        ApplicationException applicationException =
-                assertThrows(ApplicationException.class, () -> metadataDAO.createWorkflowDef(def));
+        NonTransientException applicationException =
+                assertThrows(NonTransientException.class, () -> metadataDAO.createWorkflowDef(def));
         assertEquals(
                 "Workflow with testDuplicate.1 already exists!", applicationException.getMessage());
-        assertEquals(CONFLICT, applicationException.getCode());
     }
 
     @Test
     public void testRemoveNotExistingWorkflowDef() {
-        ApplicationException applicationException =
+        NonTransientException applicationException =
                 assertThrows(
-                        ApplicationException.class, () -> metadataDAO.removeWorkflowDef("test", 1));
+                        NonTransientException.class, () -> metadataDAO.removeWorkflowDef("test", 1));
         assertEquals(
                 "No such workflow definition: test version: 1", applicationException.getMessage());
-        assertEquals(NOT_FOUND, applicationException.getCode());
     }
 
     @Test
@@ -232,12 +229,11 @@ public class MySQLMetadataDAOTest {
 
     @Test
     public void testRemoveNotExistingTaskDef() {
-        ApplicationException applicationException =
+        NonTransientException applicationException =
                 assertThrows(
-                        ApplicationException.class,
+                        NonTransientException.class,
                         () -> metadataDAO.removeTaskDef("test" + UUID.randomUUID().toString()));
         assertEquals("No such task definition", applicationException.getMessage());
-        assertEquals(NOT_FOUND, applicationException.getCode());
     }
 
     @Test

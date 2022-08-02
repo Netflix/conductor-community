@@ -15,13 +15,13 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "commons-io:commons-io": {
             "locked": "2.7"
@@ -30,19 +30,19 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.elasticsearch.client:elasticsearch-rest-client": {
             "locked": "7.6.2"
@@ -77,7 +77,7 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
@@ -86,7 +86,7 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "commons-io:commons-io": {
             "locked": "2.7"
@@ -101,31 +101,31 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.elasticsearch.client:elasticsearch-rest-client": {
             "locked": "7.6.2"
@@ -153,13 +153,13 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "commons-io:commons-io": {
             "locked": "2.7"
@@ -171,19 +171,19 @@
             "locked": "3.12.0"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.awaitility:awaitility": {
             "locked": "3.1.6"
@@ -193,6 +193,9 @@
         },
         "org.elasticsearch.client:elasticsearch-rest-high-level-client": {
             "locked": "7.6.2"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.springframework.boot:spring-boot-starter-log4j2": {
             "locked": "2.6.7"
@@ -204,7 +207,7 @@
             "locked": "1.3.3"
         },
         "org.testcontainers:elasticsearch": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     },
     "testRuntime": {
@@ -235,7 +238,7 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
@@ -244,7 +247,7 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "commons-io:commons-io": {
             "locked": "2.7"
@@ -262,31 +265,31 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.awaitility:awaitility": {
             "locked": "3.1.6"
@@ -296,6 +299,9 @@
         },
         "org.elasticsearch.client:elasticsearch-rest-high-level-client": {
             "locked": "7.6.2"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.springframework.boot:spring-boot-starter-log4j2": {
             "locked": "2.6.7"
@@ -307,7 +313,7 @@
             "locked": "1.3.3"
         },
         "org.testcontainers:elasticsearch": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     }
 }

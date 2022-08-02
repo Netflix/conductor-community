@@ -6,25 +6,25 @@
     },
     "compileClasspath": {
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.flywaydb:flyway-core": {
             "locked": "8.0.5"
@@ -47,25 +47,25 @@
     },
     "runtimeClasspath": {
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.flywaydb:flyway-core": {
             "locked": "8.0.5"
@@ -82,28 +82,31 @@
     },
     "testCompileClasspath": {
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.flywaydb:flyway-core": {
             "locked": "8.0.5"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.postgresql:postgresql": {
             "locked": "42.3.4"
@@ -124,33 +127,36 @@
             "locked": "2.6.7"
         },
         "org.testcontainers:postgresql": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     },
     "testRuntimeClasspath": {
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.9.0-rc.1"
+            "locked": "3.10.1"
         },
         "org.apache.logging.log4j:log4j-api": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-core": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-jul": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-slf4j-impl": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.apache.logging.log4j:log4j-web": {
-            "locked": "2.17.0"
+            "locked": "2.17.1"
         },
         "org.flywaydb:flyway-core": {
             "locked": "8.0.5"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
         },
         "org.postgresql:postgresql": {
             "locked": "42.3.4"
@@ -171,7 +177,7 @@
             "locked": "2.6.7"
         },
         "org.testcontainers:postgresql": {
-            "locked": "1.16.3"
+            "locked": "1.17.2"
         }
     }
 }

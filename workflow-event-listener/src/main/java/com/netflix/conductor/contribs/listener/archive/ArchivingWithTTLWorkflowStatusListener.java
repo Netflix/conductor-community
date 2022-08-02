@@ -51,6 +51,9 @@ public class ArchivingWithTTLWorkflowStatusListener implements WorkflowStatusLis
                             Monitors.recordDiscardedArchivalCount();
                         });
         this.scheduledThreadPoolExecutor.setRemoveOnCancelPolicy(true);
+        LOGGER.warn(
+                "Workflow removal with TTL is no longer supported, "
+                        + "when using this class, workflows will be removed immediately");
     }
 
     @PreDestroy
@@ -82,8 +85,7 @@ public class ArchivingWithTTLWorkflowStatusListener implements WorkflowStatusLis
                     delayArchiveSeconds,
                     TimeUnit.SECONDS);
         } else {
-            this.executionDAOFacade.removeWorkflowWithExpiry(
-                    workflow.getWorkflowId(), true, archiveTTLSeconds);
+            this.executionDAOFacade.removeWorkflow(workflow.getWorkflowId(), true);
             Monitors.recordWorkflowArchived(workflow.getWorkflowName(), workflow.getStatus());
         }
     }
@@ -97,8 +99,7 @@ public class ArchivingWithTTLWorkflowStatusListener implements WorkflowStatusLis
                     delayArchiveSeconds,
                     TimeUnit.SECONDS);
         } else {
-            this.executionDAOFacade.removeWorkflowWithExpiry(
-                    workflow.getWorkflowId(), true, archiveTTLSeconds);
+            this.executionDAOFacade.removeWorkflow(workflow.getWorkflowId(), true);
             Monitors.recordWorkflowArchived(workflow.getWorkflowName(), workflow.getStatus());
         }
     }
@@ -120,8 +121,7 @@ public class ArchivingWithTTLWorkflowStatusListener implements WorkflowStatusLis
         @Override
         public void run() {
             try {
-                this.executionDAOFacade.removeWorkflowWithExpiry(
-                        workflowId, true, archiveTTLSeconds);
+                this.executionDAOFacade.removeWorkflow(workflowId, true);
                 LOGGER.info("Archived workflow {}", workflowId);
                 Monitors.recordWorkflowArchived(workflowName, status);
                 Monitors.recordArchivalDelayQueueSize(
