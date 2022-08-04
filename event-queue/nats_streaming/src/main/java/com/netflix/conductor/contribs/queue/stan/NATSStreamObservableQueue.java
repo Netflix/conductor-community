@@ -9,7 +9,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package com.netflix.conductor.contribs.queue.nats;
+package com.netflix.conductor.contribs.queue.stan;
 
 import io.nats.client.Connection;
 import io.nats.streaming.*;

@@ -2,7 +2,8 @@ dependencies {
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
 
-    implementation "io.nats:jnats:${revNats}"
+    implementation "io.nats:java-nats-streaming:${revStan}"
+    implementation "io.nats:jnats:${revNatsStreaming}"
 
     implementation "org.apache.commons:commons-lang3:"
     implementation "com.google.guava:guava:${revGuava}"

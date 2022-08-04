@@ -9,7 +9,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package com.netflix.conductor.contribs.queue.nats.config;
+package com.netflix.conductor.contribs.queue.stan.config;
 
 import io.nats.client.Options;
 import org.springframework.boot.context.properties.ConfigurationProperties;
