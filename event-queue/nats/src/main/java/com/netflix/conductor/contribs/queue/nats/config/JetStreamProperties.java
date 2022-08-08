@@ -12,10 +12,6 @@ import java.time.Duration;
 public class JetStreamProperties {
     private String listenerQueuePrefix = "";
     /**
-     * The cluster id of the STAN session
-     */
-    private String clusterId = "test-cluster";
-    /**
      * The durable subscriber name for the subscription
      */
     private String durableName = null;
@@ -39,14 +35,6 @@ public class JetStreamProperties {
 
     public void setListenerQueuePrefix(String listenerQueuePrefix) {
         this.listenerQueuePrefix = listenerQueuePrefix;
-    }
-
-    public String getClusterId() {
-        return clusterId;
-    }
-
-    public void setClusterId(String clusterId) {
-        this.clusterId = clusterId;
     }
 
     public String getDurableName() {

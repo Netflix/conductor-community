@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author andrey.stelmashenko@gmail.com
@@ -30,7 +31,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
     private final String subject;
     private final JetStreamProperties properties;
     private final Scheduler scheduler;
-    private volatile boolean running;
+    private final AtomicBoolean running = new AtomicBoolean(false);
     private Connection nc;
     private JetStreamSubscription sub;
     private Observable<Long> interval;
@@ -52,14 +53,14 @@ public class JetStreamObservableQueue implements ObservableQueue {
         return subscriber -> {
             interval = Observable.interval(properties.getPollTimeDuration().toMillis(), TimeUnit.MILLISECONDS, scheduler);
             interval.flatMap((Long x) -> {
-                        if (!isRunning()) {
-                            LOG.debug("Component stopped, skip listening for messages from JSM Queue");
+                        if (!this.isRunning()) {
+                            LOG.debug("Component stopped, skip listening for messages from JSM Queue '{}'", subject);
                             return Observable.from(Collections.emptyList());
                         } else {
                             List<Message> available = new ArrayList<>();
                             messages.drainTo(available);
                             if (!available.isEmpty()) {
-                                LOG.debug("Processing batch messages count={}", available.size());
+                                LOG.debug("Processing JSM queue '{}' batch messages count={}", subject, available.size());
                             }
                             return Observable.from(available);
                         }
@@ -138,16 +139,16 @@ public class JetStreamObservableQueue implements ObservableQueue {
             Thread.currentThread().interrupt();
             LOG.error("Failed to close Nats connection", e);
         }
-        running = false;
+        running.set(false);
     }
 
     @Override
     public boolean isRunning() {
-        return this.running;
+        return this.running.get();
     }
 
     private void natsConnect() {
-        if (running) {
+        if (running.get()) {
             return;
         }
         LOG.info("Starting JSM observable, name={}", subject);
@@ -196,8 +197,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
     public static StreamInfo getStreamInfoOrNullWhenNotExist(JetStreamManagement jsm, String streamName) throws IOException, JetStreamApiException {
         try {
             return jsm.getStreamInfo(streamName);
-        }
-        catch (JetStreamApiException e) {
+        } catch (JetStreamApiException e) {
             if (e.getErrorCode() == 404) {
                 return null;
             }
@@ -218,9 +218,9 @@ public class JetStreamObservableQueue implements ObservableQueue {
         try {
             JetStream js = nc.jetStream();
 
-            PushSubscribeOptions pso = PushSubscribeOptions.builder().durable("durName1").build();
+            PushSubscribeOptions pso = PushSubscribeOptions.builder().durable(properties.getDurableName()).build();
             LOG.debug("Subscribing jsm, subject={}, options={}", subject, pso);
-            sub = js.subscribe(subject, "durName1", nc.createDispatcher(),
+            sub = js.subscribe(subject, properties.getDurableName(), nc.createDispatcher(),
                     msg -> {
                         var message = new JsmMessage();
                         message.setJsmMsg(msg);
@@ -231,7 +231,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
                     false,
                     pso);
             LOG.debug("Subscribed successfully {}", sub.getConsumerInfo());
-            running = true;
+            this.running.set(true);
         } catch (IOException | JetStreamApiException e) {
             throw new NatsException("Failed to subscribe", e);
         }
