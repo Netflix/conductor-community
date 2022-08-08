@@ -1,6 +1,6 @@
 package com.netflix.conductor.contribs.queue.nats.config;
 
-import com.netflix.conductor.contribs.queue.nats.JetStreamObserableQueue;
+import com.netflix.conductor.contribs.queue.nats.JetStreamObservableQueue;
 import com.netflix.conductor.core.events.EventQueueProvider;
 import com.netflix.conductor.core.events.queue.ObservableQueue;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author astelmashenko@viax.io.
+ * @author andrey.stelmashenko@gmail.com
  */
 public class JetStreamEventQueueProvider implements EventQueueProvider {
     public static final String QUEUE_TYPE = "jsm";
@@ -37,7 +37,7 @@ public class JetStreamEventQueueProvider implements EventQueueProvider {
     public ObservableQueue getQueue(String queueURI) throws IllegalArgumentException {
         LOG.debug("Getting obs queue, quri={}", queueURI);
         return queues.computeIfAbsent(queueURI,
-                q -> new JetStreamObserableQueue(
+                q -> new JetStreamObservableQueue(
                         properties,
                         getQueueType(),
                         queueURI,

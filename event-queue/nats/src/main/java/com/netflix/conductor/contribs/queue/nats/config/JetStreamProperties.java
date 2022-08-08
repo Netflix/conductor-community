@@ -3,8 +3,10 @@ package com.netflix.conductor.contribs.queue.nats.config;
 import io.nats.client.Options;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.time.Duration;
+
 /**
- * @author astelmashenko@viax.io.
+ * @author andrey.stelmashenko@gmail.com
  */
 @ConfigurationProperties("conductor.event-queues.jsm")
 public class JetStreamProperties {
@@ -21,6 +23,15 @@ public class JetStreamProperties {
      * The NATS connection url
      */
     private String url = Options.DEFAULT_URL;
+    private Duration pollTimeDuration = Duration.ofMillis(100);
+
+    public Duration getPollTimeDuration() {
+        return pollTimeDuration;
+    }
+
+    public void setPollTimeDuration(Duration pollTimeDuration) {
+        this.pollTimeDuration = pollTimeDuration;
+    }
 
     public String getListenerQueuePrefix() {
         return listenerQueuePrefix;

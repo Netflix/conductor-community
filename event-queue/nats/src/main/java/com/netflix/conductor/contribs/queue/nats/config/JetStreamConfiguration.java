@@ -15,7 +15,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * @author astelmashenko@viax.io.
+ * @author andrey.stelmashenko@gmail.com
  */
 @Configuration
 @EnableConfigurationProperties(JetStreamProperties.class)
