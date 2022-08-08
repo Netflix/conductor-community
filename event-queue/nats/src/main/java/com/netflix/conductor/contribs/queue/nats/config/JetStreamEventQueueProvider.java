@@ -36,7 +36,11 @@ public class JetStreamEventQueueProvider implements EventQueueProvider {
     @NonNull
     public ObservableQueue getQueue(String queueURI) throws IllegalArgumentException {
         LOG.debug("Getting obs queue, quri={}", queueURI);
-        return queues.computeIfAbsent(
-                queueURI, q -> new JetStreamObserableQueue(properties, getQueueType(), queueURI, scheduler));
+        return queues.computeIfAbsent(queueURI,
+                q -> new JetStreamObserableQueue(
+                        properties,
+                        getQueueType(),
+                        queueURI,
+                        scheduler));
     }
 }

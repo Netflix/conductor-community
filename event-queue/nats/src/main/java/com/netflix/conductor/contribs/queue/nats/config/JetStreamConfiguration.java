@@ -1,6 +1,5 @@
 package com.netflix.conductor.contribs.queue.nats.config;
 
-import com.netflix.conductor.contribs.queue.nats.JetStreamObserableQueue;
 import com.netflix.conductor.core.config.ConductorProperties;
 import com.netflix.conductor.core.events.EventQueueProvider;
 import com.netflix.conductor.core.events.queue.ObservableQueue;
@@ -14,8 +13,6 @@ import rx.Scheduler;
 
 import java.util.EnumMap;
 import java.util.Map;
-
-import static com.netflix.conductor.contribs.queue.nats.config.JetStreamEventQueueProvider.QUEUE_TYPE;
 
 /**
  * @author astelmashenko@viax.io.
@@ -32,9 +29,9 @@ public class JetStreamConfiguration {
     @ConditionalOnProperty(name = "conductor.default-event-queue.type", havingValue = "jsm")
     @Bean
     public Map<TaskModel.Status, ObservableQueue> getQueues(
+            JetStreamEventQueueProvider provider,
             ConductorProperties conductorProperties,
-            JetStreamProperties properties,
-            Scheduler scheduler) {
+            JetStreamProperties properties) {
         String stack = "";
         if (conductorProperties.getStack() != null && conductorProperties.getStack().length() > 0) {
             stack = conductorProperties.getStack() + "_";
@@ -43,13 +40,12 @@ public class JetStreamConfiguration {
         Map<TaskModel.Status, ObservableQueue> queues = new EnumMap<>(TaskModel.Status.class);
         for (TaskModel.Status status : statuses) {
             String queuePrefix = StringUtils.isBlank(properties.getListenerQueuePrefix())
-                            ? conductorProperties.getAppId() + "_jsm_notify_" + stack
-                            : properties.getListenerQueuePrefix();
+                    ? conductorProperties.getAppId() + "_jsm_notify_" + stack
+                    : properties.getListenerQueuePrefix();
 
             String queueName = queuePrefix + status.name();
 
-            ObservableQueue queue =
-                    new JetStreamObserableQueue(properties, QUEUE_TYPE, queueName, scheduler);
+            ObservableQueue queue = provider.getQueue(queueName);
             queues.put(status, queue);
         }
 
