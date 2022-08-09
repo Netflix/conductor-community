@@ -192,7 +192,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
         StreamConfiguration streamConfig = StreamConfiguration.builder()
                 .name(subject)
                 .retentionPolicy(RetentionPolicy.WorkQueue)
-                .storageType(StorageType.Memory)
+                .storageType(StorageType.get(properties.getStreamStorageType()))
                 .build();
 
         try {

@@ -15,6 +15,7 @@ public class JetStreamProperties {
      * The durable subscriber name for the subscription
      */
     private String durableName = "defaultQueue";
+    private String streamStorageType = "file";
     /**
      * The NATS connection url
      */
@@ -51,5 +52,13 @@ public class JetStreamProperties {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getStreamStorageType() {
+        return streamStorageType;
+    }
+
+    public void setStreamStorageType(String streamStorageType) {
+        this.streamStorageType = streamStorageType;
     }
 }
