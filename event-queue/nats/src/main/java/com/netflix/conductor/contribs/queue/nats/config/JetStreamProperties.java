@@ -14,7 +14,7 @@ public class JetStreamProperties {
     /**
      * The durable subscriber name for the subscription
      */
-    private String durableName = null;
+    private String durableName = "defaultQueue";
     /**
      * The NATS connection url
      */
