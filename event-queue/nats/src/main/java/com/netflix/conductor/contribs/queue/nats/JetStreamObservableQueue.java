@@ -3,7 +3,15 @@ package com.netflix.conductor.contribs.queue.nats;
 import com.netflix.conductor.contribs.queue.nats.config.JetStreamProperties;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.core.events.queue.ObservableQueue;
-import io.nats.client.*;
+import io.nats.client.Connection;
+import io.nats.client.ConnectionListener;
+import io.nats.client.JetStream;
+import io.nats.client.JetStreamApiException;
+import io.nats.client.JetStreamManagement;
+import io.nats.client.JetStreamSubscription;
+import io.nats.client.Nats;
+import io.nats.client.Options;
+import io.nats.client.PushSubscribeOptions;
 import io.nats.client.api.RetentionPolicy;
 import io.nats.client.api.StorageType;
 import io.nats.client.api.StreamConfiguration;
@@ -20,6 +28,8 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author andrey.stelmashenko@gmail.com
@@ -27,6 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class JetStreamObservableQueue implements ObservableQueue {
     private static final Logger LOG = LoggerFactory.getLogger(JetStreamObservableQueue.class);
     private final LinkedBlockingQueue<Message> messages = new LinkedBlockingQueue<>();
+    private final Lock mu = new ReentrantLock();
     private final String queueType;
     private final String subject;
     private final JetStreamProperties properties;
@@ -122,14 +133,16 @@ public class JetStreamObservableQueue implements ObservableQueue {
 
     @Override
     public void start() {
-        natsConnect();
+        mu.lock();
+        try {
+            natsConnect();
+        } finally {
+            mu.unlock();
+        }
     }
 
     @Override
     public void stop() {
-        if (sub != null && sub.isActive()) {
-            sub.unsubscribe();
-        }
         interval.unsubscribeOn(scheduler);
         try {
             if (nc != null) {
@@ -183,32 +196,15 @@ public class JetStreamObservableQueue implements ObservableQueue {
                 .build();
 
         try {
-            if (getStreamInfoOrNullWhenNotExist(jsm, subject) != null) {
-                LOG.info("Stream '{}' already exists", subject);
-                return;
-            }
             StreamInfo streamInfo = jsm.addStream(streamConfig);
             LOG.debug("Create stream, info: {}", streamInfo);
         } catch (IOException | JetStreamApiException e) {
-            throw new NatsException("Failed to add stream: " + streamConfig, e);
+            LOG.error("Failed to add stream: " + streamConfig, e);
         }
     }
 
-    public static StreamInfo getStreamInfoOrNullWhenNotExist(JetStreamManagement jsm, String streamName) throws IOException, JetStreamApiException {
-        try {
-            return jsm.getStreamInfo(streamName);
-        } catch (JetStreamApiException e) {
-            if (e.getErrorCode() == 404) {
-                return null;
-            }
-            throw e;
-        }
-    }
-
-    private synchronized void subscribeOnce(Connection nc, ConnectionListener.Events type) {
-        if (sub == null &&
-                (type.equals(ConnectionListener.Events.CONNECTED)
-                        || type.equals(ConnectionListener.Events.RECONNECTED))) {
+    private void subscribeOnce(Connection nc, ConnectionListener.Events type) {
+        if (type.equals(ConnectionListener.Events.CONNECTED) || type.equals(ConnectionListener.Events.RECONNECTED)) {
             createStream(nc);
             subscribe(nc);
         }
@@ -218,7 +214,8 @@ public class JetStreamObservableQueue implements ObservableQueue {
         try {
             JetStream js = nc.jetStream();
 
-            PushSubscribeOptions pso = PushSubscribeOptions.builder().durable(properties.getDurableName()).build();
+            PushSubscribeOptions pso = PushSubscribeOptions.builder()
+                    .durable(properties.getDurableName()).build();
             LOG.debug("Subscribing jsm, subject={}, options={}", subject, pso);
             sub = js.subscribe(subject, properties.getDurableName(), nc.createDispatcher(),
                     msg -> {
@@ -233,7 +230,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
             LOG.debug("Subscribed successfully {}", sub.getConsumerInfo());
             this.running.set(true);
         } catch (IOException | JetStreamApiException e) {
-            throw new NatsException("Failed to subscribe", e);
+            LOG.error("Failed to subscribe", e);
         }
     }
 
