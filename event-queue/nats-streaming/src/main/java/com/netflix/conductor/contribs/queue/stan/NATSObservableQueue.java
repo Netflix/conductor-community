@@ -9,57 +9,42 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package com.netflix.conductor.contribs.queue.nats;
+package com.netflix.conductor.contribs.queue.stan;
 
-import io.nats.client.Connection;
-import io.nats.streaming.*;
+import io.nats.client.Nats;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.nats.client.Connection;
+import io.nats.client.Subscription;
 import rx.Scheduler;
 
-import java.util.UUID;
-
 /** @author Oleksiy Lysak */
-public class NATSStreamObservableQueue extends NATSAbstractQueue {
+public class NATSObservableQueue extends NATSAbstractQueue {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NATSStreamObservableQueue.class);
-    private final StreamingConnectionFactory fact;
-    private StreamingConnection conn;
+    private static final Logger LOGGER = LoggerFactory.getLogger(NATSObservableQueue.class);
     private Subscription subs;
-    private final String durableName;
+    private Connection conn;
 
-    public NATSStreamObservableQueue(
-            String clusterId,
-            String natsUrl,
-            String durableName,
-            String queueURI,
-            Scheduler scheduler) {
-        super(queueURI, "nats_stream", scheduler);
-        Options.Builder options = new Options.Builder();
-        options.clusterId(clusterId);
-        options.clientId(UUID.randomUUID().toString());
-        options.natsUrl(natsUrl);
-        this.fact = new StreamingConnectionFactory(options.build());
-        this.durableName = durableName;
+    public NATSObservableQueue(String queueURI, Scheduler scheduler) {
+        super(queueURI, "nats", scheduler);
         open();
     }
 
     @Override
     public boolean isConnected() {
-        return (conn != null
-                && conn.getNatsConnection() != null
-                && Connection.Status.CONNECTED.equals(conn.getNatsConnection().getStatus()));
+        return (conn != null && Connection.Status.CONNECTED.equals(conn.getStatus()));
     }
 
     @Override
     public void connect() {
         try {
-            StreamingConnection temp = fact.createConnection();
+            Connection temp = Nats.connect();
             LOGGER.info("Successfully connected for " + queueURI);
             conn = temp;
         } catch (Exception e) {
-            LOGGER.error("Unable to establish nats streaming connection for " + queueURI, e);
+            LOGGER.error("Unable to establish nats connection for " + queueURI, e);
             throw new RuntimeException(e);
         }
     }
@@ -73,28 +58,19 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
 
         try {
             ensureConnected();
-            SubscriptionOptions subscriptionOptions =
-                    new SubscriptionOptions.Builder().durableName(durableName).build();
             // Create subject/queue subscription if the queue has been provided
             if (StringUtils.isNotEmpty(queue)) {
                 LOGGER.info(
                         "No subscription. Creating a queue subscription. subject={}, queue={}",
                         subject,
                         queue);
-                subs =
-                        conn.subscribe(
-                                subject,
-                                queue,
-                                msg -> onMessage(msg.getSubject(), msg.getData()),
-                                subscriptionOptions);
+                conn.createDispatcher(msg -> onMessage(msg.getSubject(), msg.getData()));
+                subs = conn.subscribe(subject, queue);
             } else {
                 LOGGER.info(
                         "No subscription. Creating a pub/sub subscription. subject={}", subject);
-                subs =
-                        conn.subscribe(
-                                subject,
-                                msg -> onMessage(msg.getSubject(), msg.getData()),
-                                subscriptionOptions);
+                conn.createDispatcher(msg -> onMessage(msg.getSubject(), msg.getData()));
+                subs = conn.subscribe(subject);
             }
         } catch (Exception ex) {
             LOGGER.error(
@@ -113,7 +89,7 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
     public void closeSubs() {
         if (subs != null) {
             try {
-                subs.close(true);
+                subs.unsubscribe();
             } catch (Exception ex) {
                 LOGGER.error("closeSubs failed with " + ex.getMessage() + " for " + queueURI, ex);
             }
@@ -131,10 +107,5 @@ public class NATSStreamObservableQueue extends NATSAbstractQueue {
             }
             conn = null;
         }
-    }
-
-    @Override
-    public boolean rePublishIfNoAck() {
-        return false;
     }
 }

@@ -18,7 +18,7 @@
             "locked": "2.2.3"
         },
         "io.nats:jnats": {
-            "locked": "2.15.6"
+            "locked": "2.6.5"
         },
         "io.reactivex:rxjava": {
             "locked": "1.2.2"
@@ -62,7 +62,7 @@
             "locked": "2.2.3"
         },
         "io.nats:jnats": {
-            "locked": "2.15.6"
+            "locked": "2.6.5"
         },
         "io.reactivex:rxjava": {
             "locked": "1.2.2"
@@ -100,7 +100,7 @@
             "locked": "2.2.3"
         },
         "io.nats:jnats": {
-            "locked": "2.15.6"
+            "locked": "2.6.5"
         },
         "io.reactivex:rxjava": {
             "locked": "1.2.2"
@@ -147,7 +147,7 @@
             "locked": "2.2.3"
         },
         "io.nats:jnats": {
-            "locked": "2.15.6"
+            "locked": "2.6.5"
         },
         "io.reactivex:rxjava": {
             "locked": "1.2.2"
