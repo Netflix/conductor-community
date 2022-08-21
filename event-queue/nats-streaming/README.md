@@ -23,6 +23,7 @@ conductor.event-queues.amqp.port=5672
 conductor.event-queues.amqp.username=guest
 conductor.event-queues.amqp.password=guest
 conductor.event-queues.amqp.virtualhost=/
+conductor.event-queues.amqp.useSslProtocol=false
 #milliseconds
 conductor.event-queues.amqp.connectionTimeout=60000
 conductor.event-queues.amqp.useExchange=true
