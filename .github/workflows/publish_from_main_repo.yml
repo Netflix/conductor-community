@@ -29,6 +29,8 @@ jobs:
           export VERSION=$(echo $TAG | cut -d'v' -f2)
           export RC=rc
           sed -i "s/revConductor = 'latest.release'/revConductor = '$VERSION'/g" dependencies.gradle
+          git commit
+          git push
           cat dependencies.gradle | grep revConductor
           if [[ "$TAG" == *"$RC"* ]]; then  
             echo "Publishing release candidate"; 
