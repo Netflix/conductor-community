@@ -32,7 +32,6 @@ jobs:
           git config --global user.name 'Anoop Panicker'
           git config --global user.email 'apanicker@netflix.com'
           git commit -am "Update Conductor version dependency"
-          git commit
           git push
           cat dependencies.gradle | grep revConductor
           if [[ "$TAG" == *"$RC"* ]]; then  
