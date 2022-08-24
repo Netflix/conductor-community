@@ -11,9 +11,7 @@
  */
 package com.netflix.conductor.contribs.queue.amqp.util;
 
-/**
- * @author Ritu Parathody
- */
+/** @author Ritu Parathody */
 public enum AMQPConfigurations {
 
     // queue exchange settings

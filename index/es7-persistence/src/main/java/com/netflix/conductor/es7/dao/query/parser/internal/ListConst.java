@@ -15,9 +15,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Viren List of constants
- */
+/** @author Viren List of constants */
 public class ListConst extends AbstractNode {
 
     private List<Object> values;

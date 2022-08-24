@@ -47,8 +47,11 @@ public class PostgresConfiguration {
 
     DataSource dataSource;
 
-    public PostgresConfiguration(DataSource dataSource) {
+    private final PostgresProperties properties;
+
+    public PostgresConfiguration(DataSource dataSource, PostgresProperties properties) {
         this.dataSource = dataSource;
+        this.properties = properties;
     }
 
     @Bean(initMethod = "migrate")
@@ -56,7 +59,7 @@ public class PostgresConfiguration {
     public Flyway flywayForPrimaryDb() {
         return Flyway.configure()
                 .locations("classpath:db/migration_postgres")
-                .schemas("public")
+                .schemas(properties.getSchema())
                 .dataSource(dataSource)
                 .baselineOnMigrate(true)
                 .load();

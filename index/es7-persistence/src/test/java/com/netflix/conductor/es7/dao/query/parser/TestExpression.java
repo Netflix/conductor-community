@@ -26,9 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Viren
- */
+/** @author Viren */
 public class TestExpression extends AbstractParserTest {
 
     @Test

@@ -11,9 +11,7 @@
  */
 package com.netflix.conductor.es7.dao.query.parser.internal;
 
-/**
- * @author Viren
- */
+/** @author Viren */
 @FunctionalInterface
 public interface FunctionThrowingException<T> {
 

@@ -13,9 +13,7 @@ package com.netflix.conductor.es7.dao.query.parser.internal;
 
 import java.io.InputStream;
 
-/**
- * @author Viren
- */
+/** @author Viren */
 public class Range extends AbstractNode {
 
     private String low;
@@ -58,16 +56,12 @@ public class Range extends AbstractNode {
         return numValue;
     }
 
-    /**
-     * @return the low
-     */
+    /** @return the low */
     public String getLow() {
         return low;
     }
 
-    /**
-     * @return the high
-     */
+    /** @return the high */
     public String getHigh() {
         return high;
     }

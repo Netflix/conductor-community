@@ -11,9 +11,7 @@
  */
 package com.netflix.conductor.contribs.queue.amqp.util;
 
-/**
- * @author Ritu Parathody
- */
+/** @author Ritu Parathody */
 public class AMQPConstants {
 
     /** this when set will create a rabbitmq queue */
