@@ -60,15 +60,17 @@ public class MySQLMetadataDAO extends MySQLBaseDAO implements MetadataDAO, Event
     }
 
     @Override
-    public void createTaskDef(TaskDef taskDef) {
+    public TaskDef createTaskDef(TaskDef taskDef) {
         validate(taskDef);
         insertOrUpdateTaskDef(taskDef);
+        return taskDef;
     }
 
     @Override
-    public String updateTaskDef(TaskDef taskDef) {
+    public TaskDef updateTaskDef(TaskDef taskDef) {
         validate(taskDef);
-        return insertOrUpdateTaskDef(taskDef);
+        insertOrUpdateTaskDef(taskDef);
+        return taskDef;
     }
 
     @Override
