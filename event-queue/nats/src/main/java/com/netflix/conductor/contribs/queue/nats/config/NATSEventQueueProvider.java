@@ -12,7 +12,6 @@
 package com.netflix.conductor.contribs.queue.nats.config;
 
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -26,7 +25,9 @@ import com.netflix.conductor.core.events.queue.ObservableQueue;
 
 import rx.Scheduler;
 
-/** @author Oleksiy Lysak */
+/**
+ * @author Oleksiy Lysak
+ */
 public class NATSEventQueueProvider implements EventQueueProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NATSEventQueueProvider.class);
@@ -48,7 +49,7 @@ public class NATSEventQueueProvider implements EventQueueProvider {
     @NonNull
     public ObservableQueue getQueue(String queueURI) {
         NATSObservableQueue queue =
-            queues.computeIfAbsent(queueURI, q -> new NATSObservableQueue(queueURI, scheduler));
+                queues.computeIfAbsent(queueURI, q -> new NATSObservableQueue(queueURI, scheduler));
         if (queue.isClosed()) {
             queue.open();
         }

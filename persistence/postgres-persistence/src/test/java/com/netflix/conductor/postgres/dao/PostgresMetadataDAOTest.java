@@ -18,7 +18,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.netflix.conductor.core.exception.NonTransientException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.flywaydb.core.Flyway;
 import org.junit.Before;
@@ -36,6 +35,7 @@ import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
 import com.netflix.conductor.common.metadata.events.EventHandler;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.postgres.config.PostgresConfiguration;
 
 import static org.junit.Assert.assertEquals;
@@ -85,7 +85,8 @@ public class PostgresMetadataDAOTest {
     public void testRemoveNotExistingWorkflowDef() {
         NonTransientException applicationException =
                 assertThrows(
-                        NonTransientException.class, () -> metadataDAO.removeWorkflowDef("test", 1));
+                        NonTransientException.class,
+                        () -> metadataDAO.removeWorkflowDef("test", 1));
         assertEquals(
                 "No such workflow definition: test version: 1", applicationException.getMessage());
     }

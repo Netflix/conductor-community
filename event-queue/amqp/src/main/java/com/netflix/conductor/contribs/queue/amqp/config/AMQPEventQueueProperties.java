@@ -267,7 +267,9 @@ public class AMQPEventQueueProperties {
         this.queueType = queueType;
     }
 
-    /** @return the sequentialMsgProcessing */
+    /**
+     * @return the sequentialMsgProcessing
+     */
     public boolean isSequentialMsgProcessing() {
         return sequentialMsgProcessing;
     }
