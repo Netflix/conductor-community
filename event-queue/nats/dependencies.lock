@@ -9,13 +9,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.10.1"
+            "locked": "3.10.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.10.1"
-        },
-        "io.nats:java-nats-streaming": {
-            "locked": "2.2.3"
+            "locked": "3.10.7"
         },
         "io.nats:jnats": {
             "locked": "2.15.6"
@@ -53,13 +50,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.10.1"
+            "locked": "3.10.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.10.1"
-        },
-        "io.nats:java-nats-streaming": {
-            "locked": "2.2.3"
+            "locked": "3.10.7"
         },
         "io.nats:jnats": {
             "locked": "2.15.6"
@@ -91,13 +85,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.10.1"
+            "locked": "3.10.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.10.1"
-        },
-        "io.nats:java-nats-streaming": {
-            "locked": "2.2.3"
+            "locked": "3.10.7"
         },
         "io.nats:jnats": {
             "locked": "2.15.6"
@@ -138,13 +129,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.10.1"
+            "locked": "3.10.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.10.1"
-        },
-        "io.nats:java-nats-streaming": {
-            "locked": "2.2.3"
+            "locked": "3.10.7"
         },
         "io.nats:jnats": {
             "locked": "2.15.6"
