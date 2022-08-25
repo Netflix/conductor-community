@@ -1,9 +1,21 @@
+/*
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 package com.netflix.conductor.contribs.queue.nats.config;
 
-import io.nats.client.Options;
+import java.time.Duration;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.time.Duration;
+import io.nats.client.Options;
 
 /**
  * @author andrey.stelmashenko@gmail.com
@@ -11,15 +23,13 @@ import java.time.Duration;
 @ConfigurationProperties("conductor.event-queues.jsm")
 public class JetStreamProperties {
     private String listenerQueuePrefix = "";
-    /**
-     * The durable subscriber name for the subscription
-     */
+    /** The durable subscriber name for the subscription */
     private String durableName = "defaultQueue";
+
     private String streamStorageType = "file";
-    /**
-     * The NATS connection url
-     */
+    /** The NATS connection url */
     private String url = Options.DEFAULT_URL;
+
     private Duration pollTimeDuration = Duration.ofMillis(100);
 
     public Duration getPollTimeDuration() {

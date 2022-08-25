@@ -1,0 +1,183 @@
+{
+    "annotationProcessor": {
+        "org.springframework.boot:spring-boot-configuration-processor": {
+            "locked": "2.6.7"
+        }
+    },
+    "compileClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.11.0"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.11.0"
+        },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
+        "org.apache.commons:commons-lang3": {
+            "locked": "3.12.0"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.springframework.boot:spring-boot-starter": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-web": {
+            "locked": "2.6.7"
+        }
+    },
+    "runtimeClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.11.0"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.11.0"
+        },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
+        "org.apache.commons:commons-lang3": {
+            "locked": "3.12.0"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        }
+    },
+    "testCompileClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.11.0"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.11.0"
+        },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
+        "org.apache.commons:commons-lang3": {
+            "locked": "3.12.0"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
+        },
+        "org.springframework.boot:spring-boot-starter-log4j2": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-test": {
+            "locked": "2.6.7"
+        }
+    },
+    "testRuntimeClasspath": {
+        "com.google.guava:guava": {
+            "locked": "30.0-jre"
+        },
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.11.0"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.11.0"
+        },
+        "io.nats:java-nats-streaming": {
+            "locked": "2.2.3"
+        },
+        "io.nats:jnats": {
+            "locked": "2.6.5"
+        },
+        "io.reactivex:rxjava": {
+            "locked": "1.2.2"
+        },
+        "org.apache.commons:commons-lang3": {
+            "locked": "3.12.0"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
+        },
+        "org.springframework.boot:spring-boot-starter-log4j2": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-test": {
+            "locked": "2.6.7"
+        }
+    }
+}

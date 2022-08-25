@@ -24,7 +24,9 @@ import com.netflix.conductor.model.WorkflowModel;
 
 import static org.mockito.Mockito.*;
 
-/** @author pavel.halabala */
+/**
+ * @author pavel.halabala
+ */
 public class ArchivingWorkflowStatusListenerTest {
 
     WorkflowModel workflow;

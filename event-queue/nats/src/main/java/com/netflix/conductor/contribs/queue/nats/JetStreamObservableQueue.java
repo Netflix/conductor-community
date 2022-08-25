@@ -1,8 +1,33 @@
+/*
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 package com.netflix.conductor.contribs.queue.nats;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.contribs.queue.nats.config.JetStreamProperties;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.core.events.queue.ObservableQueue;
+
 import io.nats.client.Connection;
 import io.nats.client.ConnectionListener;
 import io.nats.client.JetStream;
@@ -16,20 +41,8 @@ import io.nats.client.api.RetentionPolicy;
 import io.nats.client.api.StorageType;
 import io.nats.client.api.StreamConfiguration;
 import io.nats.client.api.StreamInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Scheduler;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author andrey.stelmashenko@gmail.com
@@ -47,7 +60,8 @@ public class JetStreamObservableQueue implements ObservableQueue {
     private JetStreamSubscription sub;
     private Observable<Long> interval;
 
-    public JetStreamObservableQueue(JetStreamProperties properties, String queueType, String subject, Scheduler scheduler) {
+    public JetStreamObservableQueue(
+            JetStreamProperties properties, String queueType, String subject, Scheduler scheduler) {
         LOG.debug("JSM obs queue create, qtype={}, quri={}", queueType, subject);
         this.queueType = queueType;
         this.subject = subject;
@@ -62,20 +76,30 @@ public class JetStreamObservableQueue implements ObservableQueue {
 
     private Observable.OnSubscribe<Message> getOnSubscribe() {
         return subscriber -> {
-            interval = Observable.interval(properties.getPollTimeDuration().toMillis(), TimeUnit.MILLISECONDS, scheduler);
-            interval.flatMap((Long x) -> {
-                        if (!this.isRunning()) {
-                            LOG.debug("Component stopped, skip listening for messages from JSM Queue '{}'", subject);
-                            return Observable.from(Collections.emptyList());
-                        } else {
-                            List<Message> available = new ArrayList<>();
-                            messages.drainTo(available);
-                            if (!available.isEmpty()) {
-                                LOG.debug("Processing JSM queue '{}' batch messages count={}", subject, available.size());
-                            }
-                            return Observable.from(available);
-                        }
-                    })
+            interval =
+                    Observable.interval(
+                            properties.getPollTimeDuration().toMillis(),
+                            TimeUnit.MILLISECONDS,
+                            scheduler);
+            interval.flatMap(
+                            (Long x) -> {
+                                if (!this.isRunning()) {
+                                    LOG.debug(
+                                            "Component stopped, skip listening for messages from JSM Queue '{}'",
+                                            subject);
+                                    return Observable.from(Collections.emptyList());
+                                } else {
+                                    List<Message> available = new ArrayList<>();
+                                    messages.drainTo(available);
+                                    if (!available.isEmpty()) {
+                                        LOG.debug(
+                                                "Processing JSM queue '{}' batch messages count={}",
+                                                subject,
+                                                available.size());
+                                    }
+                                    return Observable.from(available);
+                                }
+                            })
                     .subscribe(subscriber::onNext, subscriber::onError);
         };
     }
@@ -166,15 +190,18 @@ public class JetStreamObservableQueue implements ObservableQueue {
         }
         LOG.info("Starting JSM observable, name={}", subject);
         try {
-            Nats.connectAsynchronously(new Options.Builder()
-                    .connectionListener((conn, type) -> {
-                        LOG.info("Connection to JSM updated: {}", type);
-                        this.nc = conn;
-                        subscribeOnce(conn, type);
-                    })
-                    .server(properties.getUrl())
-                    .maxReconnects(-1)
-                    .build(), true);
+            Nats.connectAsynchronously(
+                    new Options.Builder()
+                            .connectionListener(
+                                    (conn, type) -> {
+                                        LOG.info("Connection to JSM updated: {}", type);
+                                        this.nc = conn;
+                                        subscribeOnce(conn, type);
+                                    })
+                            .server(properties.getUrl())
+                            .maxReconnects(-1)
+                            .build(),
+                    true);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new NatsException("Failed to connect to JSM", e);
@@ -189,11 +216,12 @@ public class JetStreamObservableQueue implements ObservableQueue {
             throw new NatsException("Failed to get jsm management", e);
         }
 
-        StreamConfiguration streamConfig = StreamConfiguration.builder()
-                .name(subject)
-                .retentionPolicy(RetentionPolicy.WorkQueue)
-                .storageType(StorageType.get(properties.getStreamStorageType()))
-                .build();
+        StreamConfiguration streamConfig =
+                StreamConfiguration.builder()
+                        .name(subject)
+                        .retentionPolicy(RetentionPolicy.WorkQueue)
+                        .storageType(StorageType.get(properties.getStreamStorageType()))
+                        .build();
 
         try {
             StreamInfo streamInfo = jsm.addStream(streamConfig);
@@ -204,7 +232,8 @@ public class JetStreamObservableQueue implements ObservableQueue {
     }
 
     private void subscribeOnce(Connection nc, ConnectionListener.Events type) {
-        if (type.equals(ConnectionListener.Events.CONNECTED) || type.equals(ConnectionListener.Events.RECONNECTED)) {
+        if (type.equals(ConnectionListener.Events.CONNECTED)
+                || type.equals(ConnectionListener.Events.RECONNECTED)) {
             createStream(nc);
             subscribe(nc);
         }
@@ -214,24 +243,27 @@ public class JetStreamObservableQueue implements ObservableQueue {
         try {
             JetStream js = nc.jetStream();
 
-            PushSubscribeOptions pso = PushSubscribeOptions.builder()
-                    .durable(properties.getDurableName()).build();
+            PushSubscribeOptions pso =
+                    PushSubscribeOptions.builder().durable(properties.getDurableName()).build();
             LOG.debug("Subscribing jsm, subject={}, options={}", subject, pso);
-            sub = js.subscribe(subject, properties.getDurableName(), nc.createDispatcher(),
-                    msg -> {
-                        var message = new JsmMessage();
-                        message.setJsmMsg(msg);
-                        message.setId(msg.getSID());
-                        message.setPayload(new String(msg.getData()));
-                        messages.add(message);
-                    },
-                    false,
-                    pso);
+            sub =
+                    js.subscribe(
+                            subject,
+                            properties.getDurableName(),
+                            nc.createDispatcher(),
+                            msg -> {
+                                var message = new JsmMessage();
+                                message.setJsmMsg(msg);
+                                message.setId(msg.getSID());
+                                message.setPayload(new String(msg.getData()));
+                                messages.add(message);
+                            },
+                            false,
+                            pso);
             LOG.debug("Subscribed successfully {}", sub.getConsumerInfo());
             this.running.set(true);
         } catch (IOException | JetStreamApiException e) {
             LOG.error("Failed to subscribe", e);
         }
     }
-
 }
