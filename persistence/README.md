@@ -1,5 +1,5 @@
 # Persistence
-Persistence modules allows you run Conductor with different backends for storing metadata and workflow executions.
+Persistence modules allow you to run Conductor with different backends for storing metadata and workflow executions.
 Conductor core has support for Redis and Cassandra, while this module allows additional MySQL and Postgres as options.
 
 **Note**: Both MySQL and Postgres persistence also implements queue implementations for Conductor.  So these modules 
