@@ -21,6 +21,8 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -442,6 +444,14 @@ public class AMQPObservableQueue implements ObservableQueue {
             final boolean useNio = properties.isUseNio();
             if (useNio) {
                 factory.useNio();
+            }
+            final boolean useSslProtocol = properties.isUseSslProtocol();
+            if (useSslProtocol) {
+                try {
+                    factory.useSslProtocol();
+                } catch (NoSuchAlgorithmException | KeyManagementException e) {
+                    throw new IllegalArgumentException("Invalid sslProtocol ", e);
+                }
             }
             factory.setConnectionTimeout(properties.getConnectionTimeoutInMilliSecs());
             factory.setRequestedHeartbeat(properties.getRequestHeartbeatTimeoutInSecs());
