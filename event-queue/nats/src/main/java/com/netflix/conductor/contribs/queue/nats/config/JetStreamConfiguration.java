@@ -59,12 +59,19 @@ public class JetStreamConfiguration {
                             ? conductorProperties.getAppId() + "_jsm_notify_" + stack
                             : properties.getListenerQueuePrefix();
 
-            String queueName = queuePrefix + status.name();
+            String queueName = queuePrefix + status.name() + getQueueGroup(properties);
 
             ObservableQueue queue = provider.getQueue(queueName);
             queues.put(status, queue);
         }
 
         return queues;
+    }
+
+    private String getQueueGroup(final JetStreamProperties properties) {
+        if (properties.getDefaultQueueGroup() == null || properties.getDefaultQueueGroup().isBlank()) {
+            return "";
+        }
+        return ":" + properties.getDefaultQueueGroup();
     }
 }

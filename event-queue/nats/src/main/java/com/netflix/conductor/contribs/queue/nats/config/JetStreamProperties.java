@@ -32,6 +32,9 @@ public class JetStreamProperties {
 
     private Duration pollTimeDuration = Duration.ofMillis(100);
 
+    /** WAIT tasks default queue group, to make subscription round-robin delivery to single sub */
+    private String defaultQueueGroup = "wait-group";
+
     public Duration getPollTimeDuration() {
         return pollTimeDuration;
     }
@@ -70,5 +73,13 @@ public class JetStreamProperties {
 
     public void setStreamStorageType(String streamStorageType) {
         this.streamStorageType = streamStorageType;
+    }
+
+    public String getDefaultQueueGroup() {
+        return defaultQueueGroup;
+    }
+
+    public void setDefaultQueueGroup(String defaultQueueGroup) {
+        this.defaultQueueGroup = defaultQueueGroup;
     }
 }
