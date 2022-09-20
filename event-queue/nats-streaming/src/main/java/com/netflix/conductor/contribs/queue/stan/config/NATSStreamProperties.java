@@ -15,11 +15,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import io.nats.client.Options;
 
+import java.time.Duration;
+
 @ConfigurationProperties("conductor.event-queues.nats-stream")
 public class NATSStreamProperties {
 
     /** The cluster id of the STAN session */
     private String clusterId = "test-cluster";
+
+    private Duration pollTimeDuration = Duration.ofMillis(100);
 
     /** The durable subscriber name for the subscription */
     private String durableName = null;
@@ -60,5 +64,13 @@ public class NATSStreamProperties {
 
     public void setListenerQueuePrefix(String listenerQueuePrefix) {
         this.listenerQueuePrefix = listenerQueuePrefix;
+    }
+
+    public Duration getPollTimeDuration() {
+        return pollTimeDuration;
+    }
+
+    public void setPollTimeDuration(Duration pollTimeDuration) {
+        this.pollTimeDuration = pollTimeDuration;
     }
 }

@@ -62,9 +62,7 @@ public class NATSStreamConfiguration {
 
             ObservableQueue queue =
                     new NATSStreamObservableQueue(
-                            properties.getClusterId(),
-                            properties.getUrl(),
-                            properties.getDurableName(),
+                            properties,
                             queueName,
                             scheduler);
             queues.put(status, queue);

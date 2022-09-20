@@ -31,34 +31,29 @@ public class NATSStreamEventQueueProvider implements EventQueueProvider {
 
     private static final Logger LOGGER =
             LoggerFactory.getLogger(NATSStreamEventQueueProvider.class);
+    public static final String QUEUE_TYPE = "nats_stream";
     protected final Map<String, NATSStreamObservableQueue> queues = new ConcurrentHashMap<>();
-    private final String durableName;
-    private final String clusterId;
-    private final String natsUrl;
     private final Scheduler scheduler;
+    private final NATSStreamProperties properties;
 
     public NATSStreamEventQueueProvider(NATSStreamProperties properties, Scheduler scheduler) {
         LOGGER.info("NATS Stream Event Queue Provider init");
         this.scheduler = scheduler;
-
-        // Get NATS Streaming options
-        clusterId = properties.getClusterId();
-        durableName = properties.getDurableName();
-        natsUrl = properties.getUrl();
+        this.properties = properties;
 
         LOGGER.info(
                 "NATS Streaming clusterId="
-                        + clusterId
+                        + properties.getClusterId()
                         + ", natsUrl="
-                        + natsUrl
+                        + properties.getUrl()
                         + ", durableName="
-                        + durableName);
+                        + properties.getDurableName());
         LOGGER.info("NATS Stream Event Queue Provider initialized...");
     }
 
     @Override
     public String getQueueType() {
-        return "nats_stream";
+        return QUEUE_TYPE;
     }
 
     @Override
@@ -67,12 +62,8 @@ public class NATSStreamEventQueueProvider implements EventQueueProvider {
         NATSStreamObservableQueue queue =
                 queues.computeIfAbsent(
                         queueURI,
-                        q ->
-                                new NATSStreamObservableQueue(
-                                        clusterId, natsUrl, durableName, queueURI, scheduler));
-        if (queue.isClosed()) {
-            queue.open();
-        }
+                        q -> new NATSStreamObservableQueue(properties, queueURI, scheduler));
+
         return queue;
     }
 }
