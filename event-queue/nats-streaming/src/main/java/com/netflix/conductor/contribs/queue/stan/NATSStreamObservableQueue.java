@@ -109,7 +109,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
                                         subscribeOnce(natsConn, type);
                                     })
                             .server(this.properties.getUrl())
-                            .maxReconnects(-1)
+                            .maxReconnects(properties.getMaxReconnects())
                             .build(),
                     true);
         } catch (InterruptedException e) {

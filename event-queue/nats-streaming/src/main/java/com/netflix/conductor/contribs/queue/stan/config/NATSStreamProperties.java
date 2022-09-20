@@ -34,6 +34,8 @@ public class NATSStreamProperties {
     /** The prefix to be used for the default listener queues */
     private String listenerQueuePrefix = "";
 
+    private int maxReconnects = -1;
+
     public String getClusterId() {
         return clusterId;
     }
@@ -72,5 +74,13 @@ public class NATSStreamProperties {
 
     public void setPollTimeDuration(Duration pollTimeDuration) {
         this.pollTimeDuration = pollTimeDuration;
+    }
+
+    public int getMaxReconnects() {
+        return maxReconnects;
+    }
+
+    public void setMaxReconnects(int maxReconnects) {
+        this.maxReconnects = maxReconnects;
     }
 }
