@@ -123,7 +123,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
 
     @Override
     public String getName() {
-        return subject;
+        return queueUri;
     }
 
     @Override
