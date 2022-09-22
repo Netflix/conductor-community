@@ -105,7 +105,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
                     new io.nats.client.Options.Builder()
                             .connectionListener(
                                     (natsConn, type) -> {
-                                        LOG.info("Connection to JSM updated: {}", type);
+                                        LOG.info("Connection to STAN updated: {}", type);
                                         subscribeOnce(natsConn, type);
                                     })
                             .server(this.properties.getUrl())
@@ -158,7 +158,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
                     msg -> {
                         var message = new StanMessage();
                         message.setStanMsg(msg);
-                        message.setId(msg.getSequence() + "-" + msg.getTimestamp() + "-" + msg.getCrc32());
+                        message.setId(msg.getSequence() + "-" + msg.getTimestamp());
                         message.setPayload(new String(msg.getData()));
                         messages.add(message);
                     },
@@ -172,6 +172,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
 
     @Override
     public void stop() {
+        LOG.info("Stopping observable queue: {}", queueUri);
         interval.unsubscribeOn(scheduler);
         try {
             if (conn != null) {
@@ -206,8 +207,8 @@ public class NATSStreamObservableQueue implements ObservableQueue {
             interval.flatMap(
                             (Long x) -> {
                                 if (!this.isRunning()) {
-                                    LOG.debug(
-                                            "Component stopped, skip listening for messages from JSM Queue '{}'",
+                                    LOG.trace(
+                                            "Component stopped, skip listening for messages from STAN Queue '{}'",
                                             subject);
                                     return Observable.from(Collections.emptyList());
                                 } else {
@@ -215,7 +216,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
                                     messages.drainTo(available);
                                     if (!available.isEmpty()) {
                                         LOG.debug(
-                                                "Processing JSM queue '{}' batch messages count={}",
+                                                "Processing STAN queue '{}' batch messages count={}",
                                                 subject,
                                                 available.size());
                                     }
@@ -233,7 +234,7 @@ public class NATSStreamObservableQueue implements ObservableQueue {
 
     @Override
     public String getName() {
-        return subject;
+        return queueUri;
     }
 
     @Override
