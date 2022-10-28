@@ -33,6 +33,8 @@ import com.netflix.conductor.postgres.storage.PostgresPayloadStorage;
 public class PostgresPayloadConfiguration {
 
     PostgresPayloadProperties properties;
+    private static final String DEFAULT_MESSAGE_TO_USER =
+            "{\"Error\": \"Data with this ID does not exist or has been deleted from the external storage.\"}";
 
     public PostgresPayloadConfiguration(PostgresPayloadProperties properties) {
         this.properties = properties;
@@ -78,6 +80,7 @@ public class PostgresPayloadConfiguration {
                         .username(properties.getUsername())
                         .password(properties.getPassword())
                         .build();
-        return new PostgresPayloadStorage(idGenerator, properties, dataSource);
+        return new PostgresPayloadStorage(
+                idGenerator, properties, dataSource, DEFAULT_MESSAGE_TO_USER);
     }
 }

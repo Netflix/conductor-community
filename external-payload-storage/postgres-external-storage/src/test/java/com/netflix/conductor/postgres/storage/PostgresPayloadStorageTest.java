@@ -45,6 +45,7 @@ public class PostgresPayloadStorageTest {
     private final String inputString =
             "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
                     + " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.";
+    private final String errorMessage = "{\"Error\": \"Data does not exist.\"}";
     private final InputStream inputData;
     private final String key = "dummyKey.json";
 
@@ -63,7 +64,8 @@ public class PostgresPayloadStorageTest {
                 new PostgresPayloadStorage(
                         new IDGenerator(),
                         testPostgres.getTestProperties(),
-                        testPostgres.getDataSource());
+                        testPostgres.getDataSource(),
+                        errorMessage);
     }
 
     @Test
@@ -81,6 +83,24 @@ public class PostgresPayloadStorageTest {
         assertEquals(
                 inputString,
                 new String(rs.getBinaryStream(1).readAllBytes(), StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void testReadNonExistentInputStreamFromDb() throws IOException, SQLException {
+        PreparedStatement stmt =
+                testPostgres
+                        .getDataSource()
+                        .getConnection()
+                        .prepareStatement("INSERT INTO external.external_payload  VALUES (?, ?)");
+        stmt.setString(1, key);
+        stmt.setBinaryStream(2, inputData, inputData.available());
+        stmt.executeUpdate();
+
+        assertEquals(
+                errorMessage,
+                new String(
+                        executionPostgres.download("non_existent_key.json").readAllBytes(),
+                        StandardCharsets.UTF_8));
     }
 
     @Test

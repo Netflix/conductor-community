@@ -11,6 +11,7 @@
  */
 package com.netflix.conductor.postgres.storage;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,13 +42,18 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
     private final String tableName;
     private final String conductorUrl;
     private final IDGenerator idGenerator;
+    private final String defaultMessageToUser;
 
     public PostgresPayloadStorage(
-            IDGenerator idGenerator, PostgresPayloadProperties properties, DataSource dataSource) {
+            IDGenerator idGenerator,
+            PostgresPayloadProperties properties,
+            DataSource dataSource,
+            String defaultMessageToUser) {
         this.idGenerator = idGenerator;
         tableName = properties.getTableName();
         conductorUrl = properties.getConductorUrl();
         this.postgresDataSource = dataSource;
+        this.defaultMessageToUser = defaultMessageToUser;
         LOGGER.info("PostgreSQL Extenal Payload Storage initialized.");
     }
 
@@ -116,7 +122,10 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
                         conn.prepareStatement("SELECT data FROM " + tableName + " WHERE id = ?")) {
             stmt.setString(1, key);
             ResultSet rs = stmt.executeQuery();
-            rs.next();
+            if (!rs.next()) {
+                LOGGER.debug("External PostgreSQL data with this ID: {} does not exist", key);
+                return new ByteArrayInputStream(defaultMessageToUser.getBytes());
+            }
             inputStream = rs.getBinaryStream(1);
             rs.close();
             LOGGER.debug("External PostgreSQL downloaded key: {}", key);
