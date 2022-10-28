@@ -118,6 +118,8 @@ public class AMQPEventQueueProperties {
 
     private String listenerQueuePrefix = "";
 
+    private boolean useSslProtocol = false;
+
     public int getBatchSize() {
         return batchSize;
     }
@@ -256,6 +258,14 @@ public class AMQPEventQueueProperties {
 
     public String getQueueType() {
         return queueType;
+    }
+
+    public boolean isUseSslProtocol() {
+        return useSslProtocol;
+    }
+
+    public void setUseSslProtocol(boolean useSslProtocol) {
+        this.useSslProtocol = useSslProtocol;
     }
 
     /**
