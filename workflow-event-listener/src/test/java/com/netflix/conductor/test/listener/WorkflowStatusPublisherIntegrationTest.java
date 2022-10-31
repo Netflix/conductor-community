@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.netflix.conductor.core.execution.StartWorkflowInput;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -204,6 +205,11 @@ public class WorkflowStatusPublisherIntegrationTest {
 
     private String startOrLoadWorkflowExecution(
             String workflowName, int version, String correlationId, Map<String, Object> input) {
-        return workflowExecutor.startWorkflow(workflowName, version, correlationId, input, null);
+        StartWorkflowInput startWorkflowInput = new StartWorkflowInput();
+        startWorkflowInput.setName(workflowName);
+        startWorkflowInput.setVersion(version);
+        startWorkflowInput.setCorrelationId(correlationId);
+        startWorkflowInput.setWorkflowInput(input);
+        return workflowExecutor.startWorkflow(startWorkflowInput);
     }
 }
