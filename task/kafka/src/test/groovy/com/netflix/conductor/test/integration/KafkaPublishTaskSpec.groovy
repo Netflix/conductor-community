@@ -19,6 +19,7 @@ import com.netflix.conductor.common.metadata.tasks.TaskType
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask
 import com.netflix.conductor.common.run.Workflow
+import com.netflix.conductor.core.execution.StartWorkflowInput
 import com.netflix.conductor.test.base.AbstractSpecification
 import org.springframework.beans.factory.annotation.Autowired
 import spock.lang.Shared
@@ -49,9 +50,12 @@ class KafkaPublishTaskSpec extends AbstractSpecification {
     def "Test the kafka template usage failure case"() {
 
         given: "Start a workflow based on the registered workflow"
-        def workflowInstanceId = workflowExecutor.startWorkflow("template_kafka_workflow", 1,
-                "testTaskDefTemplate", kafkaInput,
-                null, null, null)
+        StartWorkflowInput startWorkflowInput = new StartWorkflowInput()
+        startWorkflowInput.setName("template_kafka_workflow")
+        startWorkflowInput.setVersion(1)
+        startWorkflowInput.setCorrelationId("testTaskDefTemplate")
+        startWorkflowInput.setWorkflowInput(kafkaInput)
+        def workflowInstanceId = workflowExecutor.startWorkflow(startWorkflowInput)
 
         and: "Get the workflow based on the Id that is being executed"
         def workflow = workflowExecutionService.getExecutionStatus(workflowInstanceId, true)
@@ -98,9 +102,12 @@ class KafkaPublishTaskSpec extends AbstractSpecification {
     def "Test the kafka template usage success case"() {
 
         given: "Start a workflow based on the registered kafka workflow"
-        def workflowInstanceId = workflowExecutor.startWorkflow("template_kafka_workflow", 1,
-                "testTaskDefTemplate", kafkaInput,
-                null, null, null)
+        StartWorkflowInput startWorkflowInput = new StartWorkflowInput()
+        startWorkflowInput.setName("template_kafka_workflow");
+        startWorkflowInput.setVersion(1);
+        startWorkflowInput.setCorrelationId("testTaskDefTemplate");
+        startWorkflowInput.setWorkflowInput(kafkaInput);
+        def workflowInstanceId = workflowExecutor.startWorkflow(startWorkflowInput)
 
         and: "Get the workflow based on the Id that is being executed"
         def workflow = workflowExecutionService.getExecutionStatus(workflowInstanceId, true)
