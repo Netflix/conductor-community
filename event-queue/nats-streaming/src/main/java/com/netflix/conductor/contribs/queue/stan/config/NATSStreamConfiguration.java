@@ -58,7 +58,7 @@ public class NATSStreamConfiguration {
                             ? conductorProperties.getAppId() + "_nats_stream_notify_" + stack
                             : properties.getListenerQueuePrefix();
 
-            String queueName = queuePrefix + status.name();
+            String queueName = queuePrefix + status.name() + getQueueGroup(properties);
 
             ObservableQueue queue =
                     new NATSStreamObservableQueue(
@@ -71,5 +71,12 @@ public class NATSStreamConfiguration {
         }
 
         return queues;
+    }
+
+    private String getQueueGroup(final NATSStreamProperties properties) {
+        if (properties.getDefaultQueueGroup() == null || properties.getDefaultQueueGroup().isBlank()) {
+            return "";
+        }
+        return ":" + properties.getDefaultQueueGroup();
     }
 }

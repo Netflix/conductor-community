@@ -30,6 +30,9 @@ public class NATSStreamProperties {
     /** The prefix to be used for the default listener queues */
     private String listenerQueuePrefix = "";
 
+    /** WAIT tasks default queue group, to make subscription round-robin delivery to single sub */
+    private String defaultQueueGroup = "wait-group";
+
     public String getClusterId() {
         return clusterId;
     }
@@ -60,5 +63,13 @@ public class NATSStreamProperties {
 
     public void setListenerQueuePrefix(String listenerQueuePrefix) {
         this.listenerQueuePrefix = listenerQueuePrefix;
+    }
+
+    public String getDefaultQueueGroup() {
+        return defaultQueueGroup;
+    }
+
+    public void setDefaultQueueGroup(String defaultQueueGroup) {
+        this.defaultQueueGroup = defaultQueueGroup;
     }
 }
