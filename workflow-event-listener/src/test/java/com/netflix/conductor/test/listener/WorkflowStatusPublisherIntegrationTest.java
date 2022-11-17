@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.netflix.conductor.common.metadata.workflow.StartWorkflowRequest;
+import com.netflix.conductor.service.WorkflowService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -75,7 +77,7 @@ public class WorkflowStatusPublisherIntegrationTest {
 
     @Autowired protected ExecutionService workflowExecutionService;
 
-    @Autowired protected WorkflowExecutor workflowExecutor;
+    @Autowired protected WorkflowService workflowExecutor;
 
     @Before
     public void setUp() {
@@ -193,8 +195,7 @@ public class WorkflowStatusPublisherIntegrationTest {
     @SuppressWarnings("BusyWait")
     private void checkIfWorkflowIsCompleted(String id) throws InterruptedException {
         int statusRetrieveAttempts = 0;
-        while (workflowExecutor.getWorkflow(id, false).getStatus()
-                != WorkflowModel.Status.COMPLETED) {
+        while (workflowExecutor.getExecutionStatus(id, false).getStatus() != Workflow.WorkflowStatus.COMPLETED) {
             if (statusRetrieveAttempts > 5) {
                 break;
             }
@@ -205,11 +206,11 @@ public class WorkflowStatusPublisherIntegrationTest {
 
     private String startOrLoadWorkflowExecution(
             String workflowName, int version, String correlationId, Map<String, Object> input) {
-        StartWorkflowInput startWorkflowInput = new StartWorkflowInput();
+        StartWorkflowRequest startWorkflowInput = new StartWorkflowRequest();
         startWorkflowInput.setName(workflowName);
         startWorkflowInput.setVersion(version);
         startWorkflowInput.setCorrelationId(correlationId);
-        startWorkflowInput.setWorkflowInput(input);
+        startWorkflowInput.setInput(input);
         return workflowExecutor.startWorkflow(startWorkflowInput);
     }
 }
