@@ -49,6 +49,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -65,6 +66,7 @@ import com.netflix.conductor.common.run.TaskSummary;
 import com.netflix.conductor.common.run.WorkflowSummary;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.core.exception.NonTransientException;
+import com.netflix.conductor.core.exception.TransientException;
 import com.netflix.conductor.dao.IndexDAO;
 import com.netflix.conductor.es7.config.ElasticSearchProperties;
 import com.netflix.conductor.es7.dao.query.parser.internal.ParserException;
@@ -759,12 +761,63 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
     }
 
     @Override
+    public SearchResult<WorkflowSummary> searchWorkflowSummary(
+            String query, String freeText, int start, int count, List<String> sort) {
+        try {
+            return searchObjectsViaExpression(
+                    query,
+                    start,
+                    count,
+                    sort,
+                    freeText,
+                    WORKFLOW_DOC_TYPE,
+                    false,
+                    WorkflowSummary.class);
+        } catch (Exception e) {
+            throw new TransientException(e.getMessage(), e);
+        }
+    }
+
+    private <T> SearchResult<T> searchObjectsViaExpression(
+            String structuredQuery,
+            int start,
+            int size,
+            List<String> sortOptions,
+            String freeTextQuery,
+            String docType,
+            boolean idOnly,
+            Class<T> clazz)
+            throws ParserException, IOException {
+        QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
+        return searchObjects(
+                getIndexName(docType),
+                queryBuilder,
+                start,
+                size,
+                sortOptions,
+                docType,
+                idOnly,
+                clazz);
+    }
+
+    @Override
     public SearchResult<String> searchTasks(
             String query, String freeText, int start, int count, List<String> sort) {
         try {
             return searchObjectIdsViaExpression(query, start, count, sort, freeText, TASK_DOC_TYPE);
         } catch (Exception e) {
             throw new NonTransientException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public SearchResult<TaskSummary> searchTaskSummary(
+            String query, String freeText, int start, int count, List<String> sort) {
+        try {
+            return searchObjectsViaExpression(
+                    query, start, count, sort, freeText, TASK_DOC_TYPE, false, TaskSummary.class);
+        } catch (Exception e) {
+            throw new TransientException(e.getMessage(), e);
         }
     }
 
@@ -876,6 +929,27 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
                 getIndexName(docType), queryBuilder, start, size, sortOptions, docType);
     }
 
+    private <T> SearchResult<T> searchObjectIdsViaExpression(
+            String structuredQuery,
+            int start,
+            int size,
+            List<String> sortOptions,
+            String freeTextQuery,
+            String docType,
+            Class<T> clazz)
+            throws ParserException, IOException {
+        QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
+        return searchObjects(
+                getIndexName(docType),
+                queryBuilder,
+                start,
+                size,
+                sortOptions,
+                docType,
+                false,
+                clazz);
+    }
+
     private SearchResult<String> searchObjectIds(
             String indexName, QueryBuilder queryBuilder, int start, int size, String docType)
             throws IOException {
@@ -931,6 +1005,78 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
         List<String> result = new LinkedList<>();
         response.getHits().forEach(hit -> result.add(hit.getId()));
         long count = response.getHits().getTotalHits().value;
+        return new SearchResult<>(count, result);
+    }
+
+    private <T> SearchResult<T> searchObjects(
+            String indexName,
+            QueryBuilder queryBuilder,
+            int start,
+            int size,
+            List<String> sortOptions,
+            String docType,
+            boolean idOnly,
+            Class<T> clazz)
+            throws IOException {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+        searchSourceBuilder.from(start);
+        searchSourceBuilder.size(size);
+        if (idOnly) {
+            searchSourceBuilder.fetchSource(false);
+        }
+
+        if (sortOptions != null && !sortOptions.isEmpty()) {
+
+            for (String sortOption : sortOptions) {
+                SortOrder order = SortOrder.ASC;
+                String field = sortOption;
+                int index = sortOption.indexOf(":");
+                if (index > 0) {
+                    field = sortOption.substring(0, index);
+                    order = SortOrder.valueOf(sortOption.substring(index + 1));
+                }
+                searchSourceBuilder.sort(new FieldSortBuilder(field).order(order));
+            }
+        }
+
+        // Generate the actual request to send to ES.
+        SearchRequest searchRequest = new SearchRequest(indexName);
+        searchRequest.types(docType);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse response = elasticSearchClient.search(searchRequest, RequestOptions.DEFAULT);
+        return mapSearchResult(response, idOnly, clazz);
+    }
+
+    private <T> SearchResult<T> mapSearchResult(
+            SearchResponse response, boolean idOnly, Class<T> clazz) {
+        SearchHits searchHits = response.getHits();
+        long count = searchHits.getTotalHits().value;
+        List<T> result;
+        if (idOnly) {
+            result =
+                    Arrays.stream(searchHits.getHits())
+                            .map(hit -> clazz.cast(hit.getId()))
+                            .collect(Collectors.toList());
+        } else {
+            result =
+                    Arrays.stream(searchHits.getHits())
+                            .map(
+                                    hit -> {
+                                        try {
+                                            return objectMapper.readValue(
+                                                    hit.getSourceAsString(), clazz);
+                                        } catch (JsonProcessingException e) {
+                                            logger.error(
+                                                    "Failed to de-serialize elasticsearch from source: {}",
+                                                    hit.getSourceAsString(),
+                                                    e);
+                                        }
+                                        return null;
+                                    })
+                            .collect(Collectors.toList());
+        }
         return new SearchResult<>(count, result);
     }
 

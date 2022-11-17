@@ -12,6 +12,8 @@
 package com.netflix.conductor.contribs.queue.amqp;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -21,8 +23,6 @@ import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

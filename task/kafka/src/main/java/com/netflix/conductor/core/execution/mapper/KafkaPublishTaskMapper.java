@@ -47,8 +47,8 @@ public class KafkaPublishTaskMapper implements TaskMapper {
     }
 
     @Override
-    public TaskType getTaskType() {
-        return TaskType.KAFKA_PUBLISH;
+    public String getTaskType() {
+        return TaskType.KAFKA_PUBLISH.name();
     }
 
     /**

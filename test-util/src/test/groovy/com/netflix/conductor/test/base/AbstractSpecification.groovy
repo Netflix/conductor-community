@@ -12,6 +12,7 @@
  */
 package com.netflix.conductor.test.base
 
+import com.netflix.conductor.service.WorkflowService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
@@ -37,6 +38,9 @@ abstract class AbstractSpecification extends Specification {
 
     @Autowired
     WorkflowExecutor workflowExecutor
+
+    @Autowired
+    WorkflowService workflowService
 
     @Autowired
     WorkflowTestUtil workflowTestUtil
