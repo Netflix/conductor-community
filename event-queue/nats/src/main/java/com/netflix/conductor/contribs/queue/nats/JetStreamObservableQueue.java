@@ -53,18 +53,30 @@ public class JetStreamObservableQueue implements ObservableQueue {
     private final Lock mu = new ReentrantLock();
     private final String queueType;
     private final String subject;
+    private final String queueUri;
     private final JetStreamProperties properties;
     private final Scheduler scheduler;
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Connection nc;
     private JetStreamSubscription sub;
     private Observable<Long> interval;
+    private final String queueGroup;
 
     public JetStreamObservableQueue(
-            JetStreamProperties properties, String queueType, String subject, Scheduler scheduler) {
-        LOG.debug("JSM obs queue create, qtype={}, quri={}", queueType, subject);
+            JetStreamProperties properties, String queueType, String queueUri, Scheduler scheduler) {
+        LOG.debug("JSM obs queue create, qtype={}, quri={}", queueType, queueUri);
+
+        this.queueUri = queueUri;
+        // If queue specified (e.g. subject:queue) - split to subject & queue
+        if (queueUri.contains(":")) {
+            this.subject = queueUri.substring(0, queueUri.indexOf(':'));
+            queueGroup = queueUri.substring(queueUri.indexOf(':') + 1);
+        } else {
+            this.subject = queueUri;
+            queueGroup = null;
+        }
+
         this.queueType = queueType;
-        this.subject = subject;
         this.properties = properties;
         this.scheduler = scheduler;
     }
@@ -111,7 +123,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
 
     @Override
     public String getName() {
-        return subject;
+        return queueUri;
     }
 
     @Override
@@ -188,7 +200,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
         if (running.get()) {
             return;
         }
-        LOG.info("Starting JSM observable, name={}", subject);
+        LOG.info("Starting JSM observable, name={}", queueUri);
         try {
             Nats.connectAsynchronously(
                     new Options.Builder()
@@ -249,7 +261,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
             sub =
                     js.subscribe(
                             subject,
-                            properties.getDurableName(),
+                            queueGroup,
                             nc.createDispatcher(),
                             msg -> {
                                 var message = new JsmMessage();
@@ -258,7 +270,7 @@ public class JetStreamObservableQueue implements ObservableQueue {
                                 message.setPayload(new String(msg.getData()));
                                 messages.add(message);
                             },
-                            false,
+                            /*autoAck*/ false,
                             pso);
             LOG.debug("Subscribed successfully {}", sub.getConsumerInfo());
             this.running.set(true);
