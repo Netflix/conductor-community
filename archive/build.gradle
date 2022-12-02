@@ -1,0 +1,55 @@
+dependencies {
+
+    compileOnly "org.projectlombok:lombok:${revLombok}"
+    annotationProcessor "org.projectlombok:lombok:${revLombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${revLombok}"
+
+    implementation project(":conductor-common")
+    implementation project(":conductor-core")
+    implementation project(":conductor-community:persistence:postgres-persistence")
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.core:jackson-core"
+
+    //Metrics
+    implementation "io.micrometer:micrometer-registry-prometheus:1.7.5"
+    implementation "io.micrometer:micrometer-core:1.7.5"
+    implementation "com.netflix.spectator:spectator-reg-micrometer:${versions.revSpectator}"
+    implementation "com.netflix.spectator:spectator-reg-metrics3:${versions.revSpectator}"
+    implementation "com.netflix.spectator:spectator-api:${versions.revSpectator}"
+
+    implementation 'org.springframework.retry:spring-retry'
+
+    //Flyway for postgres configuration
+    implementation "org.flywaydb:flyway-core"
+
+    //Cache
+    implementation "com.google.guava:guava:${versions.revGuava}"
+
+    //Lucene
+    implementation "org.apache.lucene:lucene-core:${versions.revLucene}"
+    implementation "org.apache.lucene:lucene-analyzers-common:${versions.revLucene}"
+
+    //spring
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+
+    testImplementation 'org.hamcrest:hamcrest'
+    testImplementation "org.awaitility:awaitility:3.1.6"
+
+    //postgres test container
+    testImplementation "org.testcontainers:postgresql:${versions.revTestContainer}"
+
+    //Fake data generator
+    testImplementation "com.github.javafaker:javafaker:1.0.1"
+}
+
+test {
+    useJUnitPlatform()
+}
