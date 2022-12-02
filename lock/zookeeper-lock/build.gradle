@@ -1,5 +1,5 @@
 dependencies {
-    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+    implementation project(":conductor-core")
     compileOnly 'org.springframework.boot:spring-boot-starter'
 
     implementation "org.apache.commons:commons-lang3"

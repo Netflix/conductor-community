@@ -2,8 +2,8 @@ apply plugin: 'groovy'
 
 dependencies {
 
-    implementation "com.netflix.conductor:conductor-common:${revConductor}"
-    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+    implementation project(":conductor-common")
+    implementation project(":conductor-core")
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.boot:spring-boot-test'
@@ -23,7 +23,7 @@ dependencies {
     testImplementation "org.spockframework:spock-core:${revSpock}"
     testImplementation "org.spockframework:spock-spring:${revSpock}"
 
-    testImplementation project(':conductor-test-util')
-    testImplementation project(':conductor-test-util').sourceSets.test.output
+    testImplementation project(':conductor-community:test-util')
+    testImplementation project(':conductor-community:test-util').sourceSets.test.output
 
 }

@@ -123,7 +123,6 @@ sonarqube {
     }
 }
 
-/*
 configure(allprojects) {
 
     apply plugin: 'com.diffplug.spotless'
@@ -138,4 +137,3 @@ configure(allprojects) {
     }
     build.dependsOn(spotlessApply)
 }
-*/

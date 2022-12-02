@@ -1,8 +1,8 @@
 dependencies {
 
-    implementation project(':persistence:conductor-common-persistence')
-    implementation "com.netflix.conductor:conductor-common:${revConductor}"
-    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+    implementation project(':conductor-community:persistence:common-persistence')
+    implementation project(":conductor-common")
+    implementation project(":conductor-core")
 
     compileOnly 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.springframework.retry:spring-retry'
@@ -24,15 +24,15 @@ dependencies {
     testImplementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:6.8.23"
     testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
 
-    testImplementation "com.netflix.conductor:conductor-server:${revConductor}"
-    testImplementation "com.netflix.conductor:conductor-client:${revConductor}"
-    testImplementation "com.netflix.conductor:conductor-grpc-client:${revConductor}"
-    testImplementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
+    testImplementation project(":conductor-server")
+    testImplementation project(":conductor-client")
+    testImplementation project(":conductor-grpc-client")
+    testImplementation project(":conductor-es6-persistence")
 
     testImplementation "org.testcontainers:postgresql:${revTestContainer}"
 
-    testImplementation project(':conductor-test-util').sourceSets.test.output
-    testImplementation project(':persistence:conductor-common-persistence').sourceSets.test.output
+    testImplementation project(':conductor-community:test-util').sourceSets.test.output
+    testImplementation project(':conductor-community:persistence:common-persistence').sourceSets.test.output
 
 }
 

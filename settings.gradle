@@ -25,6 +25,7 @@ include 'index'
 include 'test-util'
 include 'lock'
 include 'workflow-event-listener'
+include 'archive'
 
 include 'persistence:common-persistence'
 include 'persistence:mysql-persistence'
@@ -37,7 +38,6 @@ include 'event-queue:nats'
 include 'event-queue:nats-streaming'
 include 'lock:zookeeper-lock'
 include 'task:kafka'
-include 'community-server'
 
 rootProject.children.stream()
         .filter(p -> p.name.equals("persistence") || p.name.equals("index") ||

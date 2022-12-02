@@ -43,7 +43,6 @@ ext {
     revRxJava = '1.2.2'
     revSpectator = '0.122.0'
     revGroovy = '3.0.9'
-    revSpock = '2.1-groovy-3.0'
     revSpotifyCompletableFutures = '0.3.3'
     revTestContainer = '1.17.2'
     revDynoQueues = '2.0.20'

@@ -19,9 +19,9 @@ dependencies {
     //Metrics
     implementation "io.micrometer:micrometer-registry-prometheus:1.7.5"
     implementation "io.micrometer:micrometer-core:1.7.5"
-    implementation "com.netflix.spectator:spectator-reg-micrometer:${versions.revSpectator}"
-    implementation "com.netflix.spectator:spectator-reg-metrics3:${versions.revSpectator}"
-    implementation "com.netflix.spectator:spectator-api:${versions.revSpectator}"
+    implementation "com.netflix.spectator:spectator-reg-micrometer:${revSpectator}"
+    implementation "com.netflix.spectator:spectator-reg-metrics3:${revSpectator}"
+    implementation "com.netflix.spectator:spectator-api:${revSpectator}"
 
     implementation 'org.springframework.retry:spring-retry'
 
@@ -29,11 +29,11 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
 
     //Cache
-    implementation "com.google.guava:guava:${versions.revGuava}"
+    implementation "com.google.guava:guava:${revGuava}"
 
     //Lucene
-    implementation "org.apache.lucene:lucene-core:${versions.revLucene}"
-    implementation "org.apache.lucene:lucene-analyzers-common:${versions.revLucene}"
+    implementation "org.apache.lucene:lucene-core:${revLucene}"
+    implementation "org.apache.lucene:lucene-analyzers-common:${revLucene}"
 
     //spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -44,7 +44,7 @@ dependencies {
     testImplementation "org.awaitility:awaitility:3.1.6"
 
     //postgres test container
-    testImplementation "org.testcontainers:postgresql:${versions.revTestContainer}"
+    testImplementation "org.testcontainers:postgresql:${revTestContainer}"
 
     //Fake data generator
     testImplementation "com.github.javafaker:javafaker:1.0.1"
