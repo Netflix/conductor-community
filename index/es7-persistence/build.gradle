@@ -31,7 +31,7 @@ dependencies {
     implementation "org.elasticsearch.client:elasticsearch-rest-client"
     implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client"
 
-    testImplementation "net.java.dev.jna:jna:5.7.0"
+    testImplementation "net.java.dev.jna:jna:5.12.1"
     testImplementation "org.awaitility:awaitility:${revAwaitility}"
     testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
     testImplementation project(':conductor-test-util').sourceSets.test.output
