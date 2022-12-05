@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({PostgresProperties.class})
-@Import(DataSourceAutoConfiguration.class)
 @ConditionalOnProperty(name = "conductor.archive.db.type", havingValue = "postgres")
 public class PostgresArchiveDAOConfiguration {
 
@@ -81,12 +80,12 @@ public class PostgresArchiveDAOConfiguration {
                 primaryExecutionDAO, archiveDAO, dynoQueueDAO, metricsCollector);
     }
 
-    @Bean
-    @Qualifier("primaryExecutionDAO")
-    @ConditionalOnProperty(name = "conductor.archive.db.enabled", havingValue = "true")
-    public ExecutionDAO getPrimaryExecutionDAO() {
-        return primaryExecutionDAO;
-    }
+//    @Bean
+//    @Qualifier("primaryExecutionDAO")
+//    @ConditionalOnProperty(name = "conductor.archive.db.enabled", havingValue = "true")
+//    public ExecutionDAO getPrimaryExecutionDAO() {
+//        return primaryExecutionDAO;
+//    }
 
     @Bean(initMethod = "migrate", name = "flyway")
     @PostConstruct
@@ -109,38 +108,6 @@ public class PostgresArchiveDAOConfiguration {
                 configuration.locations(
                         "classpath:db/migration_postgres",
                         "classpath:db/migration_archive_postgres");
-    }
-
-    @Bean
-    @Qualifier("searchDatasource")
-    public DataSource searchDatasource(DataSource defaultDatasource) {
-        String url = environment.getProperty("spring.search-datasource.url");
-        String user = environment.getProperty("spring.search-datasource.username");
-        String password = environment.getProperty("spring.search-datasource.password");
-        String maxPoolSizeString =
-                environment.getProperty("spring.search-datasource.hikari.maximum-pool-size");
-
-        if (Strings.isEmpty(url)) {
-            return defaultDatasource;
-        }
-        log.info("Configuring searchDatasource with {}", url);
-
-        int maxPoolSize = 10;
-        if (Strings.isNotEmpty(maxPoolSizeString)) {
-            try {
-                maxPoolSize = Integer.parseInt(maxPoolSizeString);
-            } catch (Exception e) {
-            }
-        }
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setAutoCommit(true);
-        config.setUsername(user);
-        config.setPassword(password);
-        config.setMaximumPoolSize(maxPoolSize);
-
-        HikariDataSource hikariDataSource = new HikariDataSource(config);
-        return hikariDataSource;
     }
 
     @Bean

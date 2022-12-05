@@ -60,7 +60,7 @@ public class IndexWorker {
     public IndexWorker(
             QueueDAO queueDAO,
             ArchiveDAO execDAO,
-            @Qualifier("primaryExecutionDAO") ExecutionDAO primaryExecDAO,
+            ExecutionDAO primaryExecDAO,
             IndexWorkerProperties properties,
             MetricsCollector metricsCollector) {
         this.queueDAO = queueDAO;
