@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Netflix, Inc.
+ * Copyright 2022 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,15 +12,22 @@
  */
 package io.orkes.conductor.id;
 
-import com.netflix.conductor.core.utils.IDGenerator;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.UUID;
+
 import org.apache.logging.log4j.core.util.UuidUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import com.netflix.conductor.core.utils.IDGenerator;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Component
+@ConditionalOnProperty(name = "conductor.id.generator", havingValue = "time_based")
+@Slf4j
 public class TimeBasedUUIDGenerator extends IDGenerator {
 
     private static final LocalDate JAN_1_2020 = LocalDate.of(2020, 1, 1);
@@ -38,6 +45,7 @@ public class TimeBasedUUIDGenerator extends IDGenerator {
     }
 
     public TimeBasedUUIDGenerator() {
+        log.info("Using TimeBasedUUIDGenerator to generate Ids");
     }
 
     public String generate() {

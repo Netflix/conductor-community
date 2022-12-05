@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Netflix, Inc.
+ * Copyright 2020 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,18 +12,22 @@
  */
 package io.orkes.conductor.dao.postgres;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.conductor.postgres.config.PostgresProperties;
-import com.zaxxer.hikari.HikariDataSource;
 import java.nio.file.Paths;
 import java.time.Duration;
+
 import javax.sql.DataSource;
+
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
+
+import com.netflix.conductor.postgres.config.PostgresProperties;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zaxxer.hikari.HikariDataSource;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class PostgresDAOTestUtil {
 

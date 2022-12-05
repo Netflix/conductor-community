@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Netflix, Inc.
+ * Copyright 2022 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,16 +12,15 @@
  */
 package io.orkes.conductor.dao.indexer;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
+
 import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
 
 @Slf4j
 public class IndexValueExtractor {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Netflix, Inc.
+ * Copyright 2021 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,11 +12,10 @@
  */
 package io.orkes.conductor.dao.postgres;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.javafaker.Address;
-import com.github.javafaker.Commerce;
-import com.github.javafaker.Demographic;
-import com.github.javafaker.Faker;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.netflix.conductor.common.config.ObjectMapperProvider;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.tasks.TaskType;
@@ -24,17 +23,12 @@ import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
-import com.zaxxer.hikari.HikariDataSource;
+
 import io.orkes.conductor.dao.postgres.archive.PostgresArchiveDAO;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.*;
+import com.zaxxer.hikari.HikariDataSource;
 
 public class PostgresArchivePerformanceTest {
 

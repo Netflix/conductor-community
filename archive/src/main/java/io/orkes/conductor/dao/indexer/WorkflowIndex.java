@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Netflix, Inc.
+ * Copyright 2022 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,8 +12,9 @@
  */
 package io.orkes.conductor.dao.indexer;
 
-import com.netflix.conductor.model.WorkflowModel;
 import java.util.Collection;
+
+import com.netflix.conductor.model.WorkflowModel;
 
 public class WorkflowIndex {
 

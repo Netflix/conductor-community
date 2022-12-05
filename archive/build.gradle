@@ -47,7 +47,7 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:${revTestContainer}"
 
     //Fake data generator
-    testImplementation "com.github.javafaker:javafaker:1.0.1"
+    testImplementation "com.github.javafaker:javafaker:1.0.2"
 }
 
 test {

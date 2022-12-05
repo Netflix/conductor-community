@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Netflix, Inc.
+ * Copyright 2022 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,19 +12,9 @@
  */
 package io.orkes.conductor.dao.postgres.archive;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.conductor.dao.ExecutionDAO;
-import com.netflix.conductor.dao.QueueDAO;
-import com.netflix.conductor.postgres.config.PostgresProperties;
-import com.netflix.conductor.postgres.dao.PostgresExecutionDAO;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import io.orkes.conductor.dao.archive.ArchiveDAO;
-import io.orkes.conductor.dao.archive.ArchivedExecutionDAO;
-import io.orkes.conductor.metrics.MetricsCollector;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-import lombok.extern.slf4j.Slf4j;
+
 import org.apache.logging.log4j.util.Strings;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,16 +22,27 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+
+import com.netflix.conductor.dao.ExecutionDAO;
+import com.netflix.conductor.dao.QueueDAO;
+import com.netflix.conductor.postgres.config.PostgresProperties;
+
+import io.orkes.conductor.dao.archive.ArchiveDAO;
+import io.orkes.conductor.dao.archive.ArchivedExecutionDAO;
+import io.orkes.conductor.metrics.MetricsCollector;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({PostgresProperties.class})
 @Import(DataSourceAutoConfiguration.class)
+@ConditionalOnProperty(name = "conductor.archive.db.type", havingValue = "postgres")
 public class PostgresArchiveDAOConfiguration {
 
     private final DataSource dataSource;
@@ -73,6 +74,7 @@ public class PostgresArchiveDAOConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnProperty(name = "conductor.archive.db.enabled", havingValue = "true")
     public ExecutionDAO getExecutionDAO(ArchiveDAO archiveDAO) {
         return new ArchivedExecutionDAO(

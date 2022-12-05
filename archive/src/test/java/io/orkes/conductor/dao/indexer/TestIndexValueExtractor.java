@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Netflix, Inc.
+ * Copyright 2022 Orkes, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,18 +12,18 @@
  */
 package io.orkes.conductor.dao.indexer;
 
-import static io.orkes.conductor.dao.indexer.IndexValueExtractor.getIndexWords;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Collection;
+import java.util.Map;
+import java.util.UUID;
+
+import org.junit.jupiter.api.Test;
 
 import com.netflix.conductor.common.config.ObjectMapperProvider;
 import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
-import org.junit.jupiter.api.Test;
+
+import static io.orkes.conductor.dao.indexer.IndexValueExtractor.getIndexWords;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestIndexValueExtractor {
 
