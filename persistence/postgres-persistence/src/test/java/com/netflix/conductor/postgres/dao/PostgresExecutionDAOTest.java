@@ -88,6 +88,22 @@ public class PostgresExecutionDAOTest extends ExecutionDAOTest {
         assertEquals(0, getExecutionDAO().getPendingWorkflowCount("workflow"));
     }
 
+    @Test
+    public void testRemoveWorkflowWithExpiry() throws InterruptedException {
+        WorkflowDef def = new WorkflowDef();
+        def.setName("workflow");
+
+        WorkflowModel workflow = createTestWorkflow();
+        workflow.setWorkflowDefinition(def);
+
+        List<String> ids = generateWorkflows(workflow, 1);
+
+        assertEquals(1, getExecutionDAO().getPendingWorkflowCount("workflow"));
+        ids.forEach(wfId -> getExecutionDAO().removeWorkflowWithExpiry(wfId, 1));
+        Thread.sleep(5 * 1000);
+        assertEquals(0, getExecutionDAO().getPendingWorkflowCount("workflow"));
+    }
+
     @Override
     public ExecutionDAO getExecutionDAO() {
         return executionDAO;
