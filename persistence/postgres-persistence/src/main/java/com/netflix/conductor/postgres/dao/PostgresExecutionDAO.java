@@ -16,6 +16,11 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -45,10 +50,14 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
 
     private static final String ARCHIVED_FIELD = "archived";
     private static final String RAW_JSON_FIELD = "rawJSON";
+    public static final ThreadGroup THREAD_GROUP = new ThreadGroup("postgres-persistence");
+
+    private final ScheduledExecutorService executor;
 
     public PostgresExecutionDAO(
             RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
+        this.executor = Executors.newSingleThreadScheduledExecutor(runnable -> new Thread(THREAD_GROUP, runnable));
     }
 
     private static String dateStr(Long timeInMs) {
@@ -309,13 +318,19 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
     }
 
     /**
-     * This is a dummy implementation and this feature is not supported for Postgres backed
-     * Conductor
+     * Scheduled executor based implementation.
      */
     @Override
     public boolean removeWorkflowWithExpiry(String workflowId, int ttlSeconds) {
-        throw new UnsupportedOperationException(
-                "This method is not implemented in MySQLExecutionDAO. Please use RedisDAO mode instead for using TTLs.");
+        executor.schedule(() -> {
+            try {
+                removeWorkflow(workflowId);
+            } catch (Throwable e) {
+                logger.warn("Unable to remove workflow: {} with expiry", workflowId, e);
+            }
+        }, ttlSeconds, TimeUnit.SECONDS);
+
+        return true;
     }
 
     @Override
