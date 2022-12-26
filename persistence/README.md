@@ -30,7 +30,7 @@ conductor.db.type=mysql
 #Cache expiry for teh task definitions in seconds
 conductor.mysql.taskDefCacheRefreshInterval=60
 
-#use spring datasource properties to configure MySQL connection
+#Use spring datasource properties to configure MySQL connection
 spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
@@ -48,7 +48,7 @@ conductor.db.type=postgres
 #Cache expiry for teh task definitions in seconds
 conductor.mysql.taskDefCacheRefreshInterval=60
 
-#use spring datasource properties to configure MySQL connection
+#Use spring datasource properties to configure Postgres connection
 spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
