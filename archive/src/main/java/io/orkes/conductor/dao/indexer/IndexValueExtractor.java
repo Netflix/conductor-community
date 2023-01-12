@@ -52,12 +52,19 @@ public class IndexValueExtractor {
     }
 
     private static List<String> getIndexWords(WorkflowModel workflow) {
+
+        private static final String ROOT_WF = "root_wf"
+
         List<String> words = new ArrayList<>();
         append(words, workflow.getCorrelationId());
         append(words, workflow.getInput());
         append(words, workflow.getOutput());
         append(words, workflow.getReasonForIncompletion());
         append(words, workflow.getVariables());
+
+        if (workflow.getParentWorkflowId() == null) {
+            append(words, ROOT_WF);
+        };
 
         for (TaskModel task : workflow.getTasks()) {
             append(words, task.getOutputData());
