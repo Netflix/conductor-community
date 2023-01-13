@@ -197,13 +197,6 @@ public class ArchivedExecutionDAO implements ExecutionDAO {
 
     @Override
     public String createWorkflow(WorkflowModel workflow) {
-        // UUID used are time based and we want to keep the created time of the UUID with the create
-        // time of workflow
-        // The reason is that the create time is used for partitioning and
-        // we want to be able to get the create time from workflow id
-        long time = TimeBasedUUIDGenerator.getDate(workflow.getWorkflowId());
-        workflow.setCreateTime(time);
-
         return metricsCollector
                 .getTimer("create_workflow_dao", "workflowName", workflow.getWorkflowName())
                 .record(
