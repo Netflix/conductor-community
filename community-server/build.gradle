@@ -22,7 +22,7 @@ dependencies {
 
     implementation project(':event-queue:conductor-amqp')
     implementation project(':event-queue:conductor-nats')
-
+    implementation project(':index:conductor-es7-persistence')
     implementation project(':external-payload-storage:conductor-azureblob-storage')
     implementation project(':external-payload-storage:conductor-postgres-external-storage')
 
