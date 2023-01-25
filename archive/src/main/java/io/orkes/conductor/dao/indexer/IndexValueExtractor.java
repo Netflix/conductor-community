@@ -28,7 +28,8 @@ public class IndexValueExtractor {
     private static final String splitWords = "\"|,|;|\\s|,";
     private static final String replaceWords = "\"|,|;|\\s|,|:";
     private static final Collection stopWords = EnglishAnalyzer.getDefaultStopSet();
-
+    private static final String ROOT_WF = "root_wf";
+    
     public static Collection<String> getIndexWords(
             WorkflowModel workflow, int maxWords, int maxWordLength) {
 
@@ -53,8 +54,6 @@ public class IndexValueExtractor {
 
     private static List<String> getIndexWords(WorkflowModel workflow) {
 
-        private static final String ROOT_WF = "root_wf"
-
         List<String> words = new ArrayList<>();
         append(words, workflow.getCorrelationId());
         append(words, workflow.getInput());
@@ -64,7 +63,7 @@ public class IndexValueExtractor {
 
         if (workflow.getParentWorkflowId() == null) {
             append(words, ROOT_WF);
-        };
+        }
 
         for (TaskModel task : workflow.getTasks()) {
             append(words, task.getOutputData());
