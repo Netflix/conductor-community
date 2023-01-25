@@ -12,8 +12,11 @@
  */
 package io.orkes.conductor.dao.archive;
 
+import com.netflix.conductor.model.WorkflowModel;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Primary;
@@ -69,9 +72,18 @@ public class ArchivedIndexDAO implements IndexDAO {
     }
 
     @Override
-    public SearchResult<WorkflowSummary> searchWorkflowSummary(String query, String freeText, int start, int count, List<String> sort) {
-        // FIXME this could be implemented using objectMapper
-        throw new UnsupportedOperationException("Typed workflow search is not supported in this environment");
+    public SearchResult<WorkflowSummary> searchWorkflowSummary(
+            String query, String freeText, int start, int count, List<String> sort) {
+        final SearchResult<String> stringSearchResult =
+                searchWorkflows(query, freeText, start, count, sort);
+        final List<WorkflowSummary> summaries = stringSearchResult.getResults().stream()
+                .map(wfId -> archiveDAO.getWorkflow(wfId, false))
+                .filter(Objects::nonNull)
+                .map(WorkflowModel::toWorkflow)
+                .filter(Objects::nonNull)
+                .map(WorkflowSummary::new)
+                .collect(Collectors.toList());
+        return new SearchResult<>(summaries.size(), summaries);
     }
 
     @Override
@@ -81,8 +93,10 @@ public class ArchivedIndexDAO implements IndexDAO {
     }
 
     @Override
-    public SearchResult<TaskSummary> searchTaskSummary(String query, String freeText, int start, int count, List<String> sort) {
-        throw new UnsupportedOperationException("Typed task search is not supported in this environment");
+    public SearchResult<TaskSummary> searchTaskSummary(
+            String query, String freeText, int start, int count, List<String> sort) {
+        throw new UnsupportedOperationException(
+                "Typed task search is not supported in this environment");
     }
 
     @Override
