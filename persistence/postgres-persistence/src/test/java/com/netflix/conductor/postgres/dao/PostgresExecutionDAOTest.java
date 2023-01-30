@@ -11,7 +11,6 @@
  */
 package com.netflix.conductor.postgres.dao;
 
-import com.google.common.collect.Iterables;
 import java.util.List;
 
 import org.flywaydb.core.Flyway;
@@ -31,6 +30,8 @@ import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.ExecutionDAOTest;
 import com.netflix.conductor.model.WorkflowModel;
 import com.netflix.conductor.postgres.config.PostgresConfiguration;
+
+import com.google.common.collect.Iterables;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
