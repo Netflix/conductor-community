@@ -63,7 +63,10 @@ public class JetStreamObservableQueue implements ObservableQueue {
     private final String queueGroup;
 
     public JetStreamObservableQueue(
-            JetStreamProperties properties, String queueType, String queueUri, Scheduler scheduler) {
+            JetStreamProperties properties,
+            String queueType,
+            String queueUri,
+            Scheduler scheduler) {
         LOG.debug("JSM obs queue create, qtype={}, quri={}", queueType, queueUri);
 
         this.queueUri = queueUri;

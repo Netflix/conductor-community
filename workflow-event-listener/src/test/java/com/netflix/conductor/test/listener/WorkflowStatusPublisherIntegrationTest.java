@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.netflix.conductor.common.metadata.workflow.StartWorkflowRequest;
-import com.netflix.conductor.service.WorkflowService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,17 +31,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.tasks.TaskResult;
+import com.netflix.conductor.common.metadata.workflow.StartWorkflowRequest;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import com.netflix.conductor.common.run.Workflow;
 import com.netflix.conductor.common.run.WorkflowSummary;
 import com.netflix.conductor.core.events.queue.Message;
-import com.netflix.conductor.core.execution.StartWorkflowInput;
-import com.netflix.conductor.core.execution.WorkflowExecutor;
 import com.netflix.conductor.dao.QueueDAO;
-import com.netflix.conductor.model.WorkflowModel;
 import com.netflix.conductor.service.ExecutionService;
 import com.netflix.conductor.service.MetadataService;
+import com.netflix.conductor.service.WorkflowService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -195,7 +192,8 @@ public class WorkflowStatusPublisherIntegrationTest {
     @SuppressWarnings("BusyWait")
     private void checkIfWorkflowIsCompleted(String id) throws InterruptedException {
         int statusRetrieveAttempts = 0;
-        while (workflowExecutor.getExecutionStatus(id, false).getStatus() != Workflow.WorkflowStatus.COMPLETED) {
+        while (workflowExecutor.getExecutionStatus(id, false).getStatus()
+                != Workflow.WorkflowStatus.COMPLETED) {
             if (statusRetrieveAttempts > 5) {
                 break;
             }

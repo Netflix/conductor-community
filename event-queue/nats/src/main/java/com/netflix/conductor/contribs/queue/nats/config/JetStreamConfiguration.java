@@ -69,7 +69,8 @@ public class JetStreamConfiguration {
     }
 
     private String getQueueGroup(final JetStreamProperties properties) {
-        if (properties.getDefaultQueueGroup() == null || properties.getDefaultQueueGroup().isBlank()) {
+        if (properties.getDefaultQueueGroup() == null
+                || properties.getDefaultQueueGroup().isBlank()) {
             return "";
         }
         return ":" + properties.getDefaultQueueGroup();
