@@ -29,6 +29,9 @@
         "com.netflix.conductor:conductor-es6-persistence": {
             "locked": "3.13.3"
         },
+        "com.netflix.conductor:conductor-es7-persistence": {
+            "project": true
+        },
         "com.netflix.conductor:conductor-grpc-server": {
             "locked": "3.13.3"
         },
@@ -121,6 +124,7 @@
         "com.fasterxml.jackson.core:jackson-core": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -129,6 +133,7 @@
         "com.fasterxml.jackson.core:jackson-databind": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -137,6 +142,7 @@
         "com.google.guava:guava": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-amqp",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -165,6 +171,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -177,6 +184,7 @@
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -187,6 +195,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -200,6 +209,9 @@
         },
         "com.netflix.conductor:conductor-es6-persistence": {
             "locked": "3.13.3"
+        },
+        "com.netflix.conductor:conductor-es7-persistence": {
+            "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
             "locked": "3.13.3"
@@ -264,6 +276,12 @@
             ],
             "locked": "5.13.1"
         },
+        "commons-io:commons-io": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "2.7"
+        },
         "io.micrometer:micrometer-registry-datadog": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-metrics"
@@ -315,6 +333,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -341,6 +360,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -357,6 +377,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -373,6 +394,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -389,6 +411,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -405,6 +428,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -415,6 +439,18 @@
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-high-level-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
         },
         "org.flywaydb:flyway-core": {
             "firstLevelTransitive": [
@@ -477,6 +513,7 @@
         "com.fasterxml.jackson.core:jackson-core": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -485,6 +522,7 @@
         "com.fasterxml.jackson.core:jackson-databind": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -493,6 +531,7 @@
         "com.google.guava:guava": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-amqp",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -521,6 +560,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -533,6 +573,7 @@
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -543,6 +584,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -556,6 +598,9 @@
         },
         "com.netflix.conductor:conductor-es6-persistence": {
             "locked": "3.13.3"
+        },
+        "com.netflix.conductor:conductor-es7-persistence": {
+            "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
             "locked": "3.13.3"
@@ -620,6 +665,12 @@
             ],
             "locked": "5.13.1"
         },
+        "commons-io:commons-io": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "2.7"
+        },
         "io.micrometer:micrometer-registry-datadog": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-metrics"
@@ -671,6 +722,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -697,6 +749,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -713,6 +766,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -729,6 +783,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -745,6 +800,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -761,6 +817,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -771,6 +828,18 @@
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-high-level-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
         },
         "org.flywaydb:flyway-core": {
             "firstLevelTransitive": [
@@ -853,6 +922,9 @@
         },
         "com.netflix.conductor:conductor-es6-persistence": {
             "locked": "3.13.3"
+        },
+        "com.netflix.conductor:conductor-es7-persistence": {
+            "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
             "locked": "3.13.3"
@@ -961,6 +1033,7 @@
         "com.fasterxml.jackson.core:jackson-core": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -969,6 +1042,7 @@
         "com.fasterxml.jackson.core:jackson-databind": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -977,6 +1051,7 @@
         "com.google.guava:guava": {
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-amqp",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1008,6 +1083,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1020,6 +1096,7 @@
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-mysql-persistence",
                 "com.netflix.conductor:conductor-postgres-persistence"
             ],
@@ -1030,6 +1107,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1043,6 +1121,9 @@
         },
         "com.netflix.conductor:conductor-es6-persistence": {
             "locked": "3.13.3"
+        },
+        "com.netflix.conductor:conductor-es7-persistence": {
+            "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
             "locked": "3.13.3"
@@ -1107,6 +1188,12 @@
             ],
             "locked": "5.13.1"
         },
+        "commons-io:commons-io": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "2.7"
+        },
         "io.grpc:grpc-protobuf": {
             "locked": "1.50.2"
         },
@@ -1167,6 +1254,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1193,6 +1281,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1209,6 +1298,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1225,6 +1315,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1241,6 +1332,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1257,6 +1349,7 @@
                 "com.netflix.conductor:conductor-amqp",
                 "com.netflix.conductor:conductor-azureblob-storage",
                 "com.netflix.conductor:conductor-common-persistence",
+                "com.netflix.conductor:conductor-es7-persistence",
                 "com.netflix.conductor:conductor-kafka",
                 "com.netflix.conductor:conductor-metrics",
                 "com.netflix.conductor:conductor-mysql-persistence",
@@ -1267,6 +1360,18 @@
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
+        },
+        "org.elasticsearch.client:elasticsearch-rest-high-level-client": {
+            "firstLevelTransitive": [
+                "com.netflix.conductor:conductor-es7-persistence"
+            ],
+            "locked": "7.15.2"
         },
         "org.flywaydb:flyway-core": {
             "firstLevelTransitive": [

@@ -792,14 +792,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
         return searchObjects(
-                getIndexName(docType),
-                queryBuilder,
-                start,
-                size,
-                sortOptions,
-                docType,
-                idOnly,
-                clazz);
+                getIndexName(docType), queryBuilder, start, size, sortOptions, idOnly, clazz);
     }
 
     @Override
@@ -1015,8 +1008,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             String docType)
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
-        return searchObjectIds(
-                getIndexName(docType), queryBuilder, start, size, sortOptions, docType);
+        return searchObjectIds(getIndexName(docType), queryBuilder, start, size, sortOptions);
     }
 
     private <T> SearchResult<T> searchObjectIdsViaExpression(
@@ -1030,20 +1022,12 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
         return searchObjects(
-                getIndexName(docType),
-                queryBuilder,
-                start,
-                size,
-                sortOptions,
-                docType,
-                false,
-                clazz);
+                getIndexName(docType), queryBuilder, start, size, sortOptions, false, clazz);
     }
 
     private SearchResult<String> searchObjectIds(
-            String indexName, QueryBuilder queryBuilder, int start, int size, String docType)
-            throws IOException {
-        return searchObjectIds(indexName, queryBuilder, start, size, null, docType);
+            String indexName, QueryBuilder queryBuilder, int start, int size) throws IOException {
+        return searchObjectIds(indexName, queryBuilder, start, size, null);
     }
 
     /**
@@ -1055,7 +1039,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
      * @param size The total return size.
      * @param sortOptions A list of string options to sort in the form VALUE:ORDER; where ORDER is
      *     optional and can be either ASC OR DESC.
-     * @param docType The document type to searchObjectIdsViaExpression for.
      * @return The SearchResults which includes the count and IDs that were found.
      * @throws IOException If we cannot communicate with ES.
      */
@@ -1064,8 +1047,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             QueryBuilder queryBuilder,
             int start,
             int size,
-            List<String> sortOptions,
-            String docType)
+            List<String> sortOptions)
             throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(queryBuilder);
@@ -1104,7 +1086,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             int start,
             int size,
             List<String> sortOptions,
-            String docType,
             boolean idOnly,
             Class<T> clazz)
             throws IOException {
@@ -1132,7 +1113,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
 
         // Generate the actual request to send to ES.
         SearchRequest searchRequest = new SearchRequest(indexName);
-        searchRequest.types(docType);
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse response = elasticSearchClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -1191,7 +1171,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
 
         SearchResult<String> workflowIds;
         try {
-            workflowIds = searchObjectIds(indexName, q, 0, 1000, WORKFLOW_DOC_TYPE);
+            workflowIds = searchObjectIds(indexName, q, 0, 1000);
         } catch (IOException e) {
             logger.error("Unable to communicate with ES to find archivable workflows", e);
             return Collections.emptyList();
@@ -1241,8 +1221,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
                             q,
                             0,
                             5000,
-                            Collections.singletonList("updateTime:ASC"),
-                            WORKFLOW_DOC_TYPE);
+                            Collections.singletonList("updateTime:ASC"));
         } catch (IOException e) {
             logger.error("Unable to communicate with ES to find recent running workflows", e);
             return Collections.emptyList();
