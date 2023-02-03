@@ -93,7 +93,7 @@ conductor.elasticsearch.asyncBufferFlushTimeout=10
 ```
 
 #### BASIC Authentication
-If you need to pass user/password to connect to ES, add the following properties to your config file
+If you need to pass username/password to connect to ES, add the following properties to your config file
 * conductor.elasticsearch.username
 * conductor.elasticsearch.password
 
