@@ -27,7 +27,7 @@ Group: `com.netflix.conductor`
 ```properties
 conductor.db.type=mysql
 
-#Cache expiry for teh task definitions in seconds
+#Cache expiry for the task definitions in seconds
 conductor.mysql.taskDefCacheRefreshInterval=60
 
 #Use spring datasource properties to configure MySQL connection
@@ -45,8 +45,6 @@ spring.datasource.hikari.auto-commit=
 
 ```properties
 conductor.db.type=postgres
-#Cache expiry for teh task definitions in seconds
-conductor.mysql.taskDefCacheRefreshInterval=60
 
 #Use spring datasource properties to configure Postgres connection
 spring.datasource.url=
@@ -55,3 +53,30 @@ spring.datasource.password=
 spring.datasource.hikari.maximum-pool-size=
 spring.datasource.hikari.auto-commit=
 ```
+
+Additionally, the postgres module includes the ability to index your workflow and task executions and to store task execution logs in Postgres without requiring ElasticSearch.
+
+This can be enabled by setting the following in your application properties file:
+
+```properties
+conductor.indexing.type=postgres
+conductor.indexing.enabled=true
+# The following is to force Elastic Search IndexDAO not to run. If it just missing it will still try to start v6
+conductor.elasticsearch.version=postgres
+```
+
+It supports full querying of logs through the UI, and exposes the Postgres full text search in two ways. If you search for a chunk of JSON:
+
+```JSON
+{"workflowType":"my_workflow", "version": 3}
+```
+
+It will use an index to search for documents matching the values in the JSON. In this example, all JSON docs with a `workflowType` attribute set to `my_workflow` and a `version` attribute set to `3`.
+
+You can also use a full text search on the whole unstructured JSON document. This uses the Postgres [tsquery](https://www.postgresql.org/docs/11/datatype-textsearch.html#DATATYPE-TSQUERY) syntax for constructing searches. For example:
+
+```
+my-correlation-id & my-workflow
+```
+
+Will search for any document containing both `my-correlation-id` and `my-workflow`.
