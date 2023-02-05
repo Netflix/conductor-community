@@ -33,6 +33,7 @@ dependencies {
     implementation project(':persistence:conductor-common-persistence')
     implementation project(':persistence:conductor-postgres-persistence')
     implementation project(':persistence:conductor-mysql-persistence')
+    implementation project(':persistence:conductor-oracle-persistence')
 
     implementation project(':task:conductor-kafka')
 
