@@ -53,7 +53,7 @@ spring.datasource.password=
 spring.datasource.hikari.maximum-pool-size=
 spring.datasource.hikari.auto-commit=
 ```
-=======
+
 Additionally, the postgres module includes the ability to index your workflow and task executions and to store task execution logs in Postgres without requiring ElasticSearch.
 
 This can be enabled by setting the following in your application properties file:
@@ -80,6 +80,7 @@ my-correlation-id & my-workflow
 ```
 
 Will search for any document containing both `my-correlation-id` and `my-workflow`.
+
 
 ### Oracle 
 
