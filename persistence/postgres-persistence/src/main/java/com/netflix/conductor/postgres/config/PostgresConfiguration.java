@@ -22,16 +22,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.backoff.NoBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.postgres.dao.PostgresExecutionDAO;
+import com.netflix.conductor.postgres.dao.PostgresIndexDAO;
 import com.netflix.conductor.postgres.dao.PostgresMetadataDAO;
 import com.netflix.conductor.postgres.dao.PostgresQueueDAO;
 
@@ -88,6 +86,15 @@ public class PostgresConfiguration {
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
             ObjectMapper objectMapper) {
         return new PostgresQueueDAO(retryTemplate, objectMapper, dataSource);
+    }
+
+    @Bean
+    @DependsOn({"flywayForPrimaryDb"})
+    @Conditional(PostgresIndexConditions.PostgresIndexingEnabled.class)
+    public PostgresIndexDAO postgresIndexDAO(
+            @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
+            ObjectMapper objectMapper) {
+        return new PostgresIndexDAO(retryTemplate, objectMapper, dataSource);
     }
 
     @Bean
