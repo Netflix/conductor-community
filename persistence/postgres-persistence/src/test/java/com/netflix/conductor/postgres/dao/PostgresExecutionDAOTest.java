@@ -17,6 +17,7 @@ import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +30,8 @@ import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.ExecutionDAOTest;
 import com.netflix.conductor.model.WorkflowModel;
 import com.netflix.conductor.postgres.config.PostgresConfiguration;
+
+import com.google.common.collect.Iterables;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -86,6 +89,22 @@ public class PostgresExecutionDAOTest extends ExecutionDAOTest {
         assertEquals(1, getExecutionDAO().getPendingWorkflowCount("workflow"));
         ids.forEach(wfId -> getExecutionDAO().removeWorkflow(wfId));
         assertEquals(0, getExecutionDAO().getPendingWorkflowCount("workflow"));
+    }
+
+    @Test
+    public void testRemoveWorkflowWithExpiry() {
+        WorkflowDef def = new WorkflowDef();
+        def.setName("workflow");
+
+        WorkflowModel workflow = createTestWorkflow();
+        workflow.setWorkflowDefinition(def);
+
+        List<String> ids = generateWorkflows(workflow, 1);
+
+        final ExecutionDAO execDao = Mockito.spy(getExecutionDAO());
+        assertEquals(1, execDao.getPendingWorkflowCount("workflow"));
+        ids.forEach(wfId -> execDao.removeWorkflowWithExpiry(wfId, 1));
+        Mockito.verify(execDao, Mockito.timeout(10 * 1000)).removeWorkflow(Iterables.getLast(ids));
     }
 
     @Override

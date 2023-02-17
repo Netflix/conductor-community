@@ -84,6 +84,8 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchRestDAOV7.class);
 
+    private static final String CLASS_NAME = ElasticSearchRestDAOV7.class.getSimpleName();
+
     private static final int CORE_POOL_SIZE = 6;
     private static final long KEEP_ALIVE_TIME = 1L;
 
@@ -790,14 +792,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
         return searchObjects(
-                getIndexName(docType),
-                queryBuilder,
-                start,
-                size,
-                sortOptions,
-                docType,
-                idOnly,
-                clazz);
+                getIndexName(docType), queryBuilder, start, size, sortOptions, idOnly, clazz);
     }
 
     @Override
@@ -881,6 +876,94 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
     }
 
     @Override
+    public void removeTask(String workflowId, String taskId) {
+        long startTime = Instant.now().toEpochMilli();
+
+        SearchResult<String> taskSearchResult =
+                searchTasks(
+                        String.format("(taskId='%s') AND (workflowId='%s')", taskId, workflowId),
+                        "*",
+                        0,
+                        1,
+                        null);
+
+        if (taskSearchResult.getTotalHits() == 0) {
+            logger.error("Task: {} does not belong to workflow: {}", taskId, workflowId);
+            Monitors.error(className, "removeTask");
+            return;
+        }
+
+        DeleteRequest request = new DeleteRequest(taskIndexName, taskId);
+
+        try {
+            DeleteResponse response = elasticSearchClient.delete(request, RequestOptions.DEFAULT);
+
+            if (response.getResult() != DocWriteResponse.Result.DELETED) {
+                logger.error("Index removal failed - task not found by id: {}", workflowId);
+                Monitors.error(className, "removeTask");
+                return;
+            }
+            long endTime = Instant.now().toEpochMilli();
+            logger.debug(
+                    "Time taken {} for removing task:{} of workflow: {}",
+                    endTime - startTime,
+                    taskId,
+                    workflowId);
+            Monitors.recordESIndexTime("remove_task", "", endTime - startTime);
+            Monitors.recordWorkerQueueSize(
+                    "indexQueue", ((ThreadPoolExecutor) executorService).getQueue().size());
+        } catch (IOException e) {
+            logger.error(
+                    "Failed to remove task {} of workflow: {} from index", taskId, workflowId, e);
+            Monitors.error(className, "removeTask");
+        }
+    }
+
+    @Override
+    public CompletableFuture<Void> asyncRemoveTask(String workflowId, String taskId) {
+        return CompletableFuture.runAsync(() -> removeTask(workflowId, taskId), executorService);
+    }
+
+    @Override
+    public void updateTask(String workflowId, String taskId, String[] keys, Object[] values) {
+        try {
+            if (keys.length != values.length) {
+                throw new IllegalArgumentException("Number of keys and values do not match");
+            }
+
+            long startTime = Instant.now().toEpochMilli();
+            UpdateRequest request = new UpdateRequest(taskIndexName, taskId);
+            Map<String, Object> source =
+                    IntStream.range(0, keys.length)
+                            .boxed()
+                            .collect(Collectors.toMap(i -> keys[i], i -> values[i]));
+            request.doc(source);
+
+            logger.debug("Updating task: {} of workflow: {} with {}", taskId, workflowId, source);
+            elasticSearchClient.update(request, RequestOptions.DEFAULT);
+            long endTime = Instant.now().toEpochMilli();
+            logger.debug(
+                    "Time taken {} for updating task: {} of workflow: {}",
+                    endTime - startTime,
+                    taskId,
+                    workflowId);
+            Monitors.recordESIndexTime("update_task", "", endTime - startTime);
+            Monitors.recordWorkerQueueSize(
+                    "indexQueue", ((ThreadPoolExecutor) executorService).getQueue().size());
+        } catch (Exception e) {
+            logger.error("Failed to update task: {} of workflow: {}", taskId, workflowId, e);
+            Monitors.error(className, "update");
+        }
+    }
+
+    @Override
+    public CompletableFuture<Void> asyncUpdateTask(
+            String workflowId, String taskId, String[] keys, Object[] values) {
+        return CompletableFuture.runAsync(
+                () -> updateTask(workflowId, taskId, keys, values), executorService);
+    }
+
+    @Override
     public CompletableFuture<Void> asyncUpdateWorkflow(
             String workflowInstanceId, String[] keys, Object[] values) {
         return CompletableFuture.runAsync(
@@ -925,8 +1008,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             String docType)
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
-        return searchObjectIds(
-                getIndexName(docType), queryBuilder, start, size, sortOptions, docType);
+        return searchObjectIds(getIndexName(docType), queryBuilder, start, size, sortOptions);
     }
 
     private <T> SearchResult<T> searchObjectIdsViaExpression(
@@ -940,20 +1022,12 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             throws ParserException, IOException {
         QueryBuilder queryBuilder = boolQueryBuilder(structuredQuery, freeTextQuery);
         return searchObjects(
-                getIndexName(docType),
-                queryBuilder,
-                start,
-                size,
-                sortOptions,
-                docType,
-                false,
-                clazz);
+                getIndexName(docType), queryBuilder, start, size, sortOptions, false, clazz);
     }
 
     private SearchResult<String> searchObjectIds(
-            String indexName, QueryBuilder queryBuilder, int start, int size, String docType)
-            throws IOException {
-        return searchObjectIds(indexName, queryBuilder, start, size, null, docType);
+            String indexName, QueryBuilder queryBuilder, int start, int size) throws IOException {
+        return searchObjectIds(indexName, queryBuilder, start, size, null);
     }
 
     /**
@@ -965,7 +1039,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
      * @param size The total return size.
      * @param sortOptions A list of string options to sort in the form VALUE:ORDER; where ORDER is
      *     optional and can be either ASC OR DESC.
-     * @param docType The document type to searchObjectIdsViaExpression for.
      * @return The SearchResults which includes the count and IDs that were found.
      * @throws IOException If we cannot communicate with ES.
      */
@@ -974,8 +1047,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             QueryBuilder queryBuilder,
             int start,
             int size,
-            List<String> sortOptions,
-            String docType)
+            List<String> sortOptions)
             throws IOException {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(queryBuilder);
@@ -1014,7 +1086,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             int start,
             int size,
             List<String> sortOptions,
-            String docType,
             boolean idOnly,
             Class<T> clazz)
             throws IOException {
@@ -1042,7 +1113,6 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
 
         // Generate the actual request to send to ES.
         SearchRequest searchRequest = new SearchRequest(indexName);
-        searchRequest.types(docType);
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse response = elasticSearchClient.search(searchRequest, RequestOptions.DEFAULT);
@@ -1101,7 +1171,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
 
         SearchResult<String> workflowIds;
         try {
-            workflowIds = searchObjectIds(indexName, q, 0, 1000, WORKFLOW_DOC_TYPE);
+            workflowIds = searchObjectIds(indexName, q, 0, 1000);
         } catch (IOException e) {
             logger.error("Unable to communicate with ES to find archivable workflows", e);
             return Collections.emptyList();
@@ -1151,8 +1221,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
                             q,
                             0,
                             5000,
-                            Collections.singletonList("updateTime:ASC"),
-                            WORKFLOW_DOC_TYPE);
+                            Collections.singletonList("updateTime:ASC"));
         } catch (IOException e) {
             logger.error("Unable to communicate with ES to find recent running workflows", e);
             return Collections.emptyList();

@@ -12,15 +12,9 @@
 package com.netflix.conductor.postgres.util;
 
 import java.io.IOException;
-import java.sql.Connection;
+import java.sql.*;
 import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -59,9 +53,12 @@ public class Query implements AutoCloseable {
     /** The {@link PreparedStatement} that will be managed and executed by this class. */
     private final PreparedStatement statement;
 
+    private final Connection connection;
+
     public Query(ObjectMapper objectMapper, Connection connection, String query) {
         this.rawQuery = query;
         this.objectMapper = objectMapper;
+        this.connection = connection;
 
         try {
             this.statement = connection.prepareStatement(query);
@@ -89,6 +86,12 @@ public class Query implements AutoCloseable {
 
     public Query addParameter(final String value) {
         return addParameterInternal((ps, idx) -> ps.setString(idx, value));
+    }
+
+    public Query addParameter(final List<String> value) throws SQLException {
+        String[] valueStringArray = value.toArray(new String[0]);
+        Array valueArray = this.connection.createArrayOf("VARCHAR", valueStringArray);
+        return addParameterInternal((ps, idx) -> ps.setArray(idx, valueArray));
     }
 
     public Query addParameter(final int value) {
@@ -408,6 +411,31 @@ public class Query implements AutoCloseable {
                 list.add(convert(rs.getObject(1), returnType));
             }
             return list;
+        } catch (SQLException ex) {
+            throw new NonTransientException(ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Execute the PreparedStatement and return a List of {@literal Map} values from the ResultSet.
+     *
+     * @return A {@code List<Map>}.
+     * @throws SQLException if any SQL errors occur.
+     * @throws NonTransientException if any SQL errors occur.
+     */
+    public List<Map<String, Object>> executeAndFetchMap() {
+        try (ResultSet rs = executeQuery()) {
+            List<Map<String, Object>> result = new ArrayList<>();
+            ResultSetMetaData metadata = rs.getMetaData();
+            int columnCount = metadata.getColumnCount();
+            while (rs.next()) {
+                HashMap<String, Object> row = new HashMap<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    row.put(metadata.getColumnLabel(i), rs.getObject(i));
+                }
+                result.add(row);
+            }
+            return result;
         } catch (SQLException ex) {
             throw new NonTransientException(ex.getMessage(), ex);
         }
