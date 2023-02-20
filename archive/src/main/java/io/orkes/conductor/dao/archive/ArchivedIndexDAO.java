@@ -12,6 +12,7 @@
  */
 package io.orkes.conductor.dao.archive;
 
+import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.model.WorkflowModel;
 import java.util.List;
 import java.util.Objects;
@@ -39,9 +40,11 @@ import lombok.extern.slf4j.Slf4j;
 public class ArchivedIndexDAO implements IndexDAO {
 
     private final ArchiveDAO archiveDAO;
+    private final ExecutionDAO executionDao;
 
-    public ArchivedIndexDAO(ArchiveDAO archiveDAO) {
+    public ArchivedIndexDAO(ArchiveDAO archiveDAO, ExecutionDAO executionDao) {
         this.archiveDAO = archiveDAO;
+        this.executionDao = executionDao;
     }
 
     @Override
@@ -77,7 +80,7 @@ public class ArchivedIndexDAO implements IndexDAO {
         final SearchResult<String> stringSearchResult =
                 searchWorkflows(query, freeText, start, count, sort);
         final List<WorkflowSummary> summaries = stringSearchResult.getResults().stream()
-                .map(wfId -> archiveDAO.getWorkflow(wfId, false))
+                .map(wfId -> executionDao.getWorkflow(wfId, false))
                 .filter(Objects::nonNull)
                 .map(WorkflowModel::toWorkflow)
                 .filter(Objects::nonNull)
