@@ -12,31 +12,19 @@
  */
 package io.orkes.conductor.dao.postgres.archive;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.conductor.postgres.config.PostgresProperties;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
-
-import org.apache.logging.log4j.util.Strings;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
-
-import com.netflix.conductor.dao.ExecutionDAO;
-import com.netflix.conductor.dao.QueueDAO;
-import com.netflix.conductor.postgres.config.PostgresProperties;
-
-import io.orkes.conductor.dao.archive.ArchiveDAO;
-import io.orkes.conductor.dao.archive.ArchivedExecutionDAO;
-import io.orkes.conductor.metrics.MetricsCollector;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 @Slf4j
 @Configuration(proxyBeanMethods = false)
@@ -46,38 +34,14 @@ public class PostgresArchiveDAOConfiguration {
 
     private final DataSource dataSource;
 
-    private final MetricsCollector metricsCollector;
-
-    private final ExecutionDAO primaryExecutionDAO;
-
-    private final QueueDAO dynoQueueDAO;
-
-    private final Environment environment;
-
     private final ObjectMapper objectMapper;
 
     public PostgresArchiveDAOConfiguration(
             ObjectMapper objectMapper,
-            Environment environment,
-            DataSource dataSource,
-            ExecutionDAO primaryExecutionDAO,
-            QueueDAO dynoQueueDAO,
-            MetricsCollector metricsCollector) {
+            DataSource dataSource) {
 
         this.objectMapper = objectMapper;
-        this.environment = environment;
         this.dataSource = dataSource;
-        this.primaryExecutionDAO = primaryExecutionDAO;
-        this.dynoQueueDAO = dynoQueueDAO;
-        this.metricsCollector = metricsCollector;
-    }
-
-    @Bean
-    @Primary
-    @ConditionalOnProperty(name = "conductor.archive.db.enabled", havingValue = "true")
-    public ExecutionDAO getExecutionDAO(ArchiveDAO archiveDAO) {
-        return new ArchivedExecutionDAO(
-                primaryExecutionDAO, archiveDAO, dynoQueueDAO, metricsCollector);
     }
 
 //    @Bean
