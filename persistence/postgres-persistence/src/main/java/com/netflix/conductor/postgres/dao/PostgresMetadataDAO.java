@@ -36,23 +36,11 @@ import com.google.common.base.Preconditions;
 
 public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO, EventHandlerDAO {
 
-    private final ConcurrentHashMap<String, TaskDef> taskDefCache = new ConcurrentHashMap<>();
-    private static final String CLASS_NAME = PostgresMetadataDAO.class.getSimpleName();
-
     public PostgresMetadataDAO(
             RetryTemplate retryTemplate,
             ObjectMapper objectMapper,
-            DataSource dataSource,
-            PostgresProperties properties) {
+            DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
-
-        long cacheRefreshTime = properties.getTaskDefCacheRefreshInterval().getSeconds();
-        Executors.newSingleThreadScheduledExecutor()
-                .scheduleWithFixedDelay(
-                        this::refreshTaskDefs,
-                        cacheRefreshTime,
-                        cacheRefreshTime,
-                        TimeUnit.SECONDS);
     }
 
     @Override
@@ -72,15 +60,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
     @Override
     public TaskDef getTaskDef(String name) {
         Preconditions.checkNotNull(name, "TaskDef name cannot be null");
-        TaskDef taskDef = taskDefCache.get(name);
-        if (taskDef == null) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Cache miss: {}", name);
-            }
-            taskDef = getTaskDefFromDB(name);
-        }
-
-        return taskDef;
+        return getTaskDefFromDB(name);
     }
 
     @Override
@@ -98,8 +78,6 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                     if (!q.addParameter(name).executeDelete()) {
                         throw new NotFoundException("No such task definition");
                     }
-
-                    taskDefCache.remove(name);
                 });
     }
 
@@ -461,32 +439,6 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
     }
 
     /**
-     * Query persistence for all defined {@link TaskDef} data, and cache it in {@link
-     * #taskDefCache}.
-     */
-    private void refreshTaskDefs() {
-        try {
-            withTransaction(
-                    tx -> {
-                        Map<String, TaskDef> map = new HashMap<>();
-                        findAllTaskDefs(tx).forEach(taskDef -> map.put(taskDef.getName(), taskDef));
-
-                        synchronized (taskDefCache) {
-                            taskDefCache.clear();
-                            taskDefCache.putAll(map);
-                        }
-
-                        if (logger.isTraceEnabled()) {
-                            logger.trace("Refreshed {} TaskDefs", taskDefCache.size());
-                        }
-                    });
-        } catch (Exception e) {
-            Monitors.error(CLASS_NAME, "refreshTaskDefs");
-            logger.error("refresh TaskDefs failed ", e);
-        }
-    }
-
-    /**
      * Query persistence for all defined {@link TaskDef} data.
      *
      * @param tx The {@link Connection} to use for queries.
@@ -499,7 +451,7 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
     }
 
     /**
-     * Explicitly retrieves a {@link TaskDef} from persistence, avoiding {@link #taskDefCache}.
+     * Explicitly retrieves a {@link TaskDef} from persistence.
      *
      * @param name The name of the {@code TaskDef} to query for.
      * @return {@literal null} if nothing is found, otherwise the {@code TaskDef}.
@@ -540,7 +492,6 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
                                 }
                             });
 
-                    taskDefCache.put(taskDef.getName(), taskDef);
                     return taskDef.getName();
                 });
     }

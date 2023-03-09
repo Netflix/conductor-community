@@ -69,9 +69,8 @@ public class PostgresConfiguration {
     @DependsOn({"flywayForPrimaryDb"})
     public PostgresMetadataDAO postgresMetadataDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
-            ObjectMapper objectMapper,
-            PostgresProperties properties) {
-        return new PostgresMetadataDAO(retryTemplate, objectMapper, dataSource, properties);
+            ObjectMapper objectMapper) {
+        return new PostgresMetadataDAO(retryTemplate, objectMapper, dataSource);
     }
 
     @Bean

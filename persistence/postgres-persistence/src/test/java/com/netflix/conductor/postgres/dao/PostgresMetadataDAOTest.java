@@ -195,12 +195,12 @@ public class PostgresMetadataDAOTest {
         metadataDAO.createTaskDef(def);
 
         TaskDef found = metadataDAO.getTaskDef(def.getName());
-        assertTrue(EqualsBuilder.reflectionEquals(def, found));
+        assertEquals(def, found);
 
         def.setDescription("updated description");
         metadataDAO.updateTaskDef(def);
         found = metadataDAO.getTaskDef(def.getName());
-        assertTrue(EqualsBuilder.reflectionEquals(def, found));
+        assertEquals(def, found);
         assertEquals("updated description", found.getDescription());
 
         for (int i = 0; i < 9; i++) {

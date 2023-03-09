@@ -17,6 +17,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.flywaydb:flyway-core"
 
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation "com.github.ben-manes.caffeine:caffeine:${revCaffeine}"
+
     testImplementation "org.codehaus.groovy:groovy-all:${revGroovy}"
     testImplementation "org.elasticsearch:elasticsearch:6.8.23"
     testImplementation "org.elasticsearch.client:transport:6.8.23"

@@ -20,9 +20,15 @@ import org.springframework.boot.convert.DurationUnit;
 @ConfigurationProperties("conductor.postgres")
 public class PostgresProperties {
 
-    /** The time in seconds after which the in-memory task definitions cache will be refreshed */
+    /** The time in seconds after which the in-memory task definitions cache will be invalidated */
     @DurationUnit(ChronoUnit.SECONDS)
     private Duration taskDefCacheRefreshInterval = Duration.ofSeconds(60);
+
+    /** The time in seconds after which the queue details cache will be invalidated */
+    @DurationUnit(ChronoUnit.MILLIS)
+    private Duration queueDetailsCacheRefreshInterval = Duration.ofMillis(200);
+
+    private boolean cachingEnabled = true;
 
     private Integer deadlockRetryMax = 3;
 
@@ -50,5 +56,21 @@ public class PostgresProperties {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    public Duration getQueueDetailsCacheRefreshInterval() {
+        return queueDetailsCacheRefreshInterval;
+    }
+
+    public void setQueueDetailsCacheRefreshInterval(Duration queueDetailsCacheRefreshInterval) {
+        this.queueDetailsCacheRefreshInterval = queueDetailsCacheRefreshInterval;
+    }
+
+    public boolean isCachingEnabled() {
+        return cachingEnabled;
+    }
+
+    public void setCachingEnabled(boolean cachingEnabled) {
+        this.cachingEnabled = cachingEnabled;
     }
 }

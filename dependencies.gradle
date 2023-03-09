@@ -9,6 +9,7 @@ ext {
     revAwsSdk = '1.11.86'
     revAzureStorageBlobSdk = '12.7.0'
     revBval = '2.0.5'
+    revCaffeine = '3.1.4'
     revCommonsIo = '2.7'
     revCuratorRecipes = '2.4.0'
     revCuratorTest = '2.4.0'
