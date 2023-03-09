@@ -28,6 +28,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.retry.backoff.FixedBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
@@ -78,6 +79,7 @@ public class ElasticSearchV7Configuration {
         return builder;
     }
 
+    @Primary // If you are including this project, it's assumed you want ES to be your indexing mechanism
     @Bean
     public IndexDAO es7IndexDAO(
             RestClientBuilder restClientBuilder,
