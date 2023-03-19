@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,24 +11,22 @@
  */
 package com.netflix.conductor.postgres.storage;
 
-import com.netflix.conductor.core.exception.NonTransientException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.function.Supplier;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.postgres.config.PostgresPayloadProperties;
 
@@ -40,27 +37,22 @@ import com.netflix.conductor.postgres.config.PostgresPayloadProperties;
 public class PostgresPayloadStorage implements ExternalPayloadStorage {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PostgresPayloadStorage.class);
-    public static final String URI_SUFFIX_HASHED = ".hashed.json";
-    public static final String URI_SUFFIX = ".json";
-    public static final String URI_PREFIX_EXTERNAL = "/api/external/postgres/";
-    private final String defaultMessageToUser;
 
     private final DataSource postgresDataSource;
-
-    private final IDGenerator idGenerator;
-
     private final String tableName;
     private final String conductorUrl;
+    private final IDGenerator idGenerator;
+    private final String defaultMessageToUser;
 
     public PostgresPayloadStorage(
+            IDGenerator idGenerator,
             PostgresPayloadProperties properties,
             DataSource dataSource,
-            IDGenerator idGenerator,
             String defaultMessageToUser) {
+        this.idGenerator = idGenerator;
         tableName = properties.getTableName();
         conductorUrl = properties.getConductorUrl();
         this.postgresDataSource = dataSource;
-        this.idGenerator = idGenerator;
         this.defaultMessageToUser = defaultMessageToUser;
         LOGGER.info("PostgreSQL Extenal Payload Storage initialized.");
     }
@@ -75,27 +67,14 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
     public ExternalStorageLocation getLocation(
             Operation operation, PayloadType payloadType, String path) {
 
-        return getLocationInternal(path, () -> idGenerator.generate() + URI_SUFFIX);
-    }
-
-    @Override
-    public ExternalStorageLocation getLocation(
-            Operation operation, PayloadType payloadType, String path, byte[] payloadBytes) {
-
-        return getLocationInternal(
-                path, () -> DigestUtils.sha256Hex(payloadBytes) + URI_SUFFIX_HASHED);
-    }
-
-    private ExternalStorageLocation getLocationInternal(
-            String path, Supplier<String> calculateKey) {
         ExternalStorageLocation externalStorageLocation = new ExternalStorageLocation();
         String objectKey;
         if (StringUtils.isNotBlank(path)) {
             objectKey = path;
         } else {
-            objectKey = calculateKey.get();
+            objectKey = idGenerator.generate() + ".json";
         }
-        String uri = conductorUrl + URI_PREFIX_EXTERNAL + objectKey;
+        String uri = conductorUrl + "/api/external/postgres/" + objectKey;
         externalStorageLocation.setUri(uri);
         externalStorageLocation.setPath(objectKey);
         LOGGER.debug("External storage location URI: {}, location path: {}", uri, objectKey);
@@ -115,11 +94,7 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
     public void upload(String key, InputStream payload, long payloadSize) {
         try (Connection conn = postgresDataSource.getConnection();
                 PreparedStatement stmt =
-                        conn.prepareStatement(
-                                "INSERT INTO "
-                                        + tableName
-                                        + " (id, data) VALUES (?, ?) ON CONFLICT(id) "
-                                        + "DO UPDATE SET created_on=CURRENT_TIMESTAMP")) {
+                        conn.prepareStatement("INSERT INTO " + tableName + " VALUES (?, ?)")) {
             stmt.setString(1, key);
             stmt.setBinaryStream(2, payload, payloadSize);
             stmt.executeUpdate();
@@ -146,14 +121,14 @@ public class PostgresPayloadStorage implements ExternalPayloadStorage {
                 PreparedStatement stmt =
                         conn.prepareStatement("SELECT data FROM " + tableName + " WHERE id = ?")) {
             stmt.setString(1, key);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (!rs.next()) {
-                    LOGGER.debug("External PostgreSQL data with this ID: {} does not exist", key);
-                    return new ByteArrayInputStream(defaultMessageToUser.getBytes());
-                }
-                inputStream = rs.getBinaryStream(1);
-                LOGGER.debug("External PostgreSQL downloaded key: {}", key);
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                LOGGER.debug("External PostgreSQL data with this ID: {} does not exist", key);
+                return new ByteArrayInputStream(defaultMessageToUser.getBytes());
             }
+            inputStream = rs.getBinaryStream(1);
+            rs.close();
+            LOGGER.debug("External PostgreSQL downloaded key: {}", key);
         } catch (SQLException e) {
             String msg = "Error downloading data from external PostgreSQL";
             LOGGER.error(msg, e);
