@@ -26,7 +26,10 @@ import com.netflix.conductor.test.integration.grpc.AbstractGrpcEndToEndTest;
 @TestPropertySource(
         properties = {
             "conductor.db.type=postgres",
+            "conductor.app.asyncIndexingEnabled=false",
+            "conductor.elasticsearch.version=6",
             "conductor.grpc-server.port=8098",
+            "conductor.indexing.type=elasticsearch",
             "spring.datasource.url=jdbc:tc:postgresql:11.15-alpine:///conductor", // "tc" prefix
             // starts the
             // Postgres container

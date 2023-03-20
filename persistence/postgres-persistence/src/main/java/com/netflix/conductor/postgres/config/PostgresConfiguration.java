@@ -90,7 +90,7 @@ public class PostgresConfiguration {
 
     @Bean
     @DependsOn({"flywayForPrimaryDb"})
-    @Conditional(PostgresIndexConditions.PostgresIndexingEnabled.class)
+    @ConditionalOnProperty(name = "conductor.indexing.type", havingValue = "postgres")
     public PostgresIndexDAO postgresIndexDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
             ObjectMapper objectMapper) {
