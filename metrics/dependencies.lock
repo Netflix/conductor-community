@@ -9,10 +9,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
@@ -65,10 +65,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
@@ -115,10 +115,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
@@ -183,10 +183,10 @@
             "locked": "30.0-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.3"
+            "locked": "3.13.5"
         },
         "com.netflix.spectator:spectator-reg-metrics3": {
             "locked": "0.122.0"
