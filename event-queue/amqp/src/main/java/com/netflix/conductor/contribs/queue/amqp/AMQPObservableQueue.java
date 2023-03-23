@@ -231,6 +231,43 @@ public class AMQPObservableQueue implements ObservableQueue {
         }
     }
 
+    @Override
+    public void nack(List<Message> messages) {
+        for (final Message message : messages) {
+            int retryIndex = 1;
+            while (true) {
+                try {
+                    LOGGER.info("NACK message with delivery tag {}", message.getReceipt());
+                    Channel chn =
+                            amqpConnection.getOrCreateChannel(
+                                    ConnectionType.SUBSCRIBER,
+                                    getSettings().getQueueOrExchangeName());
+                    chn.basicNack(Long.parseLong(message.getReceipt()), false, false);
+                    LOGGER.info("Nack'ed the message with delivery tag {}", message.getReceipt());
+                    break;
+                } catch (final Exception e) {
+                    AMQPRetryPattern retry = retrySettings;
+                    if (retry == null) {
+                        LOGGER.error(
+                                "Cannot NACK message with delivery tag {}",
+                                message.getReceipt(),
+                                e);
+                    }
+                    try {
+                        retry.continueOrPropogate(e, retryIndex);
+                    } catch (Exception ex) {
+                        LOGGER.error(
+                                "Retries completed. Cannot NACK message with delivery tag {}",
+                                message.getReceipt(),
+                                e);
+                        break;
+                    }
+                    retryIndex++;
+                }
+            }
+        }
+    }
+
     private static AMQP.BasicProperties buildBasicProperties(
             final Message message, final AMQPSettings settings) {
         return new AMQP.BasicProperties.Builder()
