@@ -37,7 +37,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(PostgresProperties.class)
-@ConditionalOnProperty(name = "conductor.db.type", havingValue = "postgres")
+@ConditionalOnProperty(
+        value = {"spring.flyway.enabled", "conductor.db.type"},
+        havingValue = "true,postgres")
 // Import the DataSourceAutoConfiguration when postgres database is selected.
 // By default, the datasource configuration is excluded in the main module.
 @Import(DataSourceAutoConfiguration.class)

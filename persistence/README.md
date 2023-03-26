@@ -36,6 +36,9 @@ spring.datasource.username=
 spring.datasource.password=
 spring.datasource.hikari.maximum-pool-size=
 spring.datasource.hikari.auto-commit=
+
+#Use spring flyway property to enable or disable flyway migrations
+spring.flyway.enabled=
 ```
 
 ### Postgres
@@ -52,6 +55,9 @@ spring.datasource.username=
 spring.datasource.password=
 spring.datasource.hikari.maximum-pool-size=
 spring.datasource.hikari.auto-commit=
+
+#Use spring flyway property to enable or disable flyway migrations
+spring.flyway.enabled=
 ```
 
 Additionally, the postgres module includes the ability to index your workflow and task executions and to store task execution logs in Postgres without requiring ElasticSearch.
