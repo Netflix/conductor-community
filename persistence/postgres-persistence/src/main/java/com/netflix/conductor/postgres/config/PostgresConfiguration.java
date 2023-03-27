@@ -37,9 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(PostgresProperties.class)
-@ConditionalOnProperty(
-        value = {"spring.flyway.enabled", "conductor.db.type"},
-        havingValue = "true,postgres")
+@ConditionalOnProperty(name = "conductor.db.type", havingValue = "postgres")
 // Import the DataSourceAutoConfiguration when postgres database is selected.
 // By default, the datasource configuration is excluded in the main module.
 @Import(DataSourceAutoConfiguration.class)
@@ -54,6 +52,7 @@ public class PostgresConfiguration {
         this.properties = properties;
     }
 
+    @ConditionalOnProperty(name = "spring.flyway.enabled", havingValue = "true")
     @Bean(initMethod = "migrate")
     @PostConstruct
     public Flyway flywayForPrimaryDb() {
@@ -66,7 +65,7 @@ public class PostgresConfiguration {
     }
 
     @Bean
-    @DependsOn({"flywayForPrimaryDb"})
+    @DependsOn({"flyway", "flywayInitializer"})
     public PostgresMetadataDAO postgresMetadataDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
             ObjectMapper objectMapper,
@@ -75,7 +74,7 @@ public class PostgresConfiguration {
     }
 
     @Bean
-    @DependsOn({"flywayForPrimaryDb"})
+    @DependsOn({"flyway", "flywayInitializer"})
     public PostgresExecutionDAO postgresExecutionDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
             ObjectMapper objectMapper) {
@@ -83,7 +82,7 @@ public class PostgresConfiguration {
     }
 
     @Bean
-    @DependsOn({"flywayForPrimaryDb"})
+    @DependsOn({"flyway", "flywayInitializer"})
     public PostgresQueueDAO postgresQueueDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,
             ObjectMapper objectMapper) {
@@ -91,7 +90,7 @@ public class PostgresConfiguration {
     }
 
     @Bean
-    @DependsOn({"flywayForPrimaryDb"})
+    @DependsOn({"flyway", "flywayInitializer"})
     @ConditionalOnProperty(name = "conductor.indexing.type", havingValue = "postgres")
     public PostgresIndexDAO postgresIndexDAO(
             @Qualifier("postgresRetryTemplate") RetryTemplate retryTemplate,

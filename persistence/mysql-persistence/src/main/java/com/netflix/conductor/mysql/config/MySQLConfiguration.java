@@ -39,9 +39,7 @@ import static com.mysql.cj.exceptions.MysqlErrorNumbers.ER_LOCK_DEADLOCK;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MySQLProperties.class)
-@ConditionalOnProperty(
-        value = {"spring.flyway.enabled", "conductor.db.type"},
-        havingValue = "true,mysql")
+@ConditionalOnProperty(name = "conductor.db.type", havingValue = "mysql")
 // Import the DataSourceAutoConfiguration when mysql database is selected.
 // By default the datasource configuration is excluded in the main module.
 @Import(DataSourceAutoConfiguration.class)
