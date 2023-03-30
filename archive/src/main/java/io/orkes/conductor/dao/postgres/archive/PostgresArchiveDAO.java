@@ -242,7 +242,7 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
 
         String JOINER = " AND ";
         if (workflowNames != null && !workflowNames.isEmpty()) {
-            WHERE_CLAUSE += JOINER + "archive.workflow_name = ANY (?) ";
+            WHERE_CLAUSE += JOINER + "archive.workflow_name LIKE ANY (?) ";
         }
 
         if (taskTypes != null && !taskTypes.isEmpty()) {
