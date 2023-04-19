@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -23,8 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.metadata.tasks.Task;
-// https://github.com/Netflix/conductor/discussions/3587
-// TBD import com.netflix.conductor.core.execution.TaskStatusListener;
 import com.netflix.conductor.core.dal.ExecutionDAOFacade;
 
 @Singleton
@@ -93,7 +90,7 @@ public class TaskStatusPublisher {
                                 "Error while publishing task. Hence updating elastic search index taskId {} taskname {}",
                                 task.getTaskId(),
                                 task.getTaskDefName());
-                        executionDAOFacade.indexTask(task);
+                        // TBD executionDAOFacade.indexTask(task);
 
                     } else {
                         LOGGER.error("Failed to publish task: Task is NULL");

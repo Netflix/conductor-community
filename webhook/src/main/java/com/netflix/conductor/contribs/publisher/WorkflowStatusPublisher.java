@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -22,9 +21,9 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netflix.conductor.common.run.Workflow;
+import com.netflix.conductor.core.dal.ExecutionDAOFacade;
 import com.netflix.conductor.core.listener.WorkflowStatusListener;
-import com.netflix.conductor.core.orchestration.ExecutionDAOFacade;
+import com.netflix.conductor.model.WorkflowModel;
 
 @Singleton
 public class WorkflowStatusPublisher implements WorkflowStatusListener {
@@ -33,7 +32,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
     private static final Integer QDEPTH =
             Integer.parseInt(
                     System.getenv().getOrDefault("ENV_WORKFLOW_NOTIFICATION_QUEUE_SIZE", "50"));
-    private BlockingQueue<Workflow> blockingQueue = new LinkedBlockingDeque<>(QDEPTH);
+    private BlockingQueue<WorkflowModel> blockingQueue = new LinkedBlockingDeque<>(QDEPTH);
     private RestClientManager rcm;
     private ExecutionDAOFacade executionDAOFacade;
 
@@ -57,7 +56,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
             LOGGER.info("{}: Starting consumer thread", tName);
 
             WorkflowNotification workflowNotification = null;
-            Workflow workflow = null;
+            WorkflowModel workflow = null;
             while (true) {
                 try {
                     workflow = blockingQueue.take();
@@ -88,7 +87,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
                                 workflow.getWorkflowId(),
                                 workflow.getWorkflowName(),
                                 workflow.getCorrelationId());
-                        executionDAOFacade.indexWorkflow(workflow);
+                        // TBD executionDAOFacade.indexWorkflow(workflow);
                     } else {
                         LOGGER.error("Failed to publish workflow: Workflow is NULL");
                     }
@@ -107,7 +106,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
     }
 
     @Override
-    public void onWorkflowCompleted(Workflow workflow) {
+    public void onWorkflowCompleted(WorkflowModel workflow) {
         LOGGER.debug(
                 "workflows completion {} {}", workflow.getWorkflowId(), workflow.getWorkflowName());
         try {
@@ -122,7 +121,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
     }
 
     @Override
-    public void onWorkflowTerminated(Workflow workflow) {
+    public void onWorkflowTerminated(WorkflowModel workflow) {
         LOGGER.debug(
                 "workflows termination {} {}",
                 workflow.getWorkflowId(),
@@ -139,12 +138,12 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
     }
 
     @Override
-    public void onWorkflowCompletedIfEnabled(Workflow workflow) {
+    public void onWorkflowCompletedIfEnabled(WorkflowModel workflow) {
         onWorkflowCompleted(workflow);
     }
 
     @Override
-    public void onWorkflowTerminatedIfEnabled(Workflow workflow) {
+    public void onWorkflowTerminatedIfEnabled(WorkflowModel workflow) {
         onWorkflowTerminated(workflow);
     }
 
