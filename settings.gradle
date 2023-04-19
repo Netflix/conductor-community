@@ -25,6 +25,7 @@ include 'index'
 include 'test-util'
 include 'lock'
 include 'workflow-event-listener'
+include 'webhook'
 
 include 'persistence:common-persistence'
 include 'persistence:mysql-persistence'

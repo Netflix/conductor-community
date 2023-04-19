@@ -74,6 +74,9 @@
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
         },
+        "com.netflix.conductor:conductor-webhook": {
+            "project": true
+        },
         "com.netflix.conductor:conductor-zookeeper-lock": {
             "project": true
         },
@@ -178,7 +181,8 @@
                 "com.netflix.conductor:conductor-nats",
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
-                "com.netflix.conductor:conductor-workflow-event-listener"
+                "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook
             ],
             "locked": "3.13.5"
         },
@@ -203,6 +207,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "3.13.5"
@@ -253,6 +258,9 @@
             "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
+            "project": true
+        },
+        "com.netflix.conductor:conductor-webhook": {
             "project": true
         },
         "com.netflix.conductor:conductor-zookeeper-lock": {
@@ -374,6 +382,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -391,6 +400,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -408,6 +418,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -425,6 +436,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -442,6 +454,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -573,7 +586,8 @@
                 "com.netflix.conductor:conductor-nats",
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
-                "com.netflix.conductor:conductor-workflow-event-listener"
+                "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook"
             ],
             "locked": "3.13.5"
         },
@@ -598,6 +612,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "3.13.5"
@@ -648,6 +663,9 @@
             "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
+            "project": true
+        },
+        "com.netflix.conductor:conductor-webhook": {
             "project": true
         },
         "com.netflix.conductor:conductor-zookeeper-lock": {
@@ -769,6 +787,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -786,6 +805,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -803,6 +823,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -820,6 +841,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -837,6 +859,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -980,6 +1003,9 @@
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
         },
+        "com.netflix.conductor:conductor-webhook": {
+            "project": true
+        },
         "com.netflix.conductor:conductor-zookeeper-lock": {
             "project": true
         },
@@ -1102,7 +1128,8 @@
                 "com.netflix.conductor:conductor-nats",
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
-                "com.netflix.conductor:conductor-workflow-event-listener"
+                "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook"
             ],
             "locked": "3.13.5"
         },
@@ -1127,6 +1154,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "3.13.5"
@@ -1177,6 +1205,9 @@
             "locked": "3.13.5"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
+            "project": true
+        },
+        "com.netflix.conductor:conductor-webhook": {
             "project": true
         },
         "com.netflix.conductor:conductor-zookeeper-lock": {
@@ -1307,6 +1338,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -1324,6 +1356,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -1341,6 +1374,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -1358,6 +1392,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
@@ -1375,6 +1410,7 @@
                 "com.netflix.conductor:conductor-postgres-external-storage",
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener",
+                "com.netflix.conductor:conductor-webhook",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
             "locked": "2.17.1"
