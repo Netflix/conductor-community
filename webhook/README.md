@@ -9,7 +9,7 @@ Group: `com.netflix.conductor`
 
 | Published Artifact | Description |
 | ----------- | ----------- | 
-| conductor-webhook | Webhook Event Listeners for Conductor  |
+| conductor-webhook | Webhook to publish workflow and task status  |
 
 
 ## Configuration

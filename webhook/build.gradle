@@ -1,0 +1,20 @@
+plugins {
+    id 'groovy'
+}
+dependencies {
+
+    implementation "com.netflix.conductor:conductor-common:${revConductor}"
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
+
+    compileOnly 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation "org.codehaus.groovy:groovy-all:${revGroovy}"
+    testImplementation "org.spockframework:spock-core:${revSpock}"
+    testImplementation "org.spockframework:spock-spring:${revSpock}"
+
+
+    testImplementation "com.netflix.conductor:conductor-server:${revConductor}"
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation project(':conductor-test-util').sourceSets.test.output
+}
