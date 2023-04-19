@@ -23,11 +23,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.metadata.tasks.Task;
-import com.netflix.conductor.core.execution.TaskStatusListener;
+// https://github.com/Netflix/conductor/discussions/3587
+// TBD import com.netflix.conductor.core.execution.TaskStatusListener;
 import com.netflix.conductor.core.orchestration.ExecutionDAOFacade;
 
 @Singleton
-public class TaskStatusPublisher implements TaskStatusListener {
+// public class TaskStatusPublisher implements TaskStatusListener {
+public class TaskStatusPublisher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskStatusPublisher.class);
     private static final Integer QDEPTH =
@@ -110,7 +112,7 @@ public class TaskStatusPublisher implements TaskStatusListener {
         consumerThread.start();
     }
 
-    @Override
+    // @Override
     public void onTaskScheduled(Task task) {
         try {
             blockingQueue.put(task);
