@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import com.netflix.conductor.common.metadata.tasks.Task;
 // https://github.com/Netflix/conductor/discussions/3587
 // TBD import com.netflix.conductor.core.execution.TaskStatusListener;
-import com.netflix.conductor.core.orchestration.ExecutionDAOFacade;
+import com.netflix.conductor.core.dal.ExecutionDAOFacade;
 
 @Singleton
 // public class TaskStatusPublisher implements TaskStatusListener {
