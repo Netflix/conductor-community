@@ -12,32 +12,30 @@
  */
 package io.orkes.conductor.dao.postgres.archive;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.conductor.common.metadata.tasks.TaskExecLog;
+import com.netflix.conductor.common.run.SearchResult;
+import com.netflix.conductor.model.WorkflowModel;
+import com.netflix.conductor.postgres.dao.PostgresBaseDAO;
+import io.orkes.conductor.dao.archive.ArchiveDAO;
+import io.orkes.conductor.dao.archive.DocumentStoreDAO;
+import io.orkes.conductor.dao.archive.ScrollableSearchResult;
+import io.orkes.conductor.dao.archive.WorkflowModelSummary;
+import io.orkes.conductor.dao.indexer.WorkflowIndex;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.support.RetryTemplate;
-
-import com.netflix.conductor.common.metadata.tasks.TaskExecLog;
-import com.netflix.conductor.common.run.SearchResult;
-import com.netflix.conductor.model.WorkflowModel;
-import com.netflix.conductor.postgres.dao.PostgresBaseDAO;
-
-import io.orkes.conductor.dao.archive.ArchiveDAO;
-import io.orkes.conductor.dao.archive.DocumentStoreDAO;
-import io.orkes.conductor.dao.archive.ScrollableSearchResult;
-import io.orkes.conductor.dao.indexer.WorkflowIndex;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, DocumentStoreDAO {
@@ -47,6 +45,34 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
 
     private static final String REMOVE_WORKFLOW =
             "DELETE FROM workflow_archive WHERE workflow_id = ?";
+    public static final String UNKNOWN = PostgresArchiveDAO.class.getName() + "_UNKNOWN";
+    public static final String GET_WORKFLOW_FAMILY = "WITH RECURSIVE workflow_hierarchy AS (" +
+            "   SELECT" +
+            "       workflow_id, parent_workflow_id, json_data, status from workflow_archive where workflow_id = ?" +
+            "   UNION ALL" +
+            "   SELECT child_wf.workflow_id workflow_id, child_wf.parent_workflow_id, child_wf.json_data, child_wf.status" +
+            "   FROM workflow_archive AS child_wf" +
+            "      JOIN workflow_hierarchy parent_wf ON child_wf.parent_workflow_id = parent_wf.workflow_id" +
+            ")\n" +
+            "SELECT workflow_id, parent_workflow_id, json_data, status FROM workflow_hierarchy;";
+    public static final String GET_WORKFLOW_FAMILY_SUMMARY = "WITH RECURSIVE workflow_hierarchy AS (" +
+            "   SELECT" +
+            "       workflow_id, parent_workflow_id, status from workflow_archive where workflow_id = ?" +
+            "   UNION ALL" +
+            "   SELECT child_wf.workflow_id workflow_id, child_wf.parent_workflow_id, child_wf.status" +
+            "   FROM workflow_archive AS child_wf" +
+            "      JOIN workflow_hierarchy parent_wf ON child_wf.parent_workflow_id = parent_wf.workflow_id" +
+            ")\n" +
+            "SELECT workflow_id, parent_workflow_id, status FROM workflow_hierarchy;";
+    public static final String GET_WORKFLOW_PATH = "WITH RECURSIVE workflow_path AS (" +
+            "   SELECT" +
+            "       workflow_id, parent_workflow_id from workflow_archive child_wf where workflow_id = ?" +
+            "   UNION ALL" +
+            "   SELECT parent_wf.workflow_id workflow_id, parent_wf.parent_workflow_id" +
+            "   FROM workflow_archive AS parent_wf" +
+            "      JOIN workflow_path child_wf ON child_wf.parent_workflow_id = parent_wf.workflow_id" +
+            ")\n" +
+            "SELECT workflow_id, parent_workflow_id FROM workflow_path;";
 
     private final DataSource searchDatasource;
 
@@ -74,9 +100,9 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
                 "INSERT INTO "
                         + TABLE_NAME
                         + " as wf"
-                        + "(workflow_id, created_on, modified_on, correlation_id, workflow_name, status, index_data, created_by, json_data) "
+                        + "(workflow_id, created_on, modified_on, correlation_id, workflow_name, status, index_data, created_by, json_data, parent_workflow_id) "
                         + "VALUES "
-                        + "(?, ?, ?, ?, ?, ?, ?, ?, ?)  "
+                        + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)  "
                         + "ON CONFLICT (workflow_id) DO "
                         + "UPDATE SET modified_on = ?, status = ?, index_data = ?, json_data = ? "
                         + "WHERE wf.modified_on < ? ;";
@@ -108,6 +134,8 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
                 workflowJson = objectMapper.writeValueAsString(workflow);
             }
             statement.setString(indx++, workflowJson);
+            statement.setString(indx++, workflow.getParentWorkflowId() == null ? null : workflow.getParentWorkflowId());
+
             // Update values
             statement.setLong(indx++, updatedTime);
             statement.setString(indx++, workflow.getStatus().toString());
@@ -159,6 +187,34 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    @Override
+    public List<String> getWorkflowPath(String workflowId) {
+        try (Connection connection = super.dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(GET_WORKFLOW_PATH);
+            statement.setString(1, workflowId);
+            ResultSet rs = statement.executeQuery();
+            List<String> results = new LinkedList<>();
+            String parentWfId = null;
+            while (rs.next()) {
+                String wfId = rs.getString("workflow_id");
+                parentWfId = rs.getString("parent_workflow_id");
+                results.add(wfId);
+            }
+
+            if (!com.google.common.base.Strings.isNullOrEmpty(parentWfId)) {
+                // couldn't find complete path
+                results.add(UNKNOWN);
+            }
+
+            Collections.reverse(results);
+            return results;
+
+        } catch (Exception e) {
+            log.error("Error reading workflow - " + e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -413,5 +469,35 @@ public class PostgresArchiveDAO extends PostgresBaseDAO implements ArchiveDAO, D
                                                 .executeUpdate());
                     });
         }
+    }
+
+    @Override
+    public List<WorkflowModel> getWorkflowFamily(String workflowId, boolean summaryOnly) {
+        String select = summaryOnly ? GET_WORKFLOW_FAMILY_SUMMARY : GET_WORKFLOW_FAMILY;
+        try (Connection connection = super.dataSource.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(select);
+            statement.setString(1, workflowId);
+            ResultSet rs = statement.executeQuery();
+            List<WorkflowModel> results = new ArrayList<>();
+            while (rs.next()) {
+                String wfId = rs.getString("workflow_id");
+                String parentWfId = rs.getString("parent_workflow_id");
+                String status = rs.getString("status");
+                String json = summaryOnly ? "" : rs.getString("json_data");
+                if (com.google.common.base.Strings.isNullOrEmpty(json)) {
+                    results.add(new WorkflowModelSummary(wfId, parentWfId, status));
+                } else {
+                    results.add(objectMapper.readValue(json, WorkflowModel.class));
+                }
+            }
+
+            Collections.reverse(results);
+            return results;
+
+        } catch (Exception e) {
+            log.error("Error reading workflow - " + e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+
     }
 }

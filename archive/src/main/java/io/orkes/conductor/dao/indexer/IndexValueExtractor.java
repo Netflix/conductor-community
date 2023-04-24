@@ -44,7 +44,7 @@ public class IndexValueExtractor {
                     .map(word -> word.toLowerCase().trim().replaceAll(replaceWords + "+$", ""))
                     .filter(word -> !stopWords.contains(word))
                     .limit(maxWords)
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
 
         } catch (Exception e) {
             log.warn("Error serializing input/output map to text: " + e.getMessage(), e);
@@ -56,14 +56,13 @@ public class IndexValueExtractor {
 
         List<String> words = new ArrayList<>();
         append(words, workflow.getCorrelationId());
-        append(words, workflow.getInput());
-        append(words, workflow.getOutput());
-        append(words, workflow.getReasonForIncompletion());
-        append(words, workflow.getVariables());
-
         if (workflow.getParentWorkflowId() == null) {
             append(words, ROOT_WF);
         }
+        append(words, workflow.getReasonForIncompletion());
+        append(words, workflow.getInput());
+        append(words, workflow.getOutput());
+        append(words, workflow.getVariables());
 
         for (TaskModel task : workflow.getTasks()) {
             append(words, task.getOutputData());

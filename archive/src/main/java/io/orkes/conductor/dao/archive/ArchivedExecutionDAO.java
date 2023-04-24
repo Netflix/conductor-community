@@ -12,6 +12,7 @@
  */
 package io.orkes.conductor.dao.archive;
 
+import io.orkes.conductor.dao.postgres.archive.PostgresArchiveDAO;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,6 @@ import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
 
 import io.orkes.conductor.dao.indexer.IndexWorker;
-import io.orkes.conductor.id.TimeBasedUUIDGenerator;
 import io.orkes.conductor.metrics.MetricsCollector;
 
 import lombok.extern.slf4j.Slf4j;
@@ -241,6 +241,48 @@ public class ArchivedExecutionDAO implements ExecutionDAO {
     }
 
     @Override
+    public List<String> getWorkflowPath(String workflowId) {
+        // Load path from archive
+        final List<String> workflowPath;
+        try {
+            workflowPath = archiveDAO.getWorkflowPath(workflowId);
+        } catch (Exception e) {
+            log.warn("Unable to load workflow path from archive, using primary DAO", e);
+            return primaryDAO.getWorkflowPath(workflowId);
+        }
+
+        if (workflowPath == null || workflowPath.size() == 0) {
+            log.debug("Unable to load workflow path from archive, using primary DAO");
+            // unable to load path from archive, use primary
+            return primaryDAO.getWorkflowPath(workflowId);
+        }
+
+        if (workflowPath.size() == 1 && workflowPath.contains(PostgresArchiveDAO.UNKNOWN)) {
+            log.debug("Unable to load workflow path from archive, using primary DAO");
+            // archive cannot find anything, use primary
+            return primaryDAO.getWorkflowPath(workflowId);
+        }
+
+        if (workflowPath.size() > 1 && workflowPath.contains(PostgresArchiveDAO.UNKNOWN)) {
+            log.debug("Unable to load complete workflow path from archive, using also primary DAO");
+            // archive cannot find complete path, use primary and join the 2 together
+            final List<String> primarySubPath = primaryDAO.getWorkflowPath(workflowPath.get(1));
+            // primary cannot find the path either
+            if (primarySubPath == null || primarySubPath.size() == 0) {
+                throw new IllegalStateException("Unable to fetch workflow path from archive nor from primary db");
+            }
+            // remove unknown
+            workflowPath.remove(0);
+            // remove workflowId since it will be present in both
+            workflowPath.remove(0);
+            primarySubPath.addAll(workflowPath);
+            return primarySubPath;
+        }
+
+        return workflowPath;
+    }
+
+    @Override
     public List<WorkflowModel> getWorkflowsByType(
             String workflowName, Long startTime, Long endTime) {
         List<WorkflowModel> workflows = new ArrayList<>();
@@ -279,6 +321,25 @@ public class ArchivedExecutionDAO implements ExecutionDAO {
     @Override
     public void removeEventExecution(EventExecution eventExecution) {
         primaryDAO.removeEventExecution(eventExecution);
+    }
+
+    @Override
+    public List<WorkflowModel> getWorkflowFamily(String workflowId, boolean summaryOnly) {
+        final List<WorkflowModel> workflowDeep = archiveDAO.getWorkflowFamily(workflowId, summaryOnly);
+
+        if (summaryOnly) {
+            return workflowDeep;
+        }
+
+        // If some workflow bodies were not loaded from
+        return workflowDeep.stream()
+                .map(wf -> wf instanceof WorkflowModelSummary ? loadWorkflowFromPrimary(wf) : wf)
+                .collect(Collectors.toList());
+    }
+
+    private WorkflowModel loadWorkflowFromPrimary(WorkflowModel wf) {
+        log.debug("Unable to load workflow: {} from archive, loading from primary", wf.getWorkflowId());
+        return primaryDAO.getWorkflow(wf.getWorkflowId());
     }
 
     private void queueForIndexing(WorkflowModel workflow, boolean created) {

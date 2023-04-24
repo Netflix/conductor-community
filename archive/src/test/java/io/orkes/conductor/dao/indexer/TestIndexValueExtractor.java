@@ -13,7 +13,12 @@
 package io.orkes.conductor.dao.indexer;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -51,11 +56,11 @@ public class TestIndexValueExtractor {
         for (int i = 0; i < 100; i++) {
             model.getTasks().get(0).getOutputData().put("id" + i, UUID.randomUUID().toString());
         }
-        Collection<String> words = getIndexWords(model, 2, 50);
+        Collection<String> words = getIndexWords(model, 3, 50);
 
         // Sine all the UUIDs are longer than max word length, they should all get filtered out
         assertNotNull(words);
-        assertEquals(2, words.size());
+        assertEquals(3, words.size());
         assertTrue(words.contains("abcd"));
         assertTrue(words.contains(uuid), uuid + " not in the list of words : " + words);
 
@@ -68,5 +73,33 @@ public class TestIndexValueExtractor {
         assertNotNull(words);
         assertTrue(words.contains("https://orkes-services.web.app2/data.json"));
         assertTrue(words.contains(uuid));
+    }
+
+    @Test
+    void testWithinIndexLimit() {
+        final WorkflowModel workflow = new WorkflowModel();
+        workflow.setInput(generateInput(2));
+        workflow.setOutput(generateInput(2));
+        final Collection<String> indexWords = getIndexWords(workflow, 10, 10);
+        final LinkedHashSet<String> expected = new LinkedHashSet(List.of("root_wf", "value0", "value1"));
+        assertEquals(expected, indexWords);
+    }
+
+    @Test
+    void tesOverIndexLimit() {
+        final WorkflowModel workflow = new WorkflowModel();
+        workflow.setInput(generateInput(10));
+        workflow.setOutput(generateInput(10));
+        final Collection<String> indexWords = getIndexWords(workflow, 2, 10);
+        final LinkedHashSet<String> expected = new LinkedHashSet(List.of("root_wf", "value0"));
+        assertEquals(expected, indexWords);
+    }
+
+    private static Map<String, Object> generateInput(int length) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        for (int i = 0; i < length; i++) {
+            map.put(Integer.toString(i), "value" + i);
+        }
+        return map;
     }
 }

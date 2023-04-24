@@ -27,6 +27,8 @@ public interface ArchiveDAO {
 
     WorkflowModel getWorkflow(String workflowId, boolean includeTasks);
 
+    List<String> getWorkflowPath(String workflowId);
+
     List<String> getWorkflowIdsByType(String workflowName, Long startTime, Long endTime);
 
     List<String> getWorkflowIdsByCorrelationId(
@@ -38,4 +40,6 @@ public interface ArchiveDAO {
     List<TaskExecLog> getTaskExecutionLogs(String taskId);
 
     void addTaskExecutionLogs(List<TaskExecLog> logs);
+
+    List<WorkflowModel> getWorkflowFamily(String workflowId, boolean summaryOnly);
 }
