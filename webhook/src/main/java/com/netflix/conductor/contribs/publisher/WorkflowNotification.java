@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.netflix.conductor.common.run.Workflow;
 import com.netflix.conductor.common.run.WorkflowSummary;
-import com.netflix.conductor.model.WorkflowModel;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,8 +41,8 @@ class WorkflowNotification extends WorkflowSummary {
         return accountMoId;
     }
 
-    WorkflowNotification(WorkflowModel workflow) {
-        // TBD super(workflow);
+    WorkflowNotification(Workflow workflow) {
+        super(workflow);
 
         boolean isFusionMetaPresent = workflow.getInput().containsKey("_ioMeta");
         if (!isFusionMetaPresent) {

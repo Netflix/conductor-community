@@ -60,7 +60,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
             while (true) {
                 try {
                     workflow = blockingQueue.take();
-                    workflowNotification = new WorkflowNotification(workflow);
+                    workflowNotification = new WorkflowNotification(workflow.toWorkflow());
                     String jsonWorkflow = workflowNotification.toJsonString();
                     LOGGER.info("Publishing WorkflowNotification: {}", jsonWorkflow);
                     if (workflowNotification.getAccountMoId().equals("")) {
