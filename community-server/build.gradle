@@ -8,33 +8,33 @@ dependencies {
     implementation "com.netflix.conductor:conductor-rest:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
     implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
-    implementation "com.netflix.conductor:conductor-cassandra-persistence:${revConductor}"
-    implementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
-    implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
-    implementation "com.netflix.conductor:conductor-redis-lock:${revConductor}"
-    implementation "com.netflix.conductor:conductor-redis-concurrency-limit:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-cassandra-persistence:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-redis-lock:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-redis-concurrency-limit:${revConductor}"
 
 
-    implementation "com.netflix.conductor:conductor-http-task:${revConductor}"
-    implementation "com.netflix.conductor:conductor-json-jq-task:${revConductor}"
-    implementation "com.netflix.conductor:conductor-awss3-storage:${revConductor}"
-    implementation "com.netflix.conductor:conductor-awssqs-event-queue:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-http-task:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-json-jq-task:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-awss3-storage:${revConductor}"
+    //implementation "com.netflix.conductor:conductor-awssqs-event-queue:${revConductor}"
 
-    implementation project(':event-queue:conductor-amqp')
-    implementation project(':event-queue:conductor-nats')
-    implementation project(':index:conductor-es7-persistence')
-    implementation project(':external-payload-storage:conductor-azureblob-storage')
-    implementation project(':external-payload-storage:conductor-postgres-external-storage')
+    //implementation project(':event-queue:conductor-amqp')
+    //implementation project(':event-queue:conductor-nats')
+    //implementation project(':index:conductor-es7-persistence')
+    //implementation project(':external-payload-storage:conductor-azureblob-storage')
+    //implementation project(':external-payload-storage:conductor-postgres-external-storage')
 
-    implementation project(':lock:conductor-zookeeper-lock')
+    //implementation project(':lock:conductor-zookeeper-lock')
 
     implementation project(':conductor-metrics')
 
-    implementation project(':persistence:conductor-common-persistence')
-    implementation project(':persistence:conductor-postgres-persistence')
-    implementation project(':persistence:conductor-mysql-persistence')
+    //implementation project(':persistence:conductor-common-persistence')
+    //implementation project(':persistence:conductor-postgres-persistence')
+    //implementation project(':persistence:conductor-mysql-persistence')
 
-    implementation project(':task:conductor-kafka')
+    //implementation project(':task:conductor-kafka')
 
     implementation project(':conductor-workflow-event-listener')
     implementation project(':conductor-webhook')
