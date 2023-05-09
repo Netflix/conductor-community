@@ -21,8 +21,10 @@ import org.springframework.context.annotation.Configuration;
 import com.netflix.conductor.core.dal.ExecutionDAOFacade;
 import com.netflix.conductor.core.listener.WorkflowStatusListener;
 
+// @ConditionalOnProperty(name = "conductor.webhook.enabled", havingValue = "true")
+
 @Configuration
-@EnableConfigurationProperties(SystemPropertiesPublisherConfiguration.class)
+@EnableConfigurationProperties(ConductorWebhookNotificationProperties.class)
 @ConditionalOnProperty(
         name = "conductor.workflow-status-listener.type",
         havingValue = "workflow_publisher")
@@ -32,9 +34,14 @@ public class WorkflowStatusPublisherConfiguration {
             LoggerFactory.getLogger(WorkflowStatusPublisherConfiguration.class);
 
     @Bean
-    public WorkflowStatusListener getWorkflowStatusListener(
-            RestClientManager rcm, ExecutionDAOFacade executionDAOFacade) {
+    public RestClientManager getRestClientManager(ConductorWebhookNotificationProperties config) {
+        return new RestClientManager(config);
+    }
 
-        return new WorkflowStatusPublisher(rcm, executionDAOFacade);
+    @Bean
+    public WorkflowStatusListener getWorkflowStatusListener(
+            RestClientManager restClientManager, ExecutionDAOFacade executionDAOFacade) {
+
+        return new WorkflowStatusPublisher(restClientManager, executionDAOFacade);
     }
 }

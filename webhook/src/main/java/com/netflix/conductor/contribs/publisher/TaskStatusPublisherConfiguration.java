@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 // import com.netflix.conductor.core.execution.TaskStatusListener;
 
 @Configuration
-@EnableConfigurationProperties(SystemPropertiesPublisherConfiguration.class)
+@EnableConfigurationProperties(ConductorWebhookNotificationProperties.class)
 @ConditionalOnProperty(name = "conductor.task-status-listener.type", havingValue = "task_publisher")
 public class TaskStatusPublisherConfiguration {
 

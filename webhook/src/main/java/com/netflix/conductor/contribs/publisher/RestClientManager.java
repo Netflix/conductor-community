@@ -35,13 +35,10 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@Component
 public class RestClientManager {
     private static final Logger logger = LoggerFactory.getLogger(RestClientManager.class);
-    private PublisherConfiguration config;
+    private ConductorWebhookNotificationProperties config;
     private CloseableHttpClient client;
     private String notifType;
     private String notifId;
@@ -51,7 +48,8 @@ public class RestClientManager {
         WORKFLOW
     };
 
-    public RestClientManager(PublisherConfiguration config) {
+    public RestClientManager(ConductorWebhookNotificationProperties config) {
+        logger.info("created RestClientManager" + System.currentTimeMillis());
         this.config = config;
         this.client = prepareClient();
     }
@@ -68,18 +66,18 @@ public class RestClientManager {
                 // The time to establish the connection with the remote host
                 // [http.connection.timeout].
                 // Responsible for java.net.SocketTimeoutException: connect timed out.
-                .setConnectTimeout(config.getRequestTimeoutInMillisec())
+                .setConnectTimeout(config.getRequestTimeOutMsConnect())
 
                 // The time waiting for data after the connection was established
                 // [http.socket.timeout]. The maximum time
                 // of inactivity between two data packets. Responsible for
                 // java.net.SocketTimeoutException: Read timed out.
-                .setSocketTimeout(config.getSocketTimeoutInMillisec())
+                .setSocketTimeout(config.getRequestTimeoutMsread())
 
                 // The time to wait for a connection from the connection manager/pool
                 // [http.connection-manager.timeout].
                 // Responsible for org.apache.http.conn.ConnectionPoolTimeoutException.
-                .setConnectionRequestTimeout(config.getConnectionMgrTimeoutInMillisec())
+                .setConnectionRequestTimeout(config.getRequestTimeoutMsConnMgr())
                 .build();
     }
 
@@ -88,7 +86,7 @@ public class RestClientManager {
      */
     private class CustomHttpRequestRetryHandler implements HttpRequestRetryHandler {
         int maxRetriesCount = config.getRequestRetryCount();
-        int retryIntervalInMilisec = config.getRequestRetryInterval();
+        int retryIntervalInMilisec = config.getRequestRetryCountIntervalMs();
 
         /**
          * Triggered only in case of exception
@@ -135,7 +133,7 @@ public class RestClientManager {
      */
     private class CustomServiceUnavailableRetryStrategy implements ServiceUnavailableRetryStrategy {
         int maxRetriesCount = config.getRequestRetryCount();
-        int retryIntervalInMilisec = config.getRequestRetryInterval();
+        int retryIntervalInMilisec = config.getRequestRetryCountIntervalMs();
 
         @Override
         public boolean retryRequest(
@@ -208,12 +206,12 @@ public class RestClientManager {
         String urlEndPoint = "";
 
         if (notifType == RestClientManager.NotificationType.TASK) {
-            urlEndPoint = config.getEndPointTask();
+            urlEndPoint = config.getEndpointTask();
 
         } else if (notifType == RestClientManager.NotificationType.WORKFLOW) {
-            urlEndPoint = config.getEndPointWorkflow();
+            urlEndPoint = config.getEndpointWorkflow();
         }
-        return config.getNotificationUrl() + "/" + urlEndPoint;
+        return config.getUrl() + "/" + urlEndPoint;
     }
 
     private HttpPost createPostRequest(String url, String data, Map<String, String> headers)
