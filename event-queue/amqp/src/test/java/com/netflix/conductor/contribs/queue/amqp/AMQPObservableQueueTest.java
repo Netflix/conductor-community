@@ -334,6 +334,15 @@ public class AMQPObservableQueueTest {
     }
 
     @Test
+    public void testGetMessagesFromExistingExchangeWithDefaultConfiguration() throws IOException, TimeoutException {
+        // Mock channel and connection
+        Channel channel = mockBaseChannel();
+        Connection connection = mockGoodConnection(channel);
+        testGetMessagesFromExchangeAndDefaultConfiguration(
+                channel, connection, true, true);
+    }
+
+    @Test
     public void testPublishMessagesToNotExistingExchangeAndDefaultConfiguration()
             throws IOException, TimeoutException {
         // Mock channel and connection
@@ -408,6 +417,7 @@ public class AMQPObservableQueueTest {
         assertEquals(name, settings.getQueueOrExchangeName());
         assertEquals(type, settings.getExchangeType());
         assertEquals(routingKey, settings.getRoutingKey());
+        assertEquals(queueName, settings.getExchangeBoundQueueName());
 
         List<GetResponse> queue = buildQueue(random, batchSize);
         channel =
@@ -493,6 +503,8 @@ public class AMQPObservableQueueTest {
                                         + name
                                         + "?exchangeType="
                                         + type
+                                        + "&bindQueueName="
+                                        + queueName
                                         + "&routingKey="
                                         + routingKey
                                         + "&deliveryMode=2"
@@ -508,6 +520,7 @@ public class AMQPObservableQueueTest {
         assertEquals(2, settings.getDeliveryMode());
         assertEquals(name, settings.getQueueOrExchangeName());
         assertEquals(type, settings.getExchangeType());
+        assertEquals(queueName, settings.getExchangeBoundQueueName());
         assertEquals(routingKey, settings.getRoutingKey());
 
         List<GetResponse> queue = buildQueue(random, batchSize);
@@ -540,6 +553,8 @@ public class AMQPObservableQueueTest {
                         + name
                         + "?exchangeType="
                         + type
+                        + "&bindQueueName="
+                        + queueName
                         + "&routingKey="
                         + routingKey
                         + "&deliveryMode=2"

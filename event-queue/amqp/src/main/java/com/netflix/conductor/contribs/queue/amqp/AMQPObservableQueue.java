@@ -766,7 +766,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 /*
                  * Create queue if not present based on the settings provided in the queue URI
                  * or configuration properties. Sample URI format:
-                 * amqp-exchange:myExchange?exchangeType=topic&routingKey=myRoutingKey&exclusive
+                 * amqp_exchange:myExchange?bindQueueName=myQueue&exchangeType=topic&routingKey=myRoutingKey&exclusive
                  * =false&autoDelete=false&durable=true Default settings if not provided in the
                  * queue URI or properties: isDurable: true, autoDelete: false, isExclusive:
                  * false The same settings are currently used during creation of exchange as
@@ -776,7 +776,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 final AMQP.Queue.DeclareOk declareOk =
                         getOrCreateQueue(
                                 ConnectionType.SUBSCRIBER,
-                                String.format("bound_to_%s", settings.getQueueOrExchangeName()),
+                                settings.getExchangeBoundQueueName(),
                                 settings.isDurable(),
                                 settings.isExclusive(),
                                 settings.autoDelete(),
@@ -816,7 +816,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 /*
                  * Create queue if not present based on the settings provided in the queue URI
                  * or configuration properties. Sample URI format:
-                 * amqp-exchange:myExchange?exchangeType=topic&routingKey=myRoutingKey&exclusive
+                 * amqp_exchange:myExchange?bindQueueName=myQueue&exchangeType=topic&routingKey=myRoutingKey&exclusive
                  * =false&autoDelete=false&durable=true Default settings if not provided in the
                  * queue URI or properties: isDurable: true, autoDelete: false, isExclusive:
                  * false The same settings are currently used during creation of exchange as
@@ -826,7 +826,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 final AMQP.Queue.DeclareOk declareOk =
                         getOrCreateQueue(
                                 ConnectionType.SUBSCRIBER,
-                                String.format("bound_to_%s", settings.getQueueOrExchangeName()),
+                                settings.getExchangeBoundQueueName(),
                                 settings.isDurable(),
                                 settings.isExclusive(),
                                 settings.autoDelete(),
@@ -835,7 +835,7 @@ public class AMQPObservableQueue implements ObservableQueue {
                 queueName = declareOk.getQueue();
                 amqpConnection
                         .getOrCreateChannel(
-                                ConnectionType.SUBSCRIBER, getSettings().getQueueOrExchangeName())
+                                ConnectionType.SUBSCRIBER, settings.getQueueOrExchangeName())
                         .queueBind(
                                 queueName,
                                 settings.getQueueOrExchangeName(),

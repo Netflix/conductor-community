@@ -24,13 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.contribs.queue.amqp.config.AMQPEventQueueProperties;
 
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_AUTO_DELETE;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_DELIVERY_MODE;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_DURABLE;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_EXCHANGE_TYPE;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_EXCLUSIVE;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_MAX_PRIORITY;
-import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.PARAM_ROUTING_KEY;
+import static com.netflix.conductor.contribs.queue.amqp.util.AMQPConfigurations.*;
 
 /**
  * @author Ritu Parathody
@@ -45,6 +39,7 @@ public class AMQPSettings {
     private String queueOrExchangeName;
     private String eventName;
     private String exchangeType;
+    private String exchangeBoundQueueName;
     private String queueType;
     private String routingKey;
     private final String contentEncoding;
@@ -109,6 +104,14 @@ public class AMQPSettings {
         return queueOrExchangeName;
     }
 
+    public String getExchangeBoundQueueName() {
+        if (StringUtils.isEmpty(exchangeBoundQueueName)) {
+            return String.format("bound_to_%s", queueOrExchangeName);
+        }
+        return exchangeBoundQueueName;
+    }
+
+
     public String getExchangeType() {
         return exchangeType;
     }
@@ -139,13 +142,13 @@ public class AMQPSettings {
      * <p><u>Example for queue:</u>
      *
      * <pre>
-     * amqp-queue:myQueue?deliveryMode=1&autoDelete=true&exclusive=true
+     * amqp_queue:myQueue?deliveryMode=1&autoDelete=true&exclusive=true
      * </pre>
      *
      * <u>Example for exchange:</u>
      *
      * <pre>
-     * amqp-exchange:myExchange?exchangeType=topic&routingKey=myRoutingKey&exclusive=true
+     * amqp_exchange:myExchange?bindQueueName=myQueue&exchangeType=topic&routingKey=myRoutingKey&exclusive=true
      * </pre>
      *
      * @param queueURI
@@ -178,6 +181,10 @@ public class AMQPSettings {
                                                         "The provided exchange type is empty");
                                             }
                                             exchangeType = value;
+                                        }
+                                        if (kv[0].equalsIgnoreCase(
+                                                (String.valueOf(PARAM_QUEUE_NAME)))) {
+                                            exchangeBoundQueueName = kv[1];
                                         }
                                         if (kv[0].equalsIgnoreCase(
                                                 (String.valueOf(PARAM_ROUTING_KEY)))) {
@@ -230,6 +237,7 @@ public class AMQPSettings {
                 && Objects.equals(exchangeType, other.exchangeType)
                 && exclusive == other.exclusive
                 && Objects.equals(queueOrExchangeName, other.queueOrExchangeName)
+                && Objects.equals(exchangeBoundQueueName, other.exchangeBoundQueueName)
                 && Objects.equals(queueType, other.queueType)
                 && Objects.equals(routingKey, other.routingKey)
                 && sequentialProcessing == other.sequentialProcessing;
@@ -248,6 +256,7 @@ public class AMQPSettings {
                 exchangeType,
                 exclusive,
                 queueOrExchangeName,
+                exchangeBoundQueueName,
                 queueType,
                 routingKey,
                 sequentialProcessing);
@@ -261,6 +270,8 @@ public class AMQPSettings {
                 + eventName
                 + ", exchangeType="
                 + exchangeType
+                + ", exchangeQueueName="
+                + exchangeBoundQueueName
                 + ", queueType="
                 + queueType
                 + ", routingKey="
