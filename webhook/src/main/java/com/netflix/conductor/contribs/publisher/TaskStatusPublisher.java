@@ -21,18 +21,18 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.core.dal.ExecutionDAOFacade;
+import com.netflix.conductor.core.listener.TaskStatusListener;
+import com.netflix.conductor.model.TaskModel;
 
 @Singleton
-// public class TaskStatusPublisher implements TaskStatusListener {
-public class TaskStatusPublisher {
+public class TaskStatusPublisher implements TaskStatusListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskStatusPublisher.class);
     private static final Integer QDEPTH =
             Integer.parseInt(
                     System.getenv().getOrDefault("ENV_TASK_NOTIFICATION_QUEUE_SIZE", "50"));
-    private BlockingQueue<Task> blockingQueue = new LinkedBlockingDeque<>(QDEPTH);
+    private BlockingQueue<TaskModel> blockingQueue = new LinkedBlockingDeque<>(QDEPTH);
 
     private RestClientManager rcm;
     private ExecutionDAOFacade executionDAOFacade;
@@ -55,12 +55,12 @@ public class TaskStatusPublisher {
             this.setUncaughtExceptionHandler(new ExceptionHandler());
             String tName = Thread.currentThread().getName();
             LOGGER.info("{}: Starting consumer thread", tName);
-            Task task = null;
+            TaskModel task = null;
             TaskNotification taskNotification = null;
             while (true) {
                 try {
                     task = blockingQueue.take();
-                    taskNotification = new TaskNotification(task);
+                    taskNotification = new TaskNotification(task.toTask());
                     String jsonTask = taskNotification.toJsonString();
                     LOGGER.info("Publishing TaskNotification: {}", jsonTask);
                     if (taskNotification.getTaskType().equals("SUB_WORKFLOW")) {
@@ -109,8 +109,8 @@ public class TaskStatusPublisher {
         consumerThread.start();
     }
 
-    // @Override
-    public void onTaskScheduled(Task task) {
+    @Override
+    public void onTaskScheduled(TaskModel task) {
         try {
             blockingQueue.put(task);
         } catch (Exception e) {
