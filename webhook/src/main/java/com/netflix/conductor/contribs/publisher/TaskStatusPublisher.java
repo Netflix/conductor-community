@@ -12,6 +12,7 @@
 package com.netflix.conductor.contribs.publisher;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -36,6 +37,7 @@ public class TaskStatusPublisher implements TaskStatusListener {
 
     private RestClientManager rcm;
     private ExecutionDAOFacade executionDAOFacade;
+    private List<String> subscribedTaskStatusList;
 
     class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         public void uncaughtException(Thread t, Throwable e) {
@@ -102,9 +104,13 @@ public class TaskStatusPublisher implements TaskStatusListener {
     }
 
     @Inject
-    public TaskStatusPublisher(RestClientManager rcm, ExecutionDAOFacade executionDAOFacade) {
+    public TaskStatusPublisher(
+            RestClientManager rcm,
+            ExecutionDAOFacade executionDAOFacade,
+            List<String> subscribedTaskStatuses) {
         this.rcm = rcm;
         this.executionDAOFacade = executionDAOFacade;
+        this.subscribedTaskStatusList = subscribedTaskStatuses;
         ConsumerThread consumerThread = new ConsumerThread();
         consumerThread.start();
     }
@@ -112,7 +118,9 @@ public class TaskStatusPublisher implements TaskStatusListener {
     @Override
     public void onTaskScheduled(TaskModel task) {
         try {
-            blockingQueue.put(task);
+            if (subscribedTaskStatusList.contains(TaskModel.Status.SCHEDULED.name())) {
+                blockingQueue.put(task);
+            }
         } catch (Exception e) {
             LOGGER.error(
                     "Failed to enqueue task: Id {} Type {} of workflow {} ",
@@ -120,6 +128,75 @@ public class TaskStatusPublisher implements TaskStatusListener {
                     task.getTaskType(),
                     task.getWorkflowInstanceId());
             LOGGER.error(e.toString());
+        }
+    }
+
+    private void enqueueTask(TaskModel task) {
+        try {
+            blockingQueue.put(task);
+        } catch (Exception e) {
+            LOGGER.debug(
+                    "Failed to enqueue task: Id {} Type {} of workflow {} ",
+                    task.getTaskId(),
+                    task.getTaskType(),
+                    task.getWorkflowInstanceId());
+            LOGGER.debug(e.toString());
+        }
+    }
+
+    @Override
+    public void onTaskCanceled(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.CANCELED.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskCompleted(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.COMPLETED.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskCompletedWithErrors(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.COMPLETED_WITH_ERRORS.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskFailed(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.FAILED.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskFailedWithTerminalError(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.FAILED_WITH_TERMINAL_ERROR.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskInProgress(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.IN_PROGRESS.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskSkipped(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.SKIPPED.name())) {
+            enqueueTask(task);
+        }
+    }
+
+    @Override
+    public void onTaskTimedOut(TaskModel task) {
+        if (subscribedTaskStatusList.contains(TaskModel.Status.TIMED_OUT.name())) {
+            enqueueTask(task);
         }
     }
 

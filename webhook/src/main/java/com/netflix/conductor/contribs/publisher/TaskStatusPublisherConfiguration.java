@@ -26,8 +26,10 @@ public class TaskStatusPublisherConfiguration {
 
     @Bean
     public TaskStatusListener getTaskStatusListener(
-            RestClientManager rcm, ExecutionDAOFacade executionDAOFacade) {
+            RestClientManager rcm,
+            ExecutionDAOFacade executionDAOFacade,
+            ConductorWebhookNotificationProperties config) {
 
-        return new TaskStatusPublisher(rcm, executionDAOFacade);
+        return new TaskStatusPublisher(rcm, executionDAOFacade, config.getSubscribedTaskStatuses());
     }
 }

@@ -11,6 +11,8 @@
  */
 package com.netflix.conductor.contribs.publisher;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("conductor.webhook.notification")
@@ -23,6 +25,7 @@ public class ConductorWebhookNotificationProperties {
     /*
      * TBD: list of Task status we are interested in
      */
+    private List<String> subscribedTaskStatuses;
 
     private String endpointWorkflow;
 
@@ -158,5 +161,13 @@ public class ConductorWebhookNotificationProperties {
 
     public void setConnectionPoolMaxRequestPerRoute(int connectionPoolMaxRequestPerRoute) {
         this.connectionPoolMaxRequestPerRoute = connectionPoolMaxRequestPerRoute;
+    }
+
+    public List<String> getSubscribedTaskStatuses() {
+        return subscribedTaskStatuses;
+    }
+
+    public void setSubscribedTaskStatuses(List<String> subscribedTaskStatuses) {
+        this.subscribedTaskStatuses = subscribedTaskStatuses;
     }
 }
