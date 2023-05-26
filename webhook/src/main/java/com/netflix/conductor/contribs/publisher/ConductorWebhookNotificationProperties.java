@@ -20,6 +20,10 @@ public class ConductorWebhookNotificationProperties {
 
     private String endpointTask;
 
+    /*
+     * TBD: list of Task status we are interested in
+     */
+
     private String endpointWorkflow;
 
     private String headerDomainGroup;
