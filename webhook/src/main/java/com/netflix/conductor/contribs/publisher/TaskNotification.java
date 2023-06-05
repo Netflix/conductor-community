@@ -12,11 +12,13 @@
 package com.netflix.conductor.contribs.publisher;
 
 import java.util.LinkedHashMap;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.metadata.tasks.Task;
+import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.run.TaskSummary;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -34,6 +36,17 @@ public class TaskNotification extends TaskSummary {
     public String workflowTaskType;
     private String domainGroupMoId = "";
     private String accountMoId = "";
+
+    /**
+     * following attributes doesnt exist in TaskSummary so add it here. Not adding in TaskSummary as
+     * it belongs to conductor-common
+     */
+    private String referenceTaskName;
+
+    private int retryCount;
+
+    private String taskDescription;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public String getDomainGroupMoId() {
@@ -44,8 +57,30 @@ public class TaskNotification extends TaskSummary {
         return accountMoId;
     }
 
+    public String getReferenceTaskName() {
+        return referenceTaskName;
+    }
+
+    public int getRetryCount() {
+        return retryCount;
+    }
+
+    public String getTaskDescription() {
+        return taskDescription;
+    }
+
     public TaskNotification(Task task) {
         super(task);
+        referenceTaskName = task.getReferenceTaskName();
+        retryCount = task.getRetryCount();
+        Optional<TaskDef> taskDefinition = task.getTaskDefinition();
+        if (taskDefinition.isEmpty()) {
+            taskDescription = "";
+        } else {
+            TaskDef taskDef = taskDefinition.get();
+            taskDescription = taskDef.getDescription();
+        }
+
         workflowTaskType = task.getWorkflowTask().getType();
 
         boolean isFusionMetaPresent = task.getInputData().containsKey("_ioMeta");
