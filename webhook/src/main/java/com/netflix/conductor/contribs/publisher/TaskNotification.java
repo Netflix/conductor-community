@@ -12,13 +12,11 @@
 package com.netflix.conductor.contribs.publisher;
 
 import java.util.LinkedHashMap;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.metadata.tasks.Task;
-import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.run.TaskSummary;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
@@ -71,15 +69,10 @@ public class TaskNotification extends TaskSummary {
 
     public TaskNotification(Task task) {
         super(task);
+
         referenceTaskName = task.getReferenceTaskName();
         retryCount = task.getRetryCount();
-        Optional<TaskDef> taskDefinition = task.getTaskDefinition();
-        if (taskDefinition.isEmpty()) {
-            taskDescription = "";
-        } else {
-            TaskDef taskDef = taskDefinition.get();
-            taskDescription = taskDef.getDescription();
-        }
+        taskDescription = task.getWorkflowTask().getDescription();
 
         workflowTaskType = task.getWorkflowTask().getType();
 
