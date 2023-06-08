@@ -2,7 +2,7 @@
  * Common place to define all the version dependencies
  */
 ext {
-    revConductor = '3.13.6'
+    revConductor = '3.13.7'
     revActivation = '2.0.0'
     revAmqpClient = '5.13.0'
     revAwaitility = '3.1.6'
