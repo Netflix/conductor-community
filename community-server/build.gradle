@@ -10,7 +10,6 @@ dependencies {
     implementation files('/media/hostShare/intersight/src/github/charybr/conductor-community/local-libs/conductor-core-3.14.0-SNAPSHOT.jar')
     implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
     implementation "com.netflix.conductor:conductor-cassandra-persistence:${revConductor}"
-    implementation "com.netflix.conductor:conductor-es6-persistence:${revConductor}"
     implementation "com.netflix.conductor:conductor-grpc-server:${revConductor}"
     implementation "com.netflix.conductor:conductor-redis-lock:${revConductor}"
     implementation "com.netflix.conductor:conductor-redis-concurrency-limit:${revConductor}"

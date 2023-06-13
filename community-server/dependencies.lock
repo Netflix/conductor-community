@@ -9,37 +9,34 @@
             "project": true
         },
         "com.netflix.conductor:conductor-awss3-storage": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-awssqs-event-queue": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-azureblob-storage": {
             "project": true
         },
         "com.netflix.conductor:conductor-cassandra-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.6"
-        },
-        "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es7-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-http-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-json-jq-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-kafka": {
             "project": true
@@ -60,16 +57,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-redis-concurrency-limit": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-lock": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-rest": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
@@ -155,16 +152,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-awss3-storage": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-awssqs-event-queue": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-azureblob-storage": {
             "project": true
         },
         "com.netflix.conductor:conductor-cassandra-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common": {
             "firstLevelTransitive": [
@@ -180,7 +177,7 @@
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener"
             ],
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
@@ -205,22 +202,19 @@
                 "com.netflix.conductor:conductor-workflow-event-listener",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
-            "locked": "3.13.6"
-        },
-        "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es7-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-http-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-json-jq-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-kafka": {
             "project": true
@@ -241,16 +235,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-redis-concurrency-limit": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-lock": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-rest": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
@@ -550,16 +544,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-awss3-storage": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-awssqs-event-queue": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-azureblob-storage": {
             "project": true
         },
         "com.netflix.conductor:conductor-cassandra-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common": {
             "firstLevelTransitive": [
@@ -575,7 +569,7 @@
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener"
             ],
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
@@ -600,22 +594,19 @@
                 "com.netflix.conductor:conductor-workflow-event-listener",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
-            "locked": "3.13.6"
-        },
-        "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es7-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-http-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-json-jq-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-kafka": {
             "project": true
@@ -636,16 +627,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-redis-concurrency-limit": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-lock": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-rest": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
@@ -912,40 +903,37 @@
             "project": true
         },
         "com.netflix.conductor:conductor-awss3-storage": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-awssqs-event-queue": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-azureblob-storage": {
             "project": true
         },
         "com.netflix.conductor:conductor-cassandra-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.13.6"
-        },
-        "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es7-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-http-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-json-jq-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-kafka": {
             "project": true
@@ -966,16 +954,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-redis-concurrency-limit": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-lock": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-rest": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
@@ -1079,16 +1067,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-awss3-storage": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-awssqs-event-queue": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-azureblob-storage": {
             "project": true
         },
         "com.netflix.conductor:conductor-cassandra-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common": {
             "firstLevelTransitive": [
@@ -1104,7 +1092,7 @@
                 "com.netflix.conductor:conductor-postgres-persistence",
                 "com.netflix.conductor:conductor-workflow-event-listener"
             ],
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-common-persistence": {
             "firstLevelTransitive": [
@@ -1129,22 +1117,19 @@
                 "com.netflix.conductor:conductor-workflow-event-listener",
                 "com.netflix.conductor:conductor-zookeeper-lock"
             ],
-            "locked": "3.13.6"
-        },
-        "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es7-persistence": {
             "project": true
         },
         "com.netflix.conductor:conductor-grpc-server": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-http-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-json-jq-task": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-kafka": {
             "project": true
@@ -1165,16 +1150,16 @@
             "project": true
         },
         "com.netflix.conductor:conductor-redis-concurrency-limit": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-lock": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-redis-persistence": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-rest": {
-            "locked": "3.13.6"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-workflow-event-listener": {
             "project": true
