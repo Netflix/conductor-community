@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.net.ssl.SSLException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -182,11 +183,12 @@ public class RestClientManager {
             String data,
             String domainGroupMoId,
             String accountMoId,
-            String id)
+            String id,
+            Webhook webhook)
             throws IOException {
         this.notifType = notifType.toString();
         notifId = id;
-        String url = prepareUrl(notifType);
+        String url = prepareUrl(notifType, webhook);
 
         Map<String, String> headers = new HashMap<>();
         headers.put(config.getHeaderPrefer(), config.getHeaderPreferValue());
@@ -202,16 +204,29 @@ public class RestClientManager {
         }
     }
 
-    private String prepareUrl(RestClientManager.NotificationType notifType) {
+    private String prepareUrl(RestClientManager.NotificationType notifType, Webhook webhook) {
         String urlEndPoint = "";
 
         if (notifType == RestClientManager.NotificationType.TASK) {
-            urlEndPoint = config.getEndpointTask();
-
+            if (webhook != null && StringUtils.isNotBlank(webhook.getEndpointTask())) {
+                urlEndPoint = webhook.getEndpointTask();
+            } else {
+                urlEndPoint = config.getEndpointTask();
+            }
         } else if (notifType == RestClientManager.NotificationType.WORKFLOW) {
-            urlEndPoint = config.getEndpointWorkflow();
+            if (webhook != null && StringUtils.isNotBlank(webhook.getEndpointTask())) {
+                urlEndPoint = webhook.getEndpointWorkflow();
+            } else {
+                urlEndPoint = config.getEndpointWorkflow();
+            }
         }
-        return config.getUrl() + "/" + urlEndPoint;
+        String url;
+        if (webhook != null) {
+            url = webhook.getUrl();
+        } else {
+            url = config.getUrl();
+        }
+        return url + "/" + urlEndPoint;
     }
 
     private HttpPost createPostRequest(String url, String data, Map<String, String> headers)

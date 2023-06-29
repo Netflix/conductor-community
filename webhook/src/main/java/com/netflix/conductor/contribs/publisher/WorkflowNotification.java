@@ -12,6 +12,7 @@
 package com.netflix.conductor.contribs.publisher;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import com.netflix.conductor.common.run.WorkflowSummary;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -32,6 +34,7 @@ class WorkflowNotification extends WorkflowSummary {
     private String domainGroupMoId = "";
     private String accountMoId = "";
     private ObjectMapper objectMapper = new ObjectMapper();
+    private Webhook webhook;
 
     public String getDomainGroupMoId() {
         return domainGroupMoId;
@@ -41,8 +44,22 @@ class WorkflowNotification extends WorkflowSummary {
         return accountMoId;
     }
 
+    public Webhook getWebhook() {
+        return webhook;
+    }
+
     WorkflowNotification(Workflow workflow) {
         super(workflow);
+        Map<String, Object> variables = workflow.getVariables();
+        Object webhook = variables.get("webhook");
+        if (webhook != null) {
+            try {
+                webhook = objectMapper.readValue(webhook.toString(), new TypeReference<>() {
+                });
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         boolean isFusionMetaPresent = workflow.getInput().containsKey("_ioMeta");
         if (!isFusionMetaPresent) {
