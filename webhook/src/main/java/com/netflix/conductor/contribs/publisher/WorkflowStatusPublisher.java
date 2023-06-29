@@ -141,6 +141,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
         rcm.postNotification(
                 RestClientManager.NotificationType.WORKFLOW,
                 jsonWorkflow,
-                workflowNotification.getWorkflowId());
+                workflowNotification.getWorkflowId(),
+                workflowNotification.getWebhook());
     }
 }

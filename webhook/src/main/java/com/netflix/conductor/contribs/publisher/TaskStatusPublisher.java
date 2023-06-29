@@ -193,6 +193,6 @@ public class TaskStatusPublisher implements TaskStatusListener {
         rcm.postNotification(
                 RestClientManager.NotificationType.TASK,
                 jsonTask,
-                taskNotification.getTaskId());
+                taskNotification.getTaskId(), null);
     }
 }

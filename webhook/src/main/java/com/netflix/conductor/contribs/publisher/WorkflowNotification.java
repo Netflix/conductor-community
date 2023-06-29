@@ -12,6 +12,7 @@
 package com.netflix.conductor.contribs.publisher;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import com.netflix.conductor.common.run.WorkflowSummary;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -30,9 +32,24 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 class WorkflowNotification extends WorkflowSummary {
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowStatusPublisher.class);
     private ObjectMapper objectMapper = new ObjectMapper();
+    private Webhook webhook;
 
     WorkflowNotification(Workflow workflow) {
         super(workflow);
+        Map<String, Object> variables = workflow.getVariables();
+        Object webhook = variables.get("webhook");
+        if (webhook != null) {
+            try {
+                webhook = objectMapper.readValue(webhook.toString(), new TypeReference<>() {
+                });
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public Webhook getWebhook() {
+        return webhook;
     }
 
     String toJsonString() {
