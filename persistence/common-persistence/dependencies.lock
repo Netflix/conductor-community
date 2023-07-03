@@ -12,10 +12,10 @@
             "locked": "2.13.2.1"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
@@ -44,10 +44,10 @@
             "locked": "2.13.2.1"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
@@ -76,10 +76,10 @@
             "locked": "2.13.2.1"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
@@ -117,10 +117,10 @@
             "locked": "2.13.2.1"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "org.apache.commons:commons-lang3": {
             "locked": "3.12.0"
