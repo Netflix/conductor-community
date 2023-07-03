@@ -111,7 +111,6 @@ public class AMQPSettings {
         return exchangeBoundQueueName;
     }
 
-
     public String getExchangeType() {
         return exchangeType;
     }
