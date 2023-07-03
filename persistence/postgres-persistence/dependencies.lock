@@ -255,16 +255,16 @@
             "firstLevelTransitive": [
                 "com.netflix.conductor:conductor-common-persistence"
             ],
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-es6-persistence": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-grpc-client": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "com.netflix.conductor:conductor-server": {
-            "locked": "3.14.0-SNAPSHOT"
+            "locked": "3.13.7"
         },
         "org.apache.commons:commons-lang3": {
             "firstLevelTransitive": [
