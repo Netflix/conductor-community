@@ -334,12 +334,12 @@ public class AMQPObservableQueueTest {
     }
 
     @Test
-    public void testGetMessagesFromExistingExchangeWithDefaultConfiguration() throws IOException, TimeoutException {
+    public void testGetMessagesFromExistingExchangeWithDefaultConfiguration()
+            throws IOException, TimeoutException {
         // Mock channel and connection
         Channel channel = mockBaseChannel();
         Connection connection = mockGoodConnection(channel);
-        testGetMessagesFromExchangeAndDefaultConfiguration(
-                channel, connection, true, true);
+        testGetMessagesFromExchangeAndDefaultConfiguration(channel, connection, true, true);
     }
 
     @Test
@@ -386,8 +386,9 @@ public class AMQPObservableQueueTest {
         msg.setPayload("Payload");
         msg.setReceipt("1");
         messages.add(msg);
-        List<String> deliveredTags = observableQueue.ack(messages);
-        assertNotNull(deliveredTags);
+        List<String> failedMessages = observableQueue.ack(messages);
+        assertNotNull(failedMessages);
+        assertTrue(failedMessages.isEmpty());
     }
 
     private void testGetMessagesFromExchangeAndDefaultConfiguration(
