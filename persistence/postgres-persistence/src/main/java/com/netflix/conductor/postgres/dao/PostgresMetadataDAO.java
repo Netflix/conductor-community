@@ -15,10 +15,13 @@ import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.common.metadata.events.EventHandler;
@@ -39,6 +42,8 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
     private final ConcurrentHashMap<String, TaskDef> taskDefCache = new ConcurrentHashMap<>();
     private static final String CLASS_NAME = PostgresMetadataDAO.class.getSimpleName();
 
+    private final ScheduledExecutorService scheduledExecutorService;
+
     public PostgresMetadataDAO(
             RetryTemplate retryTemplate,
             ObjectMapper objectMapper,
@@ -47,12 +52,31 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
         super(retryTemplate, objectMapper, dataSource);
 
         long cacheRefreshTime = properties.getTaskDefCacheRefreshInterval().getSeconds();
-        Executors.newSingleThreadScheduledExecutor()
-                .scheduleWithFixedDelay(
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+                ExecutorsUtil.newNamedThreadFactory("postgres-metadata-"));
+        this.scheduledExecutorService.scheduleWithFixedDelay(
                         this::refreshTaskDefs,
                         cacheRefreshTime,
                         cacheRefreshTime,
                         TimeUnit.SECONDS);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            this.scheduledExecutorService.shutdown();
+            if (scheduledExecutorService.awaitTermination(30, TimeUnit.SECONDS)) {
+                logger.debug("tasks completed, shutting down");
+            } else {
+                logger.warn("Forcing shutdown after waiting for 30 seconds");
+                scheduledExecutorService.shutdownNow();
+            }
+        } catch (InterruptedException ie) {
+            logger.warn(
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for refreshTaskDefs", ie);
+            scheduledExecutorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Override
