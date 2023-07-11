@@ -29,35 +29,10 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 @JsonFilter("SecretRemovalFilter")
 class WorkflowNotification extends WorkflowSummary {
     private static final Logger LOGGER = LoggerFactory.getLogger(WorkflowStatusPublisher.class);
-    private String domainGroupMoId = "";
-    private String accountMoId = "";
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    public String getDomainGroupMoId() {
-        return domainGroupMoId;
-    }
-
-    public String getAccountMoId() {
-        return accountMoId;
-    }
 
     WorkflowNotification(Workflow workflow) {
         super(workflow);
-
-        boolean isFusionMetaPresent = workflow.getInput().containsKey("_ioMeta");
-        if (!isFusionMetaPresent) {
-            return;
-        }
-
-        LinkedHashMap fusionMeta = (LinkedHashMap) workflow.getInput().get("_ioMeta");
-        domainGroupMoId =
-                fusionMeta.containsKey("DomainGroupMoId")
-                        ? fusionMeta.get("DomainGroupMoId").toString()
-                        : "";
-        accountMoId =
-                fusionMeta.containsKey("AccountMoId")
-                        ? fusionMeta.get("AccountMoId").toString()
-                        : "";
     }
 
     String toJsonString() {
