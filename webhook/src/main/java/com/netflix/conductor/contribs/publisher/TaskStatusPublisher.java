@@ -130,6 +130,6 @@ public class TaskStatusPublisher {
                 jsonTask,
                 taskNotification.getDomainGroupMoId(),
                 taskNotification.getAccountMoId(),
-                taskNotification.getTaskId());
+                taskNotification.getTaskId(), null);
     }
 }

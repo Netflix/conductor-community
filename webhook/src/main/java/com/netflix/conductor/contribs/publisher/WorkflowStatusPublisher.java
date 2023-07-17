@@ -155,6 +155,7 @@ public class WorkflowStatusPublisher implements WorkflowStatusListener {
                 jsonWorkflow,
                 workflowNotification.getDomainGroupMoId(),
                 workflowNotification.getAccountMoId(),
-                workflowNotification.getWorkflowId());
+                workflowNotification.getWorkflowId(),
+                workflowNotification.getWebhook());
     }
 }
