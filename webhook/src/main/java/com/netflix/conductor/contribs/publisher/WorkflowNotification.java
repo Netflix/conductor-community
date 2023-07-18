@@ -37,10 +37,10 @@ class WorkflowNotification extends WorkflowSummary {
     WorkflowNotification(Workflow workflow) {
         super(workflow);
         Map<String, Object> variables = workflow.getVariables();
-        Object webhook = variables.get("webhook");
+        Object webhookVariable = variables.get("webhook");
         if (webhook != null) {
             try {
-                webhook = objectMapper.readValue(webhook.toString(), new TypeReference<>() {
+                webhook = objectMapper.readValue(webhookVariable.toString(), new TypeReference<>() {
                 });
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
