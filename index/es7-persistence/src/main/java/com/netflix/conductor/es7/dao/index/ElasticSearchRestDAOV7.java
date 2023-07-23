@@ -377,6 +377,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
             logger.info("Index '{}' already exists", index);
         }
     }
+
     /**
      * Adds an index to elasticsearch if it does not exist.
      *

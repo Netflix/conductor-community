@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,7 +11,6 @@
  */
 package com.netflix.conductor.postgres.storage;
 
-import com.netflix.conductor.core.utils.IDGenerator;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +38,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import com.netflix.conductor.core.utils.IDGenerator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -75,7 +74,8 @@ public class PostgresPayloadStorageTest {
                 new PostgresPayloadStorage(
                         testPostgres.getTestProperties(),
                         testPostgres.getDataSource(),
-                        new IDGenerator(), errorMessage);
+                        new IDGenerator(),
+                        errorMessage);
     }
 
     @Test
@@ -268,12 +268,12 @@ public class PostgresPayloadStorageTest {
 
     private void assertCount(int expected) throws SQLException {
         try (PreparedStatement stmt =
-                     testPostgres
-                             .getDataSource()
-                             .getConnection()
-                             .prepareStatement(
-                                     "SELECT count(id) FROM external.external_payload");
-             ResultSet rs = stmt.executeQuery()) {
+                        testPostgres
+                                .getDataSource()
+                                .getConnection()
+                                .prepareStatement(
+                                        "SELECT count(id) FROM external.external_payload");
+                ResultSet rs = stmt.executeQuery()) {
             rs.next();
             assertEquals(expected, rs.getInt(1));
         }
@@ -281,9 +281,9 @@ public class PostgresPayloadStorageTest {
 
     private String getCreatedOn(String key) throws SQLException {
         try (Connection conn = testPostgres.getDataSource().getConnection();
-             PreparedStatement stmt =
-                     conn.prepareStatement(
-                             "SELECT created_on FROM external.external_payload WHERE id = ?")) {
+                PreparedStatement stmt =
+                        conn.prepareStatement(
+                                "SELECT created_on FROM external.external_payload WHERE id = ?")) {
             stmt.setString(1, key);
             try (ResultSet rs = stmt.executeQuery()) {
                 rs.next();
