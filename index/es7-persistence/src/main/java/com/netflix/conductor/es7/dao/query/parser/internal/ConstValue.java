@@ -83,6 +83,7 @@ public class ConstValue extends AbstractNode {
         String numValue = sb.toString().trim();
         return numValue;
     }
+
     /**
      * Reads an escaped string
      *
