@@ -29,10 +29,7 @@ jobs:
         run: |
           export CORE_CONDUCTOR_VERSION=${{ inputs.version }}
           echo "Building against Conductor core version $CORE_CONDUCTOR_VERSION"
-          sed -i "s/revConductor = 'latest.release'/revConductor = '$CORE_CONDUCTOR_VERSION'/g" dependencies.gradle
-          git commit
-          git push
-          # ./gradlew -Prelease.useLastTag=true final --scan
+          ./gradlew -Prelease.useLastTag=true final --scan
         env:
           NETFLIX_OSS_SONATYPE_USERNAME: ${{ secrets.ORG_SONATYPE_USERNAME }}
           NETFLIX_OSS_SONATYPE_PASSWORD: ${{ secrets.ORG_SONATYPE_PASSWORD }}

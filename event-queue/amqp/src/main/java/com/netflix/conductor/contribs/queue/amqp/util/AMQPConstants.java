@@ -18,6 +18,7 @@ public class AMQPConstants {
 
     /** this when set will create a rabbitmq queue */
     public static String AMQP_QUEUE_TYPE = "amqp_queue";
+
     /** this when set will create a rabbitmq exchange */
     public static String AMQP_EXCHANGE_TYPE = "amqp_exchange";
 
@@ -53,6 +54,7 @@ public class AMQPConstants {
      * <p>{@see <a href="https://www.rabbitmq.com/queues.html">RabbitMQ</a>}.
      */
     public static boolean DEFAULT_AUTO_DELETE = false;
+
     /**
      * default rabbitmq delivery mode This is a property of the message When set to 1 the will be
      * non persistent and 2 will be persistent {@see <a
@@ -60,12 +62,14 @@ public class AMQPConstants {
      * Message Properties</a>}.
      */
     public static int DEFAULT_DELIVERY_MODE = 2;
+
     /**
      * default rabbitmq delivery mode This is a property of the channel limit to get the number of
      * unacknowledged messages. {@see <a
      * href="https://www.rabbitmq.com/consumer-prefetch.html>Consumer Prefetch</a>}.
      */
     public static int DEFAULT_BATCH_SIZE = 1;
+
     /**
      * default rabbitmq delivery mode This is a property of the amqp implementation which sets teh
      * polling time to drain the in-memory queue.

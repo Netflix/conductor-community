@@ -11,7 +11,6 @@
  */
 package com.netflix.conductor.postgres.config;
 
-import com.netflix.conductor.core.utils.IDGenerator;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +26,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.postgres.storage.PostgresPayloadStorage;
 
 @Configuration(proxyBeanMethods = false)
@@ -76,6 +76,7 @@ public class PostgresPayloadConfiguration {
     @DependsOn({"flywayForExternalDb"})
     public ExternalPayloadStorage postgresExternalPayloadStorage(
             PostgresPayloadProperties properties) {
-        return new PostgresPayloadStorage(properties, dataSource, idGenerator, DEFAULT_MESSAGE_TO_USER);
+        return new PostgresPayloadStorage(
+                properties, dataSource, idGenerator, DEFAULT_MESSAGE_TO_USER);
     }
 }

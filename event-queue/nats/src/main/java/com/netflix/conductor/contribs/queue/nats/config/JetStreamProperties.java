@@ -23,10 +23,12 @@ import io.nats.client.Options;
 @ConfigurationProperties("conductor.event-queues.jsm")
 public class JetStreamProperties {
     private String listenerQueuePrefix = "";
+
     /** The durable subscriber name for the subscription */
     private String durableName = "defaultQueue";
 
     private String streamStorageType = "file";
+
     /** The NATS connection url */
     private String url = Options.DEFAULT_URL;
 
