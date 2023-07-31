@@ -180,8 +180,6 @@ public class RestClientManager {
     void postNotification(
             RestClientManager.NotificationType notifType,
             String data,
-            String domainGroupMoId,
-            String accountMoId,
             String id)
             throws IOException {
         this.notifType = notifType.toString();
@@ -190,8 +188,6 @@ public class RestClientManager {
 
         Map<String, String> headers = new HashMap<>();
         headers.put(config.getHeaderPrefer(), config.getHeaderPreferValue());
-        headers.put(config.getHeaderDomainGroup(), domainGroupMoId);
-        headers.put(config.getHeaderAccountCookie(), accountMoId);
 
         HttpPost request = createPostRequest(url, data, headers);
         long start = System.currentTimeMillis();
