@@ -18,6 +18,7 @@ public enum AMQPConfigurations {
 
     // queue exchange settings
     PARAM_EXCHANGE_TYPE("exchangeType"),
+    PARAM_QUEUE_NAME("bindQueueName"),
     PARAM_ROUTING_KEY("routingKey"),
     PARAM_DELIVERY_MODE("deliveryMode"),
     PARAM_DURABLE("durable"),

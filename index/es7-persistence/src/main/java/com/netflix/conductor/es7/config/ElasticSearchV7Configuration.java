@@ -79,7 +79,8 @@ public class ElasticSearchV7Configuration {
         return builder;
     }
 
-    @Primary // If you are including this project, it's assumed you want ES to be your indexing mechanism
+    @Primary // If you are including this project, it's assumed you want ES to be your indexing
+    // mechanism
     @Bean
     public IndexDAO es7IndexDAO(
             RestClientBuilder restClientBuilder,

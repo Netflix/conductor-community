@@ -32,3 +32,6 @@ lib/
 build/
 */build/
 
+# asdf tool versions
+.tool-versions
+

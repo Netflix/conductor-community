@@ -1,5 +1,4 @@
 /*
- * Copyright 2022 Netflix, Inc.
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -12,7 +11,6 @@
  */
 package com.netflix.conductor.postgres.storage;
 
-import com.netflix.conductor.core.exception.NonTransientException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -30,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.netflix.conductor.common.run.ExternalStorageLocation;
 import com.netflix.conductor.common.utils.ExternalPayloadStorage;
+import com.netflix.conductor.core.exception.NonTransientException;
 import com.netflix.conductor.core.utils.IDGenerator;
 import com.netflix.conductor.postgres.config.PostgresPayloadProperties;
 
