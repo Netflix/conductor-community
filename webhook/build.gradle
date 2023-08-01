@@ -4,8 +4,7 @@ plugins {
 dependencies {
 
     implementation "com.netflix.conductor:conductor-common:${revConductor}"
-    //implementation "com.netflix.conductor:conductor-core:${revConductor}"
-    implementation files('/media/hostShare/intersight/src/github/charybr/conductor-community/local-libs/conductor-core-3.14.0-SNAPSHOT.jar')
+    implementation "com.netflix.conductor:conductor-core:${revConductor}"
     implementation "com.netflix.conductor:conductor-annotations:${revConductor}"
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
     implementation "org.apache.commons:commons-lang3:"
