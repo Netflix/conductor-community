@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot'
 }
 
+ext['snakeyaml.version'] = revSnakeYaml
+
 dependencies {
 
 
