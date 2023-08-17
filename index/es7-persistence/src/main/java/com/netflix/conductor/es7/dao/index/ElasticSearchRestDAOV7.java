@@ -127,6 +127,7 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
     private final int asyncBufferFlushTimeout;
     private final ElasticSearchProperties properties;
     private final RetryTemplate retryTemplate;
+    private final String elasticVersion;
 
     static {
         SIMPLE_DATE_FORMAT.setTimeZone(GMT);
@@ -196,6 +197,9 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
         Executors.newSingleThreadScheduledExecutor()
                 .scheduleAtFixedRate(this::flushBulkRequests, 60, 30, TimeUnit.SECONDS);
         this.retryTemplate = retryTemplate;
+
+        this.elasticVersion = getElasticVersion();
+        logger.info("ElasticSearch server version is {}", this.elasticVersion);
     }
 
     @PreDestroy
@@ -255,15 +259,27 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
     private void initIndexTemplate(String type) {
         String template = "template_" + type;
         try {
-            if (doesResourceNotExist("/_template/" + template)) {
+            String pathName = "/_template/";
+            String templateVersion = "";
+
+            if (this.elasticVersion.startsWith("8.")) {
+                // path has changed
+                pathName = "/_index_template/";
+                // templates require a "priority" in order not to clash
+                // with existing index_patterns of the ES monitoring
+                templateVersion = "8";
+            }
+
+            if (doesResourceNotExist(pathName + template)) {
                 logger.info("Creating the index template '" + template + "'");
                 InputStream stream =
-                        ElasticSearchRestDAOV7.class.getResourceAsStream("/" + template + ".json");
+                        ElasticSearchRestDAOV7.class.getResourceAsStream(
+                                "/" + template + templateVersion + ".json");
                 byte[] templateSource = IOUtils.toByteArray(stream);
 
                 HttpEntity entity =
                         new NByteArrayEntity(templateSource, ContentType.APPLICATION_JSON);
-                Request request = new Request(HttpMethod.PUT, "/_template/" + template);
+                Request request = new Request(HttpMethod.PUT, pathName + template);
                 request.setEntity(entity);
                 String test =
                         IOUtils.toString(
@@ -472,6 +488,28 @@ public class ElasticSearchRestDAOV7 extends ElasticSearchBaseDAO implements Inde
         Request request = new Request(HttpMethod.HEAD, resourcePath);
         Response response = elasticSearchAdminClient.performRequest(request);
         return response.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
+    }
+
+    /**
+     * Gets the version of the elasticsearch server.
+     *
+     * @return Version as string; "" on error
+     */
+    public String getElasticVersion() {
+        String result = "";
+        try {
+            Request request = new Request(HttpMethod.GET, "/");
+            Response response = elasticSearchAdminClient.performRequest(request);
+
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                JsonNode root = objectMapper.readTree(EntityUtils.toString(response.getEntity()));
+                result = root.get("version").get("number").asText();
+            }
+        } catch (Exception e) {
+            logger.error("Unable to get ElasticSearch server version: {}", e);
+        }
+
+        return result;
     }
 
     /**

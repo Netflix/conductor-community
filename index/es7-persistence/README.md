@@ -2,6 +2,8 @@
 
 This module provides ES7 persistence when indexing workflows and tasks.
 
+NOTE: this now also works with ES8. A ES8 version is detected and the index templates are uploaded to the correct url.
+
 ### ES Breaking changes
 
 From ES6 to ES7 there were significant breaking changes which affected ES7-persistence module implementation.
