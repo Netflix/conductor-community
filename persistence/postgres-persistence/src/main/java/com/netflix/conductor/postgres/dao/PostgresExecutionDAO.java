@@ -21,8 +21,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.common.metadata.events.EventExecution;
@@ -46,18 +48,13 @@ import com.google.common.collect.Lists;
 public class PostgresExecutionDAO extends PostgresBaseDAO
         implements ExecutionDAO, RateLimitingDAO, PollDataDAO, ConcurrentExecutionLimitDAO {
 
-    private static final String ARCHIVED_FIELD = "archived";
-    private static final String RAW_JSON_FIELD = "rawJSON";
-    public static final ThreadGroup THREAD_GROUP = new ThreadGroup("postgres-persistence");
-
-    private final ScheduledExecutorService executor;
+    private final ScheduledExecutorService scheduledExecutorService;
 
     public PostgresExecutionDAO(
             RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
-        this.executor =
-                Executors.newSingleThreadScheduledExecutor(
-                        runnable -> new Thread(THREAD_GROUP, runnable));
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+                        ExecutorsUtil.newNamedThreadFactory("postgres-execution-"));
     }
 
     private static String dateStr(Long timeInMs) {
@@ -68,6 +65,24 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
     private static String dateStr(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         return format.format(date);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            this.scheduledExecutorService.shutdown();
+            if (scheduledExecutorService.awaitTermination(30, TimeUnit.SECONDS)) {
+                logger.debug("tasks completed, shutting down");
+            } else {
+                logger.warn("Forcing shutdown after waiting for 30 seconds");
+                scheduledExecutorService.shutdownNow();
+            }
+        } catch (InterruptedException ie) {
+            logger.warn(
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for removeWorkflowWithExpiry", ie);
+            scheduledExecutorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Override
@@ -320,7 +335,7 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
     /** Scheduled executor based implementation. */
     @Override
     public boolean removeWorkflowWithExpiry(String workflowId, int ttlSeconds) {
-        executor.schedule(
+        scheduledExecutorService.schedule(
                 () -> {
                     try {
                         removeWorkflow(workflowId);
