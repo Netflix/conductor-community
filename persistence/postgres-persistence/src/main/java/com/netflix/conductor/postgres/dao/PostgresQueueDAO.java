@@ -14,11 +14,14 @@ package com.netflix.conductor.postgres.dao;
 import java.sql.Connection;
 import java.util.*;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.core.events.queue.Message;
@@ -34,17 +37,38 @@ public class PostgresQueueDAO extends PostgresBaseDAO implements QueueDAO {
 
     private static final Long UNACK_SCHEDULE_MS = 60_000L;
 
+    private final ScheduledExecutorService scheduledExecutorService;
+
     public PostgresQueueDAO(
             RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
 
-        Executors.newSingleThreadScheduledExecutor()
-                .scheduleAtFixedRate(
+        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+                ExecutorsUtil.newNamedThreadFactory("postgres-queue-"));
+        this.scheduledExecutorService.scheduleAtFixedRate(
                         this::processAllUnacks,
                         UNACK_SCHEDULE_MS,
                         UNACK_SCHEDULE_MS,
                         TimeUnit.MILLISECONDS);
-        logger.debug(PostgresQueueDAO.class.getName() + " is ready to serve");
+        logger.debug("{} is ready to serve", PostgresQueueDAO.class.getName());
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            this.scheduledExecutorService.shutdown();
+            if (scheduledExecutorService.awaitTermination(30, TimeUnit.SECONDS)) {
+                logger.debug("tasks completed, shutting down");
+            } else {
+                logger.warn("Forcing shutdown after waiting for 30 seconds");
+                scheduledExecutorService.shutdownNow();
+            }
+        } catch (InterruptedException ie) {
+            logger.warn(
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for processAllUnacks", ie);
+            scheduledExecutorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Override
