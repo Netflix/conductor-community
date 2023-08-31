@@ -22,16 +22,20 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
   && rm -rf /var/lib/apt/lists/*
 
 # Copy the project onto the builder image
-COPY . /community-server
+COPY /community-server .
 
 # Build the server
 WORKDIR /community-server
 RUN ./gradlew build -x test
 
 
+WORKDIR /conductor
 RUN git clone https://github.com/Netflix/conductor
 # Build the client
-WORKDIR /conductor/ui
+WORKDIR  ./conductor/ui
+# Copies package.json to Docker environment in a separate layer as a performance optimization
+
+# Installs all node packages. Cached unless package.json changes
 RUN yarn install && yarn build
 
 # ===========================================================================================================
@@ -54,8 +58,8 @@ COPY --from=builder /community-server/community-server/build/libs/conductor-comm
 # Copy compiled UI assets to nginx www directory
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
-COPY --from=builder /conductor/ui/build .
-COPY --from=builder /conductor/docker/server/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /conductor/conductor/ui/build  .
+COPY --from=builder /docker/server/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the files for the server into the app folders
 RUN chmod +x /app/startup.sh

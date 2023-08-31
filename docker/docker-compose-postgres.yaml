@@ -40,7 +40,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.36.2
     volumes:
-      - ./prometheus/:/etc/prometheus/
+      - ./apps/prometheus/configs/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
