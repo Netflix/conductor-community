@@ -47,7 +47,7 @@ LABEL maintainer="Netflix OSS <conductor@netflix.com>"
 RUN mkdir -p /app/config /app/logs /app/libs
 
 # Copy the compiled output to new image
-COPY --from=builder /community-server/docker/server/bin /app
+COPY --from=builder /community-server/docker/server/script /app
 COPY --from=builder /community-server/docker/server/config /app/config
 COPY --from=builder /community-server/community-server/build/libs/conductor-community-server-*-boot.jar /app/libs
 
