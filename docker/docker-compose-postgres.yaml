@@ -22,6 +22,8 @@ services:
       - elasticsearch:es
       - redis:rs
       - postgres:postgresdb
+      - prometheus:prometheus
+      - grafana:grafana
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -34,6 +36,38 @@ services:
       options:
         max-size: "1k"
         max-file: "3"
+
+  prometheus:
+    image: prom/prometheus:v2.36.2
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    external_links:
+      - conductor-server:conductor-server
+    networks:
+      - internal
+    restart: always
+
+  grafana:
+    image: grafana/grafana:6.7.2
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    expose:
+      - 3000
 
   postgres:
     image: postgres
@@ -95,6 +129,8 @@ services:
 volumes:
   pgdata-conductor:
     driver: local
+  prometheus_data: { }
+  grafana_data: { }
 
 networks:
   internal:
