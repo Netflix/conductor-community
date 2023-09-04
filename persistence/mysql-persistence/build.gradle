@@ -20,10 +20,10 @@ dependencies {
 
     testImplementation "org.codehaus.groovy:groovy-all:${revGroovy}"
 
-    testImplementation "org.elasticsearch:elasticsearch:6.8.23"
-    testImplementation "org.elasticsearch.client:transport:6.8.23"
-    testImplementation "org.elasticsearch.client:elasticsearch-rest-client:6.8.23"
-    testImplementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:6.8.23"
+    testImplementation "org.elasticsearch:elasticsearch:8.9.1"
+    testImplementation "org.elasticsearch.client:transport:8.9.1"
+    testImplementation "org.elasticsearch.client:elasticsearch-rest-client:8.9.1"
+    testImplementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:8.9.1"
     testImplementation "org.testcontainers:elasticsearch:${revTestContainer}"
 
     testImplementation "org.testcontainers:mysql:${revTestContainer}"
