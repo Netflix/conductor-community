@@ -386,8 +386,9 @@ public class AMQPObservableQueueTest {
         msg.setPayload("Payload");
         msg.setReceipt("1");
         messages.add(msg);
-        List<String> deliveredTags = observableQueue.ack(messages);
-        assertNotNull(deliveredTags);
+        List<String> failedMessages = observableQueue.ack(messages);
+        assertNotNull(failedMessages);
+        assertTrue(failedMessages.isEmpty());
     }
 
     private void testGetMessagesFromExchangeAndDefaultConfiguration(

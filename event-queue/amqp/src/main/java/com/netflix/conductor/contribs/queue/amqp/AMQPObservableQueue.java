@@ -187,16 +187,16 @@ public class AMQPObservableQueue implements ObservableQueue {
     }
 
     public List<String> ack(List<Message> messages) {
-        final List<String> processedDeliveryTags = new ArrayList<>();
+        final List<String> failedMessages = new ArrayList<>();
         for (final Message message : messages) {
             try {
                 ackMsg(message);
-                processedDeliveryTags.add(message.getReceipt());
             } catch (final Exception e) {
                 LOGGER.error("Cannot ACK message with delivery tag {}", message.getReceipt(), e);
+                failedMessages.add(message.getReceipt());
             }
         }
-        return processedDeliveryTags;
+        return failedMessages;
     }
 
     public void ackMsg(Message message) throws Exception {
