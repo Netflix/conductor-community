@@ -40,7 +40,7 @@ that has the following
 2. A key with the name `queryExpression`, whose value is a JQ expression. The expression will operate on the value of
    the `inputParameters` attribute. In the example below, the `inputParameters` has 2 inner objects named by attributes
    `key1` and `key2`, each of which has an object that is named `value1` and `value2`. They have an associated array of
-   strings as values, `"a", "b"` and `"c", "d"`. The expression `key3: (.key1.value1 + .key2.value2)` concat's the 2
+   strings as values, `"a", "b"` and `"c", "d"`. The expression `key3: (.key1.value1 + .key2.value2)` concats the 2
    string arrays into a single array against an attribute named `key3`
 
 ```json
