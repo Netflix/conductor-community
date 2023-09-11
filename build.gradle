@@ -36,8 +36,8 @@ allprojects {
     apply plugin: 'java-library'
     apply plugin: 'project-report'
 
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     group = 'com.netflix.conductor'
 
