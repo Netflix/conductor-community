@@ -23,12 +23,12 @@
     },
     "jacocoAgent": {
         "org.jacoco:org.jacoco.agent": {
-            "locked": "0.8.7"
+            "locked": "0.8.8"
         }
     },
     "jacocoAnt": {
         "org.jacoco:org.jacoco.ant": {
-            "locked": "0.8.7"
+            "locked": "0.8.8"
         }
     },
     "runtimeClasspath": {
