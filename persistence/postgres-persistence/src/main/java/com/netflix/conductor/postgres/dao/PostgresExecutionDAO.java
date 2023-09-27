@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
-import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.common.metadata.events.EventExecution;
@@ -38,6 +37,7 @@ import com.netflix.conductor.dao.RateLimitingDAO;
 import com.netflix.conductor.metrics.Monitors;
 import com.netflix.conductor.model.TaskModel;
 import com.netflix.conductor.model.WorkflowModel;
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import com.netflix.conductor.postgres.util.Query;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +53,8 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
     public PostgresExecutionDAO(
             RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
+        this.scheduledExecutorService =
+                Executors.newSingleThreadScheduledExecutor(
                         ExecutorsUtil.newNamedThreadFactory("postgres-execution-"));
     }
 
@@ -79,7 +80,8 @@ public class PostgresExecutionDAO extends PostgresBaseDAO
             }
         } catch (InterruptedException ie) {
             logger.warn(
-                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for removeWorkflowWithExpiry", ie);
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for removeWorkflowWithExpiry",
+                    ie);
             scheduledExecutorService.shutdownNow();
             Thread.currentThread().interrupt();
         }

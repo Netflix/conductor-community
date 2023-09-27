@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
-import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.common.metadata.events.EventHandler;
@@ -33,6 +32,7 @@ import com.netflix.conductor.dao.EventHandlerDAO;
 import com.netflix.conductor.dao.MetadataDAO;
 import com.netflix.conductor.metrics.Monitors;
 import com.netflix.conductor.postgres.config.PostgresProperties;
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
@@ -52,13 +52,11 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
         super(retryTemplate, objectMapper, dataSource);
 
         long cacheRefreshTime = properties.getTaskDefCacheRefreshInterval().getSeconds();
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
-                ExecutorsUtil.newNamedThreadFactory("postgres-metadata-"));
+        this.scheduledExecutorService =
+                Executors.newSingleThreadScheduledExecutor(
+                        ExecutorsUtil.newNamedThreadFactory("postgres-metadata-"));
         this.scheduledExecutorService.scheduleWithFixedDelay(
-                        this::refreshTaskDefs,
-                        cacheRefreshTime,
-                        cacheRefreshTime,
-                        TimeUnit.SECONDS);
+                this::refreshTaskDefs, cacheRefreshTime, cacheRefreshTime, TimeUnit.SECONDS);
     }
 
     @PreDestroy
@@ -73,7 +71,8 @@ public class PostgresMetadataDAO extends PostgresBaseDAO implements MetadataDAO,
             }
         } catch (InterruptedException ie) {
             logger.warn(
-                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for refreshTaskDefs", ie);
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for refreshTaskDefs",
+                    ie);
             scheduledExecutorService.shutdownNow();
             Thread.currentThread().interrupt();
         }

@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.sql.DataSource;
 
-import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import org.springframework.retry.support.RetryTemplate;
 
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.dao.QueueDAO;
+import com.netflix.conductor.postgres.util.ExecutorsUtil;
 import com.netflix.conductor.postgres.util.Query;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,13 +43,14 @@ public class PostgresQueueDAO extends PostgresBaseDAO implements QueueDAO {
             RetryTemplate retryTemplate, ObjectMapper objectMapper, DataSource dataSource) {
         super(retryTemplate, objectMapper, dataSource);
 
-        this.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
-                ExecutorsUtil.newNamedThreadFactory("postgres-queue-"));
+        this.scheduledExecutorService =
+                Executors.newSingleThreadScheduledExecutor(
+                        ExecutorsUtil.newNamedThreadFactory("postgres-queue-"));
         this.scheduledExecutorService.scheduleAtFixedRate(
-                        this::processAllUnacks,
-                        UNACK_SCHEDULE_MS,
-                        UNACK_SCHEDULE_MS,
-                        TimeUnit.MILLISECONDS);
+                this::processAllUnacks,
+                UNACK_SCHEDULE_MS,
+                UNACK_SCHEDULE_MS,
+                TimeUnit.MILLISECONDS);
         logger.debug("{} is ready to serve", PostgresQueueDAO.class.getName());
     }
 
@@ -65,7 +66,8 @@ public class PostgresQueueDAO extends PostgresBaseDAO implements QueueDAO {
             }
         } catch (InterruptedException ie) {
             logger.warn(
-                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for processAllUnacks", ie);
+                    "Shutdown interrupted, invoking shutdownNow on scheduledExecutorService for processAllUnacks",
+                    ie);
             scheduledExecutorService.shutdownNow();
             Thread.currentThread().interrupt();
         }
