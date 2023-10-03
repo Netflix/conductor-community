@@ -8,11 +8,11 @@ jobs:
     name: Gradle Build and Publish
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Zulu JDK 11
+      - name: Set up Zulu JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
@@ -32,8 +32,8 @@ jobs:
           ./gradlew generateLock saveLock
           git config --global user.name 'Anoop Panicker'
           git config --global user.email 'apanicker@netflix.com'
-          # git commit -am "Update Conductor version dependency to $VERSION"
-          # git push
+          git commit -am "Update Conductor version dependency to $VERSION"
+          git push
           cat dependencies.gradle | grep revConductor
           if [[ "$TAG" == *"$RC"* ]]; then  
             echo "Publishing release candidate"; 
