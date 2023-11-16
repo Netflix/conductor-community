@@ -5,8 +5,6 @@ plugins {
 ext['snakeyaml.version'] = revSnakeYaml
 
 dependencies {
-
-
     implementation "com.netflix.conductor:conductor-rest:${revConductor}"
     implementation "com.netflix.conductor:conductor-core:${revConductor}"
     implementation "com.netflix.conductor:conductor-redis-persistence:${revConductor}"
@@ -70,6 +68,10 @@ bootJar {
     classifier = 'boot'
 }
 
+// https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#integrating-with-actuator.build-info
+// This will configure a BuildInfo task named bootBuildInfo
 springBoot {
     buildInfo()
 }
+
+compileJava.dependsOn bootBuildInfo
