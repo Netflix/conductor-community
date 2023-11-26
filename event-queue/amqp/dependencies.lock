@@ -9,10 +9,10 @@
             "locked": "32.1.2-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.rabbitmq:amqp-client": {
             "locked": "5.13.0"
@@ -50,10 +50,10 @@
             "locked": "32.1.2-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.rabbitmq:amqp-client": {
             "locked": "5.13.0"
@@ -85,10 +85,10 @@
             "locked": "32.1.2-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.rabbitmq:amqp-client": {
             "locked": "5.13.0"
@@ -132,10 +132,10 @@
             "locked": "32.1.2-jre"
         },
         "com.netflix.conductor:conductor-common": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.netflix.conductor:conductor-core": {
-            "locked": "3.14.0"
+            "locked": "3.15.0"
         },
         "com.rabbitmq:amqp-client": {
             "locked": "5.13.0"
