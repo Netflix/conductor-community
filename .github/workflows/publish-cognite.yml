@@ -1,0 +1,35 @@
+name: Publish to Maven Central
+on:
+  workflow_dispatch:
+    inputs:
+      version: 
+        description: "workflow version"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Gradle Build and Publish
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Zulu JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-     
+      - name: Publish release
+        run: |
+          export CORE_CONDUCTOR_VERSION=${{ inputs.version }}
+          echo "Building against Conductor core version $CORE_CONDUCTOR_VERSION"
+          ./gradlew publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_OSSRH_USER }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_OSSRH_PASSWORD }}
