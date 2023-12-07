@@ -26,13 +26,6 @@ plugins {
 }
 
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            pom {
-                name = 'My Library'
-            }
-        }
-    }
     repositories {
         maven {
             name = "OSSRH"
@@ -67,7 +60,7 @@ allprojects {
         }
     }
 
-    group = 'com.netflix.conductor'
+    group = 'com.cognite.conductor'
 
     configurations.all {
         exclude group: 'ch.qos.logback', module: 'logback-classic'

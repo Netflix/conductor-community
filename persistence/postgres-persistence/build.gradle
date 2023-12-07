@@ -40,3 +40,17 @@ test {
     //the SQL unit tests must run within the same JVM to share the same embedded DB
     maxParallelForks = 1
 }
+
+publishing {
+    repositories {
+        maven {
+            name = "OSSRH"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}
+
