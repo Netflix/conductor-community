@@ -1,4 +1,10 @@
-# Netflix Conductor community modules
+# DISCLAIMER: THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED
+
+Effective **December 13, 2023**, Netflix will discontinue maintenance of Conductor OSS on GitHub. This strategic decision, while difficult, is essential for realigning our resources to better serve our business objectives with our internal Conductor fork.
+
+We are deeply grateful for your support and contributions over the years. While Netflix will no longer be maintaining this repo, members of the Conductor community have been active in promoting alternative forks of this project, we’ll leave the code as is and trust that the health of the community will remain strong and continue to develop moving forward.
+
+## Netflix Conductor community modules
 
 This repository hosts all the community contributed modules and extensions for 
 [Netflix Conductor](https://github.com/Netflix/conductor)
