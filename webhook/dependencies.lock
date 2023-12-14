@@ -1,0 +1,153 @@
+{
+    "annotationProcessor": {
+        "org.springframework.boot:spring-boot-configuration-processor": {
+            "locked": "2.6.7"
+        }
+    },
+    "compileClasspath": {
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.13.8"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.springframework.boot:spring-boot-starter": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-web": {
+            "locked": "2.6.7"
+        }
+    },
+    "runtimeClasspath": {
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.13.8"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        }
+    },
+    "testCompileClasspath": {
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-server": {
+            "locked": "3.13.8"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "3.0.9"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "2.1-groovy-3.0"
+        },
+        "org.spockframework:spock-spring": {
+            "locked": "2.1-groovy-3.0"
+        },
+        "org.springframework.boot:spring-boot-starter-log4j2": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-test": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-web": {
+            "locked": "2.6.7"
+        }
+    },
+    "testRuntimeClasspath": {
+        "com.netflix.conductor:conductor-common": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-core": {
+            "locked": "3.13.8"
+        },
+        "com.netflix.conductor:conductor-server": {
+            "locked": "3.13.8"
+        },
+        "org.apache.logging.log4j:log4j-api": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-core": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-jul": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-slf4j-impl": {
+            "locked": "2.17.1"
+        },
+        "org.apache.logging.log4j:log4j-web": {
+            "locked": "2.17.1"
+        },
+        "org.codehaus.groovy:groovy-all": {
+            "locked": "3.0.9"
+        },
+        "org.junit.vintage:junit-vintage-engine": {
+            "locked": "5.8.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "2.1-groovy-3.0"
+        },
+        "org.spockframework:spock-spring": {
+            "locked": "2.1-groovy-3.0"
+        },
+        "org.springframework.boot:spring-boot-starter-log4j2": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-test": {
+            "locked": "2.6.7"
+        },
+        "org.springframework.boot:spring-boot-starter-web": {
+            "locked": "2.6.7"
+        }
+    }
+}
